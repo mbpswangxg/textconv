@@ -1,0 +1,10 @@
+﻿<td class="output">
+            <div style="display: table;">
+              <div style="display: table-cell;width: 75px;">
+                $1<font color="#FF0000">*</font>
+              </div>
+              <div style="display: table-cell; text-align: right;">
+                <input type="button" value="設定" style="padding: 2px;" class="BTN02" onClick="$2">
+              </div>
+            </div>
+          </td>

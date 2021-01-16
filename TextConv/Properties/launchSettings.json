@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TextConv": {
+      "commandName": "Project",
+      "commandLineArgs": "-c td2"
+    }
+  }
+}

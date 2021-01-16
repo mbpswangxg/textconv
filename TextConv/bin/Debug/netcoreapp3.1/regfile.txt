@@ -1,0 +1,88 @@
+﻿#comment start with #, and no range comments.
+#[0]:pattern, [1]:replacement,[2-n]:regex ignoreCase=false, default true.
+#------------------------------------------------
+#general command:
+# textconv -c COMMAND_KEYWORD.
+# ex: textconv INSTR
+#------------------------------------------------
+# ORACLE => SQLSERVER 対応
+#=================================================================
+INSTR\(([^,]+),([^\)]+)\)	CHARINDEX($2,$1)	ignoreCase=true
+
+TO_DATE\(([^,]+),\s*'YYYYMM'\s*\)	CONVERT(datetime, $1+'01')
+TO_DATE\(([^,]+),\s*'YYYY/MM'\s*\)	CONVERT(datetime, $1+'/01')
+TO_DATE\(([^,]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(datetime, $1)
+TO_DATE\(([^,]+),([^\)]+)\)	CONVERT(datetime2, $1)
+
+TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
+TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
+TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
+
+TO_CHAR\(([^,\(\n]+),\s*'FMMM'\s*\)	FORMAT($1, '%M')
+TO_CHAR\(([^,\(\n]+),\s*'FMDD'\s*\)	FORMAT($1, '%d')
+
+TO_CHAR\(([^,\(\n]+),\s*'YYYY'\s*\)	FORMAT($1, 'yyyy')
+TO_CHAR\(([^,\(\n]+),\s*'MM'\s*\)	FORMAT($1, 'MM')
+TO_CHAR\(([^,\(\n]+),\s*'DD'\s*\)	FORMAT($1, 'dd')
+
+TO_CHAR\(([^,\n]+),\s*'[9,]*999'\s*\)	FORMAT($1, '#,###')
+
+TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYYMM'\s*\)\s*,\s*'FMMM'\s*\)	FORMAT(CONVERT(datetime,$1+'01'), '%M')
+TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM'\s*\)\s*,\s*'YYYY/FMMM'\s*\)	FORMAT(CONVERT(datetime,$1+'/01'), 'yyyy/M')
+TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM/DD'\s*\)\s*,\s*'YYYY/FMMM/DD'\s*\)	FORMAT(CONVERT(datetime,$1), 'yyyy/M/d')
+
+TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'FMMM'\s*\)	FORMAT($1, '%M')
+TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM'\s*\)	FORMAT($1, 'yyyy/M')
+TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM/DD'\s*\)	FORMAT($1, 'yyyy/M/d')
+
+TO_CHAR\(\s*([^,\(\)]+)\)	CONVERT(varchar, $1)
+
+((?:^|[^\.\w]))SUBSTR\s*\(	$1SUBSTRING(
+((?:^|[^\.\w]))LENGTH\s*\(	$1LEN(
+((?:^|[^\.\w]))NVL\s*\(	$1ISNULL(
+
+COUNT\([\w+\.]*ROWID\)	COUNT(*)
+
+SYSDATE	GETDATE()
+
+#special command.
+#@COMMAND_KEYWORD=pattern
+# textconv -c COMMAND_KEYWORD
+#-------------------------------------------
+:ORA_OR=\|\|	+	excludeRange=(if|while)[^\n]+\|\|[^\n]+|^[\s\/]*\|\|
+
+
+:UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
+:UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
+:UCASE_COL=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	UCASE_GROUP=1,3	ignoreCase=false
+:UCASE_COL="\s*SET\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+:UCASE_COL="\s*WHERE\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+:UCASE_COL="\s*AND\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+:UCASE_COL="\s*ORDER BY\s+(\w+\.)(\w*[a-z]+\w*)	UCASE_GROUP=2	ignoreCase=false
+:UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
+:UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
+
+DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
+DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
+DECODE=DECODE\((ISNULL\([\w\.\s]+,[^\(\)]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
+DECODE=DECODE\(([^,]+),([^,]+)(,([^,\)]+))+\)(";)	DECODE_GROUP=SPECIAL_CASE
+
+DECODE=DECODE\(([^,]+),([^,]+),([^,]+),(\s*FORMAT\([\w\.\s]+,[\w\.%/\s']+\)\s*\+[\s\w']+[\+\s]*FORMAT\([\w\.\s]+,[\w\.%/\s']+\)\s*\+[\s\w']+[\+\s]*FORMAT\([\w\.\s]+,[\w\.%/\s']+\)\s*\+[\s\w']+[\+\s]*)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
+DECODE=DECODE\(([^,]+),([^,]+),\s*(FORMAT\(CONVERT\([\w\.\s]+,[\w\.%/\s'\+]+\),[\w\.%/\s'\+]+\)),\s*(FORMAT\(CONVERT\([\w\.\s]+,[\w\.%/\s'\+]+\),[\w\.%/\s'\+]+\))\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
+DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w']+\)),([^,\(\)]+),([^,\(\)]+),([^,]+,[^\(\)]+\([^\(\)]+\)[^,]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
+DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([\s\w]+\([^,]+,[^,]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
+DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([\s\w]+\([^,]+,[^\)]+\)[^\)]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
+DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 WHEN $6 THEN $7 END
+
+#DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
+#DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,\)]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 ELSE $6 END
+TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
+
+WHEN_NULL=WHEN null THEN	WHEN IS null THEN
+UserTransaction	Transaction
+#==============================================
+#JSP
+#==============================================
+"IM_MAIN"	"_top"
+imDesignCss=\<IMART\s+type="imDesignCss"\>\<\/IMART\>\s*$	
+imDesignCss=\<imart\s+type="imDesignCss"\/\>\s*$	
