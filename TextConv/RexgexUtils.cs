@@ -13,8 +13,10 @@ namespace TextConv
         private string currentfile = string.Empty;
         private ReplaceItem currentRule = null;
         private RegexOptions regOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
-        public List<string> msgs;
         private string srcfile = string.Empty;
+        
+        public List<string> msgs;
+
         public RexgexUtils(string cmd, List<ReplaceItem> allRules, string filepattern)
         {
             this.cmd = cmd;
@@ -62,11 +64,12 @@ namespace TextConv
             string newContent = string.Empty;
             foreach (var rule in this.rules) 
             {
-                if (rule.SkipFile(file)) continue;
+                if (rule.isSkipFile(file)) continue;
                 
                 if (rule.byLines)
                 {
                     string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
+                    rule.beforeReplace(lines);
                     if (replaceAllLines(lines, rule))
                     {
                         FileInfo fi = new FileInfo(file);
@@ -77,12 +80,12 @@ namespace TextConv
                 else
                 {
                     string content = File.ReadAllText(file, FileHelper.Encoding);
+                    rule.beforeReplace(content);
                     newContent = replaceAllText(content, rule);
                     if (!content.Equals(newContent))
                     {
-                        content = newContent;
                         FileInfo fi = new FileInfo(file);
-                        File.WriteAllText(file, content, FileHelper.Encoding);
+                        File.WriteAllText(file, newContent, FileHelper.Encoding);
                     }
                 }
 
@@ -121,31 +124,33 @@ namespace TextConv
             //==============================
             return content;
         }
+
         private bool replaceAllLines(string[] lines, ReplaceItem rule)
         {
-            string nline = string.Empty;
-            bool hasChanged = false;
-            int i = 0;
             //==============================
             this.currentRule = rule;
             if (!rule.ignoreCase)
             {
                 regOptions = RegexOptions.Singleline;
             }
-
+            for (int i = 0; i < lines.Length; i++) 
+            {
+            }
+                string nline = string.Empty;
+            bool hasChanged = false;
             Regex reg = new Regex(rule.pattern, regOptions);
-            for (i=0; i < lines.Length;i++)
+            for (int i = 0; i < lines.Length;i++)
             {
                 nline = lines[i];
-                if (!string.IsNullOrEmpty(rule.excludeRangePattern))
-                {
-                    //対象外範囲の場合、該当行を飛ばす
-                    if (Regex.IsMatch(nline, rule.excludeRangePattern, regOptions)) 
-                    {
-                        msgs.Add(string.Format("{0}:{1}\t{2}\t{3}", currentfile, i+1, nline, "★SKIP"));
-                        continue;
-                    }
-                }
+                //if (!string.IsNullOrEmpty(rule.excludePattern))
+                //{
+                //    //対象外範囲の場合、該当行を飛ばす
+                //    if (Regex.IsMatch(nline, rule.excludePattern, regOptions)) 
+                //    {
+                //        msgs.Add(string.Format("{0}:{1}\t{2}\t{3}", currentfile, i+1, nline, "★SKIP"));
+                //        continue;
+                //    }
+                //}
                     
                 while (Regex.IsMatch(nline, rule.pattern, regOptions))
                 {   
@@ -158,6 +163,7 @@ namespace TextConv
             return hasChanged;
         }
         
+
         private string MatchReplacer(Match m) 
         {
             string oldV = m.Value;
