@@ -138,26 +138,44 @@ namespace TextConv
             
             string nline = string.Empty;
             bool hasChanged = false;
+            bool innerChanged = false;
             Regex reg = new Regex(rule.pattern, regOptions);
             for (int i = 0; i < lines.Length;i++)
             {
                 nline = lines[i];
-                currentLineNo = i;
+                currentLineNo = i+1;
                 while (reg.IsMatch(nline))
                 {
+                    innerChanged = false;
                     nline = reg.Replace(nline, MatchReplacer);
                     if (!nline.Equals(lines[i])) 
                     {
-                        hasChanged = true;
                         lines[i] = nline;
+                        innerChanged = true;
+                    }
+                    if (innerChanged)
+                    {
+                        hasChanged = true;
+                    }
+                    else 
+                    {
+                        //変更対象外
+                        break;
                     }
                 }
             }
             
             return hasChanged;
         }
-        
 
+        private static int CompareLineMatch(LineMatch x, LineMatch y)
+        {
+            if (x.lineNo != y.lineNo)
+            {
+                return x.lineNo - y.lineNo;
+            }
+            return x.Match.Index - y.Match.Index;
+        }
         private string MatchReplacer(Match m) 
         {
             string oldV = m.Value;
@@ -166,21 +184,7 @@ namespace TextConv
             if (currentRule.hasRangeCheck) 
             {
                 //範囲チェックあるの場合
-                bool isInRange = false;
-                foreach (KeyValuePair<LineMatch, LineMatch> kv in currentRule.rangeMatches)
-                {
-                    if (kv.Key.lineNo <= this.currentLineNo && this.currentLineNo <= kv.Value.lineNo)
-                    {
-                        if(kv.Key.Match.Index <= m.Index && m.Index <= kv.Value.Match.Index) 
-                        {
-                            //範囲内フラグ設定
-                            isInRange = true;
-                            break;
-                        }
-                    }
-                }
-                
-                if (isInRange) 
+                if (currentRule.isInRange(currentLineNo, m)) 
                 {
                     //範囲内のスキップ対象であれば、変更せずに戻る
                     if (currentRule.skipedRange) return m.Value;

@@ -24,14 +24,16 @@ namespace TextConv
                 return;
             }
             string srcfile = getCmdValue("-f", args);
-            
-            string folder = Xmler.GetAppSettingValue("srcfolder");
+            string folder = getCmdValue("-d", args);
+            if (string.IsNullOrEmpty(folder))
+            {
+                folder = Xmler.GetAppSettingValue("srcfolder");
+            }
             if (string.IsNullOrEmpty(folder))
             {
                 Console.WriteLine("App.config setting srcfolder is required.");
                 return;
             }
-
             //==============================================================
             List<ReplaceItem> items = new List<ReplaceItem>();
             readRegfile(items);
@@ -69,7 +71,7 @@ namespace TextConv
                 if (string.IsNullOrEmpty(line)) continue;
                 if (line.StartsWith("#")) continue;
                 
-                string[] words = line.Split(splitWords.ToCharArray());
+                string[] words = Regex.Split(line, splitWords);
                 items.Add(new ReplaceItem(words));
             }
         }

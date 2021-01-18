@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-c td2"
+      "commandLineArgs": "-c :ORA_OR -d \"C:\\tmp\\wangx\\_projects\\航空電子\\jae-work - old\\test\""
     }
   }
 }

@@ -43,7 +43,7 @@ SYSDATE	GETDATE()
 #@COMMAND_KEYWORD=pattern
 # textconv -c COMMAND_KEYWORD
 #-------------------------------------------
-:ORA_OR=\|\|	+	excludePattern=(if|while)[^\n]+\|\|[^\n]+|^[\s\/]*\|\|
+:ORA_OR=\|\|	+	rangefrom=\s+(if|while)\s*\(	rangeto=\)[^\)\{]*\{	skipedRange=true
 
 :UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
 :UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false

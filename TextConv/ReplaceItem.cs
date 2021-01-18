@@ -26,21 +26,21 @@ namespace TextConv
         public bool requiredRange = false;
         public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
 
+        private LineMatch fromMatch;
+        private LineMatch toMatch;
+        private Regex keyReg;
+        private Regex valReg;
+        private List<LineMatch> keys = new List<LineMatch>();
+        private List<LineMatch> vals = new List<LineMatch>();
+
         public bool hasRangeCheck
         {
             get { return skipedRange || requiredRange; }
         }
 
         public ReplaceItem() { }
-        public ReplaceItem(string[] owords) {
+        public ReplaceItem(string[] words) {
             Match m;
-            List<string> origins = new List<string>(owords);
-            List<string> words = origins.FindAll(r => !string.IsNullOrEmpty(r));
-            if (words.Count < 2)
-            {
-                Console.WriteLine("error reg settings line: [{0}]", string.Join(",", words));
-                return;
-            }
 
             pattern = words[0];
             replacement = words[1];
@@ -64,55 +64,55 @@ namespace TextConv
                 }
             }
 
-            for (int i = 2; i < words.Count; i++)
+            for (int i = 2; i < words.Length; i++)
             {
-                m = Regex.Match(words[i], @"ignoreCase=(\w+)");
+                m = Regex.Match(words[i], @"ignoreCase=(true|false)");
                 if (m.Success)
                 {
                     ignoreCase = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"bylines=(.+)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"bylines=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     byLines = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"bytext=(.+)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"bytext=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     byLines = !bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"srcfile=(.+)", RegexOptions.IgnoreCase);
-                if (m.Success)
-                {
-                    srcfile = m.Groups[1].Value;
-                    continue;
-                }
-                m = Regex.Match(words[i], @"skipedRange=(\w+)");
+                m = Regex.Match(words[i], @"skipedRange=(true|false)");
                 if (m.Success)
                 {
                     skipedRange = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"requiredRange=(\w+)");
+                m = Regex.Match(words[i], @"requiredRange=(true|false)");
                 if (m.Success)
                 {
                     requiredRange = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
 
-                m = Regex.Match(words[i], @"rangeFrom=(.+)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"rangeFrom=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     rangeFrom = m.Groups[1].Value;
                     continue;
                 }
-                m = Regex.Match(words[i], @"rangeTo=(.+)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"rangeTo=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     rangeTo = m.Groups[1].Value;
+                    continue;
+                }
+                m = Regex.Match(words[i], @"srcfile=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    srcfile = m.Groups[1].Value;
                     continue;
                 }
             }
@@ -123,6 +123,15 @@ namespace TextConv
                 {
                     throw new Exception("when skipedRange/requiredRange=true, rangeFrom and rangeTo are required in repfile.txt.");
                 }
+
+                RegexOptions regOptions = RegexOptions.Multiline;
+                if (ignoreCase)
+                {
+                    regOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase;
+                }
+
+                keyReg = new Regex(rangeFrom, regOptions);
+                valReg = new Regex(rangeTo, regOptions);
             }
         }
         private void readRepfile(string filepath)
@@ -144,42 +153,70 @@ namespace TextConv
         {
             //　範囲判定不要の場合、処理対象外
             if (!hasRangeCheck) return;
+            rangeMatches.Clear();
+            keys.Clear();
+            vals.Clear();
+
             for (int i = 0; i < lines.Length; i++)
             {
-                beforeReplace(i, lines[i]);
+                fillMatches(i+1, lines[i]);
             }
+            keys.Sort(CompareLineMatch);
+            vals.Sort(CompareLineMatch);
         }
         public void beforeReplace (string content)
         {
-            beforeReplace(0, content);
+            //　範囲判定不要の場合、処理対象外
+            if (!hasRangeCheck) return;
+            rangeMatches.Clear();
+            keys.Clear();
+            vals.Clear();
+
+            fillMatches(0, content);
+            keys.Sort(CompareLineMatch);
+            vals.Sort(CompareLineMatch);
         }
-        private void beforeReplace(int lineNo, string line)
+        public bool isInRange(int currentLineNo, Match m)
+        {
+            //今の行番に一番近い先頭行を取得
+            LineMatch fromMatch = keys.FindLast(fm => fm.lineNo <= currentLineNo);
+            //先頭行対応する直後行を取得
+            LineMatch toMatch = vals.Find(tm => fromMatch.lineNo <= tm.lineNo);
+
+            if (fromMatch != null && toMatch != null)
+            {
+                //今の行番に一番近い後ろ行を取得
+                LineMatch toMatch2 = vals.Find(tm => currentLineNo <= tm.lineNo);
+                return toMatch.Equals(toMatch2);
+            }
+            return false;
+        }
+
+        private void fillMatches(int lineNo, string line)
         {
             //　範囲判定不要の場合、処理対象外
             if (!hasRangeCheck) return;
 
-            RegexOptions regOptions = RegexOptions.Multiline;
-            if (ignoreCase) 
+            MatchCollection m1 = keyReg.Matches(line);
+            foreach(Match k in m1)
             {
-                regOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase;
+                keys.Add(new LineMatch(lineNo, k));
             }
-            
-            MatchCollection ms1 = Regex.Matches(line, rangeFrom, regOptions);
-            MatchCollection ms2 = Regex.Matches(line, rangeTo, regOptions);
-
-            foreach (Match m1 in ms1)
+            MatchCollection m2 = valReg.Matches(line);
+            foreach (Match v in m2)
             {
-                foreach (Match m2 in ms2)
-                {
-                    if (m1.Index > m2.Index)
-                    {
-                        continue;
-                    }
-                    rangeMatches.Add(new LineMatch(lineNo, m1), new LineMatch(lineNo, m2));
-                    break;
-                }
+                vals.Add(new LineMatch(lineNo, v));
             }
         }
 
+        private static int CompareLineMatch(LineMatch x, LineMatch y)
+        {
+            if (x.lineNo != y.lineNo)
+            {
+                return x.lineNo - y.lineNo;
+            }
+            return x.Match.Index - y.Match.Index;
+        }
+        
     }
 }
