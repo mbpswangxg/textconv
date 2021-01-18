@@ -26,8 +26,6 @@ namespace TextConv
         public bool requiredRange = false;
         public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
 
-        private LineMatch fromMatch;
-        private LineMatch toMatch;
         private Regex keyReg;
         private Regex valReg;
         private List<LineMatch> keys = new List<LineMatch>();
@@ -116,12 +114,16 @@ namespace TextConv
                     continue;
                 }
             }
+            if(skipedRange && requiredRange)
+            {
+                throw new Exception("error: skipedRange=true or requiredRange=true, it's wrong for both true.");
+            }
             if (hasRangeCheck)
             {
                 if (string.IsNullOrEmpty(rangeFrom)
                 || string.IsNullOrEmpty(rangeTo))
                 {
-                    throw new Exception("when skipedRange/requiredRange=true, rangeFrom and rangeTo are required in repfile.txt.");
+                    
                 }
 
                 RegexOptions regOptions = RegexOptions.Multiline;
@@ -180,14 +182,17 @@ namespace TextConv
         {
             //今の行番に一番近い先頭行を取得
             LineMatch fromMatch = keys.FindLast(fm => fm.lineNo <= currentLineNo);
-            //先頭行対応する直後行を取得
-            LineMatch toMatch = vals.Find(tm => fromMatch.lineNo <= tm.lineNo);
-
-            if (fromMatch != null && toMatch != null)
+            
+            if (fromMatch != null)
             {
-                //今の行番に一番近い後ろ行を取得
-                LineMatch toMatch2 = vals.Find(tm => currentLineNo <= tm.lineNo);
-                return toMatch.Equals(toMatch2);
+                //先頭行対応する直後行を取得
+                LineMatch toMatch = vals.Find(tm => fromMatch.lineNo <= tm.lineNo);
+                if (toMatch != null)
+                {
+                    //今の行番に一番近い後ろ行を取得
+                    LineMatch toMatch2 = vals.Find(tm => currentLineNo <= tm.lineNo);
+                    return toMatch.Equals(toMatch2);
+                }
             }
             return false;
         }
