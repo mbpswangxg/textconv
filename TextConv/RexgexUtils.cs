@@ -11,6 +11,7 @@ namespace TextConv
         private string cmd;
         private List<ReplaceItem> rules;
         private string currentfile = string.Empty;
+        private int currentLineNo = 0;
         private ReplaceItem currentRule = null;
         private RegexOptions regOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
         private string srcfile = string.Empty;
@@ -61,6 +62,7 @@ namespace TextConv
             if (!File.Exists(file)) return;
             
             this.currentfile = file;
+            this.currentLineNo = 0;
             string newContent = string.Empty;
             foreach (var rule in this.rules) 
             {
@@ -133,31 +135,23 @@ namespace TextConv
             {
                 regOptions = RegexOptions.Singleline;
             }
-            for (int i = 0; i < lines.Length; i++) 
-            {
-            }
-                string nline = string.Empty;
+            
+            string nline = string.Empty;
             bool hasChanged = false;
             Regex reg = new Regex(rule.pattern, regOptions);
             for (int i = 0; i < lines.Length;i++)
             {
                 nline = lines[i];
-                //if (!string.IsNullOrEmpty(rule.excludePattern))
-                //{
-                //    //対象外範囲の場合、該当行を飛ばす
-                //    if (Regex.IsMatch(nline, rule.excludePattern, regOptions)) 
-                //    {
-                //        msgs.Add(string.Format("{0}:{1}\t{2}\t{3}", currentfile, i+1, nline, "★SKIP"));
-                //        continue;
-                //    }
-                //}
-                    
-                while (Regex.IsMatch(nline, rule.pattern, regOptions))
-                {   
+                currentLineNo = i;
+                while (reg.IsMatch(nline))
+                {
                     nline = reg.Replace(nline, MatchReplacer);
-                    hasChanged = true;
+                    if (!nline.Equals(lines[i])) 
+                    {
+                        hasChanged = true;
+                        lines[i] = nline;
+                    }
                 }
-                lines[i] = nline;
             }
             
             return hasChanged;
@@ -168,6 +162,35 @@ namespace TextConv
         {
             string oldV = m.Value;
             string newV = m.Value;
+
+            if (currentRule.hasRangeCheck) 
+            {
+                //範囲チェックあるの場合
+                bool isInRange = false;
+                foreach (KeyValuePair<LineMatch, LineMatch> kv in currentRule.rangeMatches)
+                {
+                    if (kv.Key.lineNo <= this.currentLineNo && this.currentLineNo <= kv.Value.lineNo)
+                    {
+                        if(kv.Key.Match.Index <= m.Index && m.Index <= kv.Value.Match.Index) 
+                        {
+                            //範囲内フラグ設定
+                            isInRange = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if (isInRange) 
+                {
+                    //範囲内のスキップ対象であれば、変更せずに戻る
+                    if (currentRule.skipedRange) return m.Value;
+                }
+                else
+                {
+                    //範囲外のチェック対象であれば、変更せずに戻る
+                    if (currentRule.requiredRange) return m.Value;
+                }
+            }
 
             if (string.IsNullOrEmpty(currentRule.repCmdKey)
                 || currentRule.repCmdKey.Equals("null") 

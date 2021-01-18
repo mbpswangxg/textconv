@@ -24,7 +24,7 @@ namespace TextConv
         public string rangeTo = string.Empty;
         public bool skipedRange = false;
         public bool requiredRange = false;
-        private Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
+        public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
 
         public bool hasRangeCheck
         {
