@@ -23,7 +23,7 @@ namespace TextConv
                 Console.WriteLine("TextConv -c COMMAND_KEY");
                 return;
             }
-            string srcfile = getCmdValue("-f", args);
+            string filefilter = getCmdValue("-f", args);
             string folder = getCmdValue("-d", args);
             if (string.IsNullOrEmpty(folder))
             {
@@ -38,7 +38,7 @@ namespace TextConv
             List<ReplaceItem> items = new List<ReplaceItem>();
             readRegfile(items);
             
-            RexgexUtils utils = new RexgexUtils(cmd, items, srcfile);
+            RexgexUtils utils = new RexgexUtils(cmd, items, filefilter);
             utils.ReplaceFolder(folder);
             
             foreach(var e in utils.msgs)

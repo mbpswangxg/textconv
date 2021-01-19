@@ -1,0 +1,10 @@
+D:\workspace\C#\textconv\conver\obj\Debug\conver.FrmMDI.resources
+D:\workspace\C#\textconv\conver\obj\Debug\conver.Properties.Resources.resources
+D:\workspace\C#\textconv\conver\obj\Debug\conver.csproj.GenerateResource.cache
+D:\workspace\C#\textconv\conver\obj\Debug\conver.Regexer.resources
+D:\workspace\C#\textconv\conver\bin\Debug\conver.exe.config
+D:\workspace\C#\textconv\conver\bin\Debug\conver.exe
+D:\workspace\C#\textconv\conver\bin\Debug\conver.pdb
+D:\workspace\C#\textconv\conver\obj\Debug\conver.exe
+D:\workspace\C#\textconv\conver\obj\Debug\conver.pdb
+D:\workspace\C#\textconv\conver\obj\Debug\conver.csprojAssemblyReference.cache
