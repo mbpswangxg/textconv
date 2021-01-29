@@ -28,7 +28,7 @@ namespace conver
             tabWindow.SuspendLayout();
             TabPage page = new TabPage( "Regex" + childFormNumber++);
             tabWindow.TabPages.Add(page);
-            Regexer r = new Regexer();
+            RegexTabPage r = new RegexTabPage();
             r.Dock = DockStyle.Fill;
             r.TabStop = false;
 

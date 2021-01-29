@@ -161,7 +161,16 @@ namespace TextConv
         public bool isSkipFile(string filepath)
         {
             if (string.IsNullOrEmpty(filefilter)) return false;
-            return !Regex.IsMatch(filepath, filefilter, RegexOptions.IgnoreCase);
+            if (this.FileFilterCheck == ReplaceChecks.none) return false;
+            
+            if (Regex.IsMatch(filepath, filefilter, RegexOptions.IgnoreCase))
+            {
+                return this.FileFilterCheck == ReplaceChecks.skip;
+            }
+            else
+            {
+                return this.FileFilterCheck == ReplaceChecks.replace;
+            }
         }
 
         public void beforeReplace(string[] lines)
@@ -282,6 +291,52 @@ namespace TextConv
             }
 
             return hasChanged;
+        }
+
+        public void ReplaceFile(string file)
+        {
+            if (!File.Exists(file)) return;
+
+            
+            if (isSkipFile(file)) return;
+
+            string newContent = string.Empty;
+            if (byLines)
+            {
+                string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
+                beforeReplace(lines);
+                if (replaceLines(lines))
+                {
+                    FileInfo fi = new FileInfo(file);
+                    File.WriteAllLines(file, lines, FileHelper.Encoding);
+                }
+                newContent = string.Join("\n", lines);
+            }
+            else
+            {
+                string content = File.ReadAllText(file, FileHelper.Encoding);
+                beforeReplace(content);
+                newContent = replaceText(content);
+                if (!content.Equals(newContent))
+                {
+                    FileInfo fi = new FileInfo(file);
+                    File.WriteAllText(file, newContent, FileHelper.Encoding);
+                }
+            }
+
+            /*//特殊コマンドを除き、漏れはないか？(?:^|[^\.\w])substr\b
+            if (!Regex.IsMatch(this.cmd, @":\w+"))
+            {
+                MatchCollection ms = Regex.Matches(newContent, @"(?:^|[^\.\w])" + this.cmd + @"\b[^\n]+", regOptions);
+                foreach (Match m in ms)
+                {
+                    if (!m.Value.StartsWith("."))
+                    {
+                        msgs.Add(string.Format("{0}\t{1}\t{2}", currentfile, m.Value, "★ERROR"));
+                    }
+                }
+            }*/
+            
         }
 
         private string MatchReplacer(Match m)

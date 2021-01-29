@@ -54,6 +54,12 @@
     <Compile Include="HighLight.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegexTabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RegexTabPage.Designer.cs">
+      <DependentUpon>RegexTabPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Regexer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,6 +79,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RegexTabPage.resx">
+      <DependentUpon>RegexTabPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Regexer.resx">
       <DependentUpon>Regexer.cs</DependentUpon>
     </EmbeddedResource>

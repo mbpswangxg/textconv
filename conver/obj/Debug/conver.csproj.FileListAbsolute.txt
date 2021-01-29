@@ -8,3 +8,13 @@ D:\workspace\C#\textconv\conver\bin\Debug\conver.pdb
 D:\workspace\C#\textconv\conver\obj\Debug\conver.exe
 D:\workspace\C#\textconv\conver\obj\Debug\conver.pdb
 D:\workspace\C#\textconv\conver\obj\Debug\conver.csprojAssemblyReference.cache
+D:\workspace\C#\textconv\conver\bin\Debug\regfile.txt
+D:\workspace\C#\textconv\conver\bin\Debug\repfiles\html1-td.txt
+D:\workspace\C#\textconv\conver\bin\Debug\repfiles\html1-td2.txt
+D:\workspace\C#\textconv\conver\bin\Debug\repfiles\html1.txt
+D:\workspace\C#\textconv\conver\bin\Debug\repfiles\html2table.txt
+D:\workspace\C#\textconv\conver\bin\Debug\TextConv.exe
+D:\workspace\C#\textconv\conver\bin\Debug\TextConv.pdb
+D:\workspace\C#\textconv\conver\bin\Debug\TextConv.exe.config
+D:\workspace\C#\textconv\conver\obj\Debug\conver.csproj.CopyComplete
+D:\workspace\C#\textconv\conver\obj\Debug\conver.RegexTabPage.resources

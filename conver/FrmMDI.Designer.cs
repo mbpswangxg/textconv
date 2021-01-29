@@ -68,9 +68,6 @@
             this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.printPreviewToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnMultiline = new System.Windows.Forms.ToolStripButton();
-            this.btnIgnoreCase = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnMatch = new System.Windows.Forms.ToolStripButton();
             this.btnReplace = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -308,7 +305,7 @@
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.contentsToolStripMenuItem.Text = "目次(&C)";
             // 
             // indexToolStripMenuItem
@@ -316,7 +313,7 @@
             this.indexToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indexToolStripMenuItem.Image")));
             this.indexToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.indexToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.indexToolStripMenuItem.Text = "インデックス(&I)";
             // 
             // searchToolStripMenuItem
@@ -324,18 +321,18 @@
             this.searchToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("searchToolStripMenuItem.Image")));
             this.searchToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.searchToolStripMenuItem.Text = "検索(&S)";
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(215, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
             this.aboutToolStripMenuItem.Text = "バージョン情報(&A)... ...";
             // 
             // toolStrip
@@ -349,9 +346,6 @@
             this.printToolStripButton,
             this.printPreviewToolStripButton,
             this.toolStripSeparator10,
-            this.btnMultiline,
-            this.btnIgnoreCase,
-            this.toolStripSeparator2,
             this.btnMatch,
             this.btnReplace,
             this.toolStripSeparator5,
@@ -422,35 +416,6 @@
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 27);
             this.toolStripSeparator10.Visible = false;
             // 
-            // btnMultiline
-            // 
-            this.btnMultiline.Checked = true;
-            this.btnMultiline.CheckOnClick = true;
-            this.btnMultiline.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.btnMultiline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnMultiline.Image = ((System.Drawing.Image)(resources.GetObject("btnMultiline.Image")));
-            this.btnMultiline.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnMultiline.Name = "btnMultiline";
-            this.btnMultiline.Size = new System.Drawing.Size(94, 24);
-            this.btnMultiline.Text = "Multiline(&M)";
-            // 
-            // btnIgnoreCase
-            // 
-            this.btnIgnoreCase.Checked = true;
-            this.btnIgnoreCase.CheckOnClick = true;
-            this.btnIgnoreCase.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.btnIgnoreCase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnIgnoreCase.Image = ((System.Drawing.Image)(resources.GetObject("btnIgnoreCase.Image")));
-            this.btnIgnoreCase.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnIgnoreCase.Name = "btnIgnoreCase";
-            this.btnIgnoreCase.Size = new System.Drawing.Size(106, 24);
-            this.btnIgnoreCase.Text = "IgnoreCase(&C)";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
-            // 
             // btnMatch
             // 
             this.btnMatch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -507,7 +472,7 @@
             this.tabWindow.ContextMenuStrip = this.mnuTabWindow;
             this.tabWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabWindow.Location = new System.Drawing.Point(0, 55);
-            this.tabWindow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabWindow.Margin = new System.Windows.Forms.Padding(4);
             this.tabWindow.Name = "tabWindow";
             this.tabWindow.SelectedIndex = 0;
             this.tabWindow.Size = new System.Drawing.Size(1109, 777);
@@ -542,7 +507,7 @@
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMDI";
             this.Text = "FrmMDI";
             this.Load += new System.EventHandler(this.FrmMDI_Load);
@@ -564,7 +529,6 @@
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
@@ -600,8 +564,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ignorCaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton btnMultiline;
-        private System.Windows.Forms.ToolStripButton btnIgnoreCase;
         private System.Windows.Forms.ToolStripButton printToolStripButton;
         private System.Windows.Forms.ToolStripButton printPreviewToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
