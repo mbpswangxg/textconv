@@ -51,6 +51,12 @@
     <Compile Include="FrmMDI.Designer.cs">
       <DependentUpon>FrmMDI.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmReplaceFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReplaceFiles.Designer.cs">
+      <DependentUpon>FrmReplaceFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="HighLight.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,15 +66,12 @@
     <Compile Include="RegexTabPage.Designer.cs">
       <DependentUpon>RegexTabPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Regexer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Regexer.Designer.cs">
-      <DependentUpon>Regexer.cs</DependentUpon>
-    </Compile>
     <Compile Include="TreeDataBinder.cs" />
     <EmbeddedResource Include="FrmMDI.resx">
       <DependentUpon>FrmMDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReplaceFiles.resx">
+      <DependentUpon>FrmReplaceFiles.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -81,9 +84,6 @@
     </Compile>
     <EmbeddedResource Include="RegexTabPage.resx">
       <DependentUpon>RegexTabPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Regexer.resx">
-      <DependentUpon>Regexer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

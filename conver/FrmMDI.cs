@@ -35,6 +35,8 @@ namespace conver
             this.KeyDown += r.FrmRegex_KeyDown;
             this.btnMatch.Click += r.btnMatch_Click;
             this.btnReplace.Click += r.btnReplace_Click;
+            this.btnSaveRules.Click += r.SaveRules;
+            this.btnShowReplaceFileDialog.Click += r.ShowReplaceFileDialog;
 
             page.Controls.Add(r);
             tabWindow.ResumeLayout();

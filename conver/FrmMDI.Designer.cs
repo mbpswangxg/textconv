@@ -78,6 +78,9 @@
             this.tabWindow = new System.Windows.Forms.TabControl();
             this.mnuTabWindow = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuCloseTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnSaveRules = new System.Windows.Forms.ToolStripButton();
+            this.btnShowReplaceFileDialog = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -96,7 +99,6 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.windowsMenu;
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
             this.menuStrip.Size = new System.Drawing.Size(1109, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
@@ -349,6 +351,9 @@
             this.btnMatch,
             this.btnReplace,
             this.toolStripSeparator5,
+            this.btnSaveRules,
+            this.toolStripSeparator2,
+            this.btnShowReplaceFileDialog,
             this.helpToolStripButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 28);
             this.toolStrip.Name = "toolStrip";
@@ -495,6 +500,31 @@
             this.mnuCloseTab.Text = "Close";
             this.mnuCloseTab.Click += new System.EventHandler(this.mnuCloseTab_Click);
             // 
+            // btnSaveRules
+            // 
+            this.btnSaveRules.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnSaveRules.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveRules.Image")));
+            this.btnSaveRules.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSaveRules.Name = "btnSaveRules";
+            this.btnSaveRules.Size = new System.Drawing.Size(83, 24);
+            this.btnSaveRules.Text = "Save Rules";
+            this.btnSaveRules.ToolTipText = "Save Replace Rules";
+            // 
+            // btnShowReplaceFileDialog
+            // 
+            this.btnShowReplaceFileDialog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnShowReplaceFileDialog.Image = ((System.Drawing.Image)(resources.GetObject("btnShowReplaceFileDialog.Image")));
+            this.btnShowReplaceFileDialog.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowReplaceFileDialog.Name = "btnShowReplaceFileDialog";
+            this.btnShowReplaceFileDialog.Size = new System.Drawing.Size(148, 24);
+            this.btnShowReplaceFileDialog.Text = "Replace Files Dialog";
+            this.btnShowReplaceFileDialog.ToolTipText = "Show Replace Files Dialog";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            // 
             // FrmMDI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -573,6 +603,9 @@
         private System.Windows.Forms.TabControl tabWindow;
         private System.Windows.Forms.ContextMenuStrip mnuTabWindow;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseTab;
+        private System.Windows.Forms.ToolStripButton btnSaveRules;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnShowReplaceFileDialog;
     }
 }
 

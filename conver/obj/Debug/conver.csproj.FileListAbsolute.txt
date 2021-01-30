@@ -1,7 +1,6 @@
 D:\workspace\C#\textconv\conver\obj\Debug\conver.FrmMDI.resources
 D:\workspace\C#\textconv\conver\obj\Debug\conver.Properties.Resources.resources
 D:\workspace\C#\textconv\conver\obj\Debug\conver.csproj.GenerateResource.cache
-D:\workspace\C#\textconv\conver\obj\Debug\conver.Regexer.resources
 D:\workspace\C#\textconv\conver\bin\Debug\conver.exe.config
 D:\workspace\C#\textconv\conver\bin\Debug\conver.exe
 D:\workspace\C#\textconv\conver\bin\Debug\conver.pdb
@@ -18,3 +17,4 @@ D:\workspace\C#\textconv\conver\bin\Debug\TextConv.pdb
 D:\workspace\C#\textconv\conver\bin\Debug\TextConv.exe.config
 D:\workspace\C#\textconv\conver\obj\Debug\conver.csproj.CopyComplete
 D:\workspace\C#\textconv\conver\obj\Debug\conver.RegexTabPage.resources
+D:\workspace\C#\textconv\conver\obj\Debug\conver.FrmReplaceFiles.resources

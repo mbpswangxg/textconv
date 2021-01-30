@@ -23,6 +23,7 @@ namespace conver
         private const string replaceformat = @"";
         private RegexOptions options = RegexOptions.None;
         private ReplaceItem repItem = new ReplaceItem();
+        private FrmReplaceFiles frmReplaceFiles = new FrmReplaceFiles();
         public RegexOptions Options
         {
             set { options = value; }
@@ -33,12 +34,30 @@ namespace conver
             InitializeComponent();
             //txtReplaceRule.Text = ReplaceLoader.SampleTemplate;
             //TreeDataBinder.DataBind(treeTemplate, ReplaceLoader.TemplateDataSet, "template");
-            chkRange_CheckedChanged(chkRange, null);
-            chkFileFilter_CheckedChanged(chkRange, null);
+            /*chkRange_CheckedChanged(chkRange, null);
+            chkFileFilter_CheckedChanged(chkRange, null);*/
 
         }
 
         #region
+        /// <summary>
+        /// Do regex match, show the result on tree.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void SaveRules(object sender, EventArgs e)
+        {
+            MessageBox.Show("Show Replace Rules OK");
+        }
+        /// <summary>
+        /// Do regex match, show the result on tree.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void ShowReplaceFileDialog(object sender, EventArgs e)
+        {
+            frmReplaceFiles.Show(); 
+        }
         /// <summary>
         /// Do regex match, show the result on tree.
         /// </summary>
@@ -76,12 +95,12 @@ namespace conver
             repItem.pattern = txtPattern.Text;
             repItem.replacement = txtReplacement.Text;
             repItem.RangeCheck = ReplaceChecks.none;
-            if (chkRange.Checked)
+            /*if (chkRange.Checked)
             {
                 if (rdoRangeSkip.Checked) repItem.RangeCheck = ReplaceChecks.skip;
                 if (rdoRangeDo.Checked) repItem.RangeCheck = ReplaceChecks.replace;
             }
-            /*repItem.filefilter = txtFileFilter.Text;*/
+            *//*repItem.filefilter = txtFileFilter.Text;*//*
             //repItem.repfile = txtReplacementFile.Text;
 
             repItem.FileFilterCheck = ReplaceChecks.none;
@@ -89,7 +108,7 @@ namespace conver
             {
                 if (rdoFilterSkip.Checked) repItem.FileFilterCheck = ReplaceChecks.skip;
                 if (rdoFilterDo.Checked) repItem.FileFilterCheck = ReplaceChecks.replace;
-            }
+            }*/
             repItem.InitReplaceRule();
         }
         private string MatchReplacer(Match m)
@@ -210,18 +229,18 @@ namespace conver
 
         private void chkRange_CheckedChanged(object sender, EventArgs e)
         {
-            rdoRangeSkip.Enabled = chkRange.Checked;
+            /*rdoRangeSkip.Enabled = chkRange.Checked;
             rdoRangeDo.Enabled = chkRange.Checked;
             txtRangeFrom.Enabled = chkRange.Checked;
-            txtRangeTo.Enabled = chkRange.Checked;
-            
+            txtRangeTo.Enabled = chkRange.Checked;*/
+
         }
 
         private void chkFileFilter_CheckedChanged(object sender, EventArgs e)
         {
-            rdoFilterSkip.Enabled = chkFileFilter.Checked;
+            /*rdoFilterSkip.Enabled = chkFileFilter.Checked;
             rdoFilterDo.Enabled = chkFileFilter.Checked;
-            /*txtFileFilter.Enabled = chkFileFilter.Checked;*/
+            *//*txtFileFilter.Enabled = chkFileFilter.Checked;*/
         }
     }
 }
