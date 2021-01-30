@@ -15,14 +15,30 @@ namespace TextConv
 
     public class ReplaceItem
     {
-        public string cmdKey = string.Empty;
+        #region "Key Properties"
+        public string Name = string.Empty;
+        public string Desc = string.Empty;
+
         public string pattern = string.Empty;
         public string replacement = string.Empty;
+        public bool ignoreCase = true;
+        public bool multiLine = true;
+        public string ExcapeText;
+
+
+        public string rangeFrom = string.Empty;
+        public string rangeTo = string.Empty;
+        public bool RangeSkip;
+
+
+        #endregion
+
+        public string cmdKey = string.Empty;
         public string repCmdKey = string.Empty;
         public string repGroup = string.Empty;
 
         public RegexOptions regOptions;
-        public bool ignoreCase = true;
+        
         public bool byLines = true;
 
         /*public string inputText = string.Empty;
@@ -32,8 +48,6 @@ namespace TextConv
         public string filefilter = string.Empty;
         public string repfile = string.Empty;
 
-        public string rangeFrom = string.Empty;
-        public string rangeTo = string.Empty;
         
         public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
 
