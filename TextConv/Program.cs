@@ -18,13 +18,13 @@ namespace TextConv
                 Console.WriteLine("TextConv -c COMMAND_KEY.");
                 return;
             }
-            string cmd = getCmdValue("-c", args);
+            string cmd = getValue("-c", args);
             if (string.IsNullOrEmpty(cmd)) {
                 Console.WriteLine("TextConv -c COMMAND_KEY");
                 return;
             }
-            string filefilter = getCmdValue("-f", args);
-            string folder = getCmdValue("-d", args);
+            
+            string folder = getValue("-d", args);
             if (string.IsNullOrEmpty(folder))
             {
                 folder = Xmler.GetAppSettingValue("srcfolder");
@@ -34,6 +34,8 @@ namespace TextConv
                 Console.WriteLine("App.config setting srcfolder is required.");
                 return;
             }
+
+            string filefilter = getValue("-f", args);
             //==============================================================
             List<ReplaceItem> items = new List<ReplaceItem>();
             readRegfile(items);
@@ -51,7 +53,7 @@ namespace TextConv
                 utils.msgs.Count(r => r.EndsWith("SKIP")));
         }
         
-        private static string getCmdValue(string cmdPattern, string[] args) 
+        private static string getValue(string cmdPattern, string[] args) 
         {
             int x = args.ToList().IndexOf(cmdPattern);
             if (x > -1)
@@ -65,14 +67,12 @@ namespace TextConv
         private static void readRegfile(List<ReplaceItem> items) 
         {
             string[] lines = File.ReadAllLines("regfile.txt");
-            string splitWords = Xmler.GetAppSettingValue("splitwords", ";;;");
             foreach(var line in lines) 
             {
                 if (string.IsNullOrEmpty(line)) continue;
                 if (line.StartsWith("#")) continue;
                 
-                string[] words = Regex.Split(line, splitWords);
-                items.Add(new ReplaceItem(words));
+                items.Add(new ReplaceItem(line));
             }
         }
 

@@ -67,7 +67,7 @@ namespace TextConv
             {
                 if (rule.isSkipFile(file)) continue;
                 
-                if (rule.byLines)
+                if (!rule.multiLine)
                 {
                     string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
                     rule.beforeReplace(lines);

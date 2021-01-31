@@ -6,13 +6,6 @@ using System.Text.RegularExpressions;
 
 namespace TextConv
 {
-    public enum ReplaceChecks
-    {
-        none = 0,
-        skip,
-        replace
-    }
-
     public class ReplaceItem
     {
         #region "Key Properties"
@@ -28,91 +21,70 @@ namespace TextConv
 
         public string rangeFrom = string.Empty;
         public string rangeTo = string.Empty;
-        public bool RangeSkip;
+        public bool rangeSkip;
 
+        public string filefilter = string.Empty;
+        public bool fileSkip;
 
         #endregion
 
         public string cmdKey = string.Empty;
         public string repCmdKey = string.Empty;
-        public string repGroup = string.Empty;
 
         public RegexOptions regOptions;
-        
-        public bool byLines = true;
-
-        /*public string inputText = string.Empty;
-        public string inputFile = string.Empty;
-        public string inputFolder = string.Empty;*/
-
-        public string filefilter = string.Empty;
         public string repfile = string.Empty;
 
         
         public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
-
         private Regex keyReg = null;
         private Regex valReg = null;
         private List<LineMatch> keys = new List<LineMatch>();
         private List<LineMatch> vals = new List<LineMatch>();
 
-        public ReplaceChecks RangeCheck = ReplaceChecks.none;
-        public ReplaceChecks FileFilterCheck = ReplaceChecks.none;
         private int lineNo = 0;
         public ReplaceItem() { }
-        public ReplaceItem(string[] words) {
+        public ReplaceItem(string args) {
+            string splitWords = Xmler.GetAppSettingValue("splitwords", ";;;");
+            string[] words = Regex.Split(args, splitWords);
+
             Match m;
 
             pattern = words[0];
             replacement = words[1];
-            m = Regex.Match(pattern, @"^([^=]+)=(.+)");
+            m = Regex.Match(pattern, @"^(\w+)=(.+)");
             if (m.Success)
             {
                 cmdKey = m.Groups[1].Value;
                 pattern = m.Groups[2].Value;
             }
 
-            m = Regex.Match(replacement, @"^(^\w+)=(.+)");
+            m = Regex.Match(replacement, @"^(\w+)=(.+)");
             if (m.Success)
             {
                 repCmdKey = m.Groups[1].Value;
-                repGroup = m.Groups[2].Value;
-                replacement = repGroup;
-                repfile = repGroup;
+                replacement = m.Groups[2].Value;
+                
                 if (repCmdKey.Equals("repfile"))
                 {
-                    readRepfile(repGroup);
+                    readRepfile(replacement);
                 }
             }
-
+            // ３番目以降のパラメータはOptionで、必須ではない
             for (int i = 2; i < words.Length; i++)
             {
-                m = Regex.Match(words[i], @"ignoreCase=(true|false)");
+                m = Regex.Match(words[i], @"ignoreCase=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     ignoreCase = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"bylines=(true|false)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"multiline=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    byLines = bool.Parse(m.Groups[1].Value);
+                    multiLine = !bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"bytext=(true|false)", RegexOptions.IgnoreCase);
-                if (m.Success)
-                {
-                    byLines = !bool.Parse(m.Groups[1].Value);
-                    continue;
-                }
-                m = Regex.Match(words[i], @"rangeCheck=([0-2])");
-                if (m.Success)
-                {
-                    int rc = int.Parse(m.Groups[1].Value);
-                    this.RangeCheck =(ReplaceChecks) Enum.Parse(typeof(ReplaceChecks), m.Groups[1].Value); 
-                    continue;
-                }
-
+                
                 m = Regex.Match(words[i], @"rangeFrom=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
@@ -125,10 +97,23 @@ namespace TextConv
                     rangeTo = m.Groups[1].Value;
                     continue;
                 }
+                m = Regex.Match(words[i], @"rangeSkip=(true|false)");
+                if (m.Success)
+                {
+                    this.rangeSkip = !bool.Parse(m.Groups[1].Value);
+                    continue;
+                }
+
                 m = Regex.Match(words[i], @"filefilter=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     filefilter = m.Groups[1].Value;
+                    continue;
+                }
+                m = Regex.Match(words[i], @"fileSkip=(true|false)");
+                if (m.Success)
+                {
+                    this.fileSkip = !bool.Parse(m.Groups[1].Value);
                     continue;
                 }
             }
@@ -137,13 +122,8 @@ namespace TextConv
         }
         public void InitReplaceRule()
         {
-            if (RangeCheck != ReplaceChecks.none)
+            if (!string.IsNullOrEmpty(rangeFrom) && !string.IsNullOrEmpty(rangeTo))
             {
-                if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo))
-                {
-                    throw new Exception("error: rangeFrom and rangeTo are required.");
-                }
-
                 regOptions = RegexOptions.Multiline;
                 if (ignoreCase)
                 {
@@ -152,13 +132,6 @@ namespace TextConv
 
                 keyReg = new Regex(rangeFrom, regOptions);
                 valReg = new Regex(rangeTo, regOptions);
-            }
-            if (FileFilterCheck != ReplaceChecks.none)
-            {
-                if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo))
-                {
-                    throw new Exception("error: rangeFrom and rangeTo are required.");
-                }
             }
         }
 
@@ -175,22 +148,21 @@ namespace TextConv
         public bool isSkipFile(string filepath)
         {
             if (string.IsNullOrEmpty(filefilter)) return false;
-            if (this.FileFilterCheck == ReplaceChecks.none) return false;
             
             if (Regex.IsMatch(filepath, filefilter, RegexOptions.IgnoreCase))
             {
-                return this.FileFilterCheck == ReplaceChecks.skip;
+                return this.fileSkip;
             }
             else
             {
-                return this.FileFilterCheck == ReplaceChecks.replace;
+                return !this.fileSkip;
             }
         }
 
         public void beforeReplace(string[] lines)
         {
             //　範囲判定不要の場合、処理対象外
-            if (RangeCheck == ReplaceChecks.none) return;
+            //if (RangeCheck == ReplaceChecks.none) return;
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -206,7 +178,7 @@ namespace TextConv
         public void beforeReplace (string content)
         {
             //　範囲判定不要の場合、処理対象外
-            if (RangeCheck == ReplaceChecks.none) return;
+            //if (RangeCheck == ReplaceChecks.none) return;
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -237,7 +209,7 @@ namespace TextConv
         private void fillMatches(int lineNo, string line)
         {
             //　範囲判定不要の場合、処理対象外
-            if (RangeCheck == ReplaceChecks.none) return;
+            //if (RangeCheck == ReplaceChecks.none) return;
 
             MatchCollection m1 = keyReg.Matches(line);
             foreach(Match k in m1)
@@ -315,7 +287,7 @@ namespace TextConv
             if (isSkipFile(file)) return;
 
             string newContent = string.Empty;
-            if (byLines)
+            if (!multiLine)
             {
                 string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
                 beforeReplace(lines);
@@ -358,7 +330,7 @@ namespace TextConv
             string oldV = m.Value;
             string newV = m.Value;
 
-            if (RangeCheck != ReplaceChecks.none)
+            /*if (RangeCheck != ReplaceChecks.none)
             {
                 //範囲チェックあるの場合
                 if (isInRange(lineNo, m))
@@ -371,7 +343,7 @@ namespace TextConv
                     //範囲外のチェック対象であれば、変更せずに戻る
                     if (RangeCheck == ReplaceChecks.replace) return m.Value;
                 }
-            }
+            }*/
 
             if (string.IsNullOrEmpty(repCmdKey)
                 || repCmdKey.Equals("null")
@@ -379,28 +351,22 @@ namespace TextConv
             {
                 newV = Regex.Replace(m.Value, pattern, replacement, regOptions);
             }
-            else if (repCmdKey.Contains("UCASE_GROUP"))
+            else if (repCmdKey.EndsWith("CASE_GROUP"))
             {
                 for (int i = 0; i < m.Groups.Count; i++)
                 {
-                    if (repGroup.Contains(i.ToString()))
+                    if (replacement.Contains(i.ToString()))
                     {
                         foreach (Capture cpt in m.Groups[i].Captures)
                         {
-                            newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToUpper());
-                        }
-                    }
-                }
-            }
-            else if (repCmdKey.Contains("LCASE_GROUP"))
-            {
-                for (int i = 0; i < m.Groups.Count; i++)
-                {
-                    if (repGroup.Contains(i.ToString()))
-                    {
-                        foreach (Capture cpt in m.Groups[i].Captures)
-                        {
-                            newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToLower());
+                            if (Regex.IsMatch(repCmdKey, "LCASE"))
+                            {
+                                newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToLower());
+                            }
+                            if (Regex.IsMatch(repCmdKey, "UCASE"))
+                            {
+                                newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToUpper());
+                            }
                         }
                     }
                 }
@@ -438,9 +404,9 @@ namespace TextConv
             }
             else
             {
-                Console.WriteLine("repCmdKey:{0},repGroup:{1},replacement:{2}. " +
+                Console.WriteLine("repCmdKey:{0},replacement:{1}. " +
                     "注意: [=]が存在するreplacementであれば,repCmdKeyの命名が必須で,defaultでnull=replacementのformatにしてください",
-                    repCmdKey, repGroup, replacement);
+                    repCmdKey, replacement);
 
                 newV = Regex.Replace(m.Value, pattern, replacement, regOptions);
             }

@@ -86,14 +86,14 @@ HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=record.DISP_MSG)	$1 escapeXm
 #==============================================
 #HTML
 #==============================================
-repfile2=(\<table\>?[^\>]*\>\s*)(\<col width="75" \/\>\s*\<col class="W045" \/\>\s*\<col\s*\/>)	repfile=repfiles/html1-td.txt	bytext=true	filefilter=draft\w*.html
-repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]+>\s*<input[^\<\>]+onClick="([^"]+)">\s*<\/td\>	repfile=repfiles/html1.txt	bytext=true
+repfile2=(\<table\>?[^\>]*\>\s*)(\<col width="75" \/\>\s*\<col class="W045" \/\>\s*\<col\s*\/>)	repfile=repfiles/html1-td.txt	multiline=true	filefilter=draft\w*.html
+repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]+>\s*<input[^\<\>]+onClick="([^"]+)">\s*<\/td\>	repfile=repfiles/html1.txt	multiline=true
 
 nowrap1=(\<td class="output"\s*)(\>セキュリティ\<font)	null=$1 style="white-space: nowrap;"$2
 font1=(font-family: '[^'"]+')"	$1;"
 ouput1=(\<td[^\<\>]+class="output)\s+VWRITE"\>(承認者コメント参照)	null=$1"><div style="display: inline-block;" class="VWRITE">$2</div>
-td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	bytext=true	filefilter=draft\w*.html
+td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	multiline=true	filefilter=draft\w*.html
 
-colwidth=(\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>)	repfile=repfiles/html2table.txt	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	bytext=true	filefilter=draft\w*.html
-td3=((\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>\s+)\<td)\>	null=$1 style="text-align: center;">	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	bytext=true	filefilter=draft\w*.html
-td4=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	bytext=true	filefilter=draft\w*.html
+colwidth=(\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>)	repfile=repfiles/html2table.txt	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	multiline=true	filefilter=draft\w*.html
+td3=((\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>\s+)\<td)\>	null=$1 style="text-align: center;">	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	multiline=true	filefilter=draft\w*.html
+td4=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html
