@@ -305,7 +305,7 @@ namespace TextConv
                 Console.WriteLine(file);
             }
             string newContent = string.Empty;
-            //if (!multiLine)
+            if (!multiLine)
             {
                 string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
                 beforeReplace(lines);
@@ -316,17 +316,17 @@ namespace TextConv
                 }
                 newContent = string.Join("\n", lines);
             }
-            //else
-            //{
-            //    string content = File.ReadAllText(file, FileHelper.Encoding);
-            //    beforeReplace(content);
-            //    newContent = replaceText(content);
-            //    if (!content.Equals(newContent))
-            //    {
-            //        FileInfo fi = new FileInfo(file);
-            //        File.WriteAllText(file, newContent, FileHelper.Encoding);
-            //    }
-            //}
+            else
+            {
+                string content = File.ReadAllText(file, FileHelper.Encoding);
+                beforeReplace(content);
+                newContent = replaceText(content);
+                if (!content.Equals(newContent))
+                {
+                    FileInfo fi = new FileInfo(file);
+                    File.WriteAllText(file, newContent, FileHelper.Encoding);
+                }
+            }
         }
 
         private string MatchReplacer(Match m)
@@ -381,23 +381,33 @@ namespace TextConv
                 sb.Append("CASE ").Append(m.Groups[1].Value).Append(" ");
                 sb.Append("WHEN ").Append(m.Groups[2].Value).Append(" ");
                 Group grp = m.Groups[4];
+                string sbWord = string.Empty;
                 for (int i = 0; i < grp.Captures.Count; i++)
                 {
                     if (i < grp.Captures.Count - 1)
                     {
                         if (i % 2 == 0)
                         {
-                            sb.Append("THEN ");
+                            sbWord = "THEN";
                         }
                         else
                         {
-                            sb.Append("WHEN ");
+                            sbWord = "WHEN";
                         }
+                        sb.Append(sbWord);
                         sb.Append(grp.Captures[i].Value).Append(" ");
                     }
                     else
                     {
-                        sb.Append("ELSE ").Append(grp.Captures[i].Value).Append(" END ");
+                        if (sbWord.StartsWith("WHEN"))
+                        {
+                            sb.Append("THEN");
+                        }
+                        else
+                        {
+                            sb.Append("ELSE");
+                        }
+                        sb.Append(grp.Captures[i].Value).Append(" END");
                     }
                 }
                 for (int i = 5; i < m.Groups.Count; i++)

@@ -88,13 +88,20 @@ DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w']+\)),([^,\(\)]+),([^,\(\)]+),([^,]+,[^\
 DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([\s\w]+\([^,]+,[^,]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
 DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([\s\w]+\([^,]+,[^\)]+\)[^\)]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
 DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 WHEN $6 THEN $7 END
+DECODE=DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 END
 
 #DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 #DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,\)]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 ELSE $6 END
 TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
 
-WHEN_NULL=WHEN null THEN	WHEN IS null THEN
-UserTransaction	Transaction
+WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
+UserTransaction=new UserTransaction\(\)	Transaction
+usertabcol=select [\w,\s]+from user_tab_columns where table_name='(\w+)'	repfile=repfiles/selectUserTabCol.sql
+usertabcol=column_name[^"]+"	null=c.name as col_name , ty.name as data_type , c.precision as length_val "	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
+usertabcol=data_scale as length_decimal	null=c.max_length as length_decimal	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
+usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns c on t.object_id = c.object_id inner join sys.types ty on ty.user_type_id = c.user_type_id "
+usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
+
 #==============================================
 #JSP
 #==============================================
