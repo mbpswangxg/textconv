@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-c usertabcol"
+      "commandLineArgs": "-c insertscript"
     }
   }
 }

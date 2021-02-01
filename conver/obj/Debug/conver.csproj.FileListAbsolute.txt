@@ -40,3 +40,4 @@ C:\tool\textconv\conver\bin\Debug\TextConv.pdb
 C:\tool\textconv\conver\bin\Debug\TextConv.exe.config
 C:\tool\textconv\conver\obj\Debug\conver.csproj.CopyComplete
 D:\workspace\C#\textconv\conver\bin\Debug\repfiles\selectUserTabCol.sql
+C:\tool\textconv\conver\bin\Debug\repfiles\selectUserTabCol.sql

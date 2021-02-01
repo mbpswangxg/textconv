@@ -101,7 +101,8 @@ usertabcol=column_name[^"]+"	null=c.name as col_name , ty.name as data_type , c.
 usertabcol=data_scale as length_decimal	null=c.max_length as length_decimal	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns c on t.object_id = c.object_id inner join sys.types ty on ty.user_type_id = c.user_type_id "
 usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
-insertscript=(\<head\>)	null=$1\r\n<script src="jae/migration/util.js"></script>	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
+insertscript=(\s*\<script src="csjs\/im_window.js"\>)	null=<script src="jae/migration/util.js"></script>\n$1	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
+#insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
 #==============================================
 #JSP
 #==============================================
