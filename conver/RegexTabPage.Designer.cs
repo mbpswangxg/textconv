@@ -33,7 +33,7 @@
             this.tpMatch = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkMultiline = new System.Windows.Forms.CheckBox();
             this.chkIgnoreCase = new System.Windows.Forms.CheckBox();
             this.txtPattern = new System.Windows.Forms.RichTextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -44,17 +44,15 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.txtRangeTo = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtRangeFrom = new System.Windows.Forms.RichTextBox();
+            this.chkRange = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.txtReplaceResult = new System.Windows.Forms.RichTextBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.txtReplacement = new System.Windows.Forms.RichTextBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.spcFrame)).BeginInit();
             this.spcFrame.Panel1.SuspendLayout();
             this.spcFrame.Panel2.SuspendLayout();
@@ -99,7 +97,7 @@
             this.spcFrame.Panel2.Controls.Add(this.tabControl1);
             this.spcFrame.Panel2MinSize = 200;
             this.spcFrame.Size = new System.Drawing.Size(1266, 794);
-            this.spcFrame.SplitterDistance = 618;
+            this.spcFrame.SplitterDistance = 685;
             this.spcFrame.SplitterWidth = 5;
             this.spcFrame.TabIndex = 1;
             this.spcFrame.TabStop = false;
@@ -112,7 +110,7 @@
             this.tabResult.Margin = new System.Windows.Forms.Padding(4);
             this.tabResult.Name = "tabResult";
             this.tabResult.SelectedIndex = 0;
-            this.tabResult.Size = new System.Drawing.Size(618, 794);
+            this.tabResult.Size = new System.Drawing.Size(685, 794);
             this.tabResult.TabIndex = 3;
             this.tabResult.TabStop = false;
             // 
@@ -123,7 +121,7 @@
             this.tpMatch.Margin = new System.Windows.Forms.Padding(4);
             this.tpMatch.Name = "tpMatch";
             this.tpMatch.Padding = new System.Windows.Forms.Padding(4);
-            this.tpMatch.Size = new System.Drawing.Size(610, 765);
+            this.tpMatch.Size = new System.Drawing.Size(677, 765);
             this.tpMatch.TabIndex = 0;
             this.tpMatch.Text = "Input/Match";
             this.tpMatch.UseVisualStyleBackColor = true;
@@ -144,36 +142,40 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2MinSize = 100;
-            this.splitContainer1.Size = new System.Drawing.Size(602, 757);
-            this.splitContainer1.SplitterDistance = 130;
+            this.splitContainer1.Size = new System.Drawing.Size(669, 757);
+            this.splitContainer1.SplitterDistance = 171;
             this.splitContainer1.TabIndex = 3;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.chkMultiline);
             this.groupBox1.Controls.Add(this.chkIgnoreCase);
             this.groupBox1.Controls.Add(this.txtPattern);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(602, 130);
+            this.groupBox1.Size = new System.Drawing.Size(669, 171);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pattern";
             // 
-            // checkBox1
+            // chkMultiline
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(203, -1);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(86, 19);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "MultiLine";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkMultiline.AutoSize = true;
+            this.chkMultiline.Checked = true;
+            this.chkMultiline.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkMultiline.Location = new System.Drawing.Point(203, -1);
+            this.chkMultiline.Name = "chkMultiline";
+            this.chkMultiline.Size = new System.Drawing.Size(81, 19);
+            this.chkMultiline.TabIndex = 4;
+            this.chkMultiline.Text = "Multiline";
+            this.chkMultiline.UseVisualStyleBackColor = true;
             // 
             // chkIgnoreCase
             // 
             this.chkIgnoreCase.AutoSize = true;
+            this.chkIgnoreCase.Checked = true;
+            this.chkIgnoreCase.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkIgnoreCase.Location = new System.Drawing.Point(96, -1);
             this.chkIgnoreCase.Name = "chkIgnoreCase";
             this.chkIgnoreCase.Size = new System.Drawing.Size(101, 19);
@@ -187,7 +189,7 @@
             this.txtPattern.Location = new System.Drawing.Point(3, 18);
             this.txtPattern.Margin = new System.Windows.Forms.Padding(4);
             this.txtPattern.Name = "txtPattern";
-            this.txtPattern.Size = new System.Drawing.Size(596, 109);
+            this.txtPattern.Size = new System.Drawing.Size(663, 150);
             this.txtPattern.TabIndex = 3;
             this.txtPattern.Text = "";
             // 
@@ -206,8 +208,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer2.Panel2MinSize = 200;
-            this.splitContainer2.Size = new System.Drawing.Size(602, 623);
-            this.splitContainer2.SplitterDistance = 272;
+            this.splitContainer2.Size = new System.Drawing.Size(669, 582);
+            this.splitContainer2.SplitterDistance = 327;
             this.splitContainer2.SplitterWidth = 10;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -217,7 +219,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(272, 623);
+            this.groupBox2.Size = new System.Drawing.Size(327, 582);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Input";
@@ -228,7 +230,7 @@
             this.txtInput.Location = new System.Drawing.Point(3, 18);
             this.txtInput.Margin = new System.Windows.Forms.Padding(4);
             this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(266, 602);
+            this.txtInput.Size = new System.Drawing.Size(321, 561);
             this.txtInput.TabIndex = 2;
             this.txtInput.Text = "";
             // 
@@ -238,7 +240,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(320, 623);
+            this.groupBox3.Size = new System.Drawing.Size(332, 582);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Match Groups";
@@ -250,7 +252,7 @@
             this.treeMatch.Location = new System.Drawing.Point(3, 18);
             this.treeMatch.Margin = new System.Windows.Forms.Padding(4);
             this.treeMatch.Name = "treeMatch";
-            this.treeMatch.Size = new System.Drawing.Size(314, 602);
+            this.treeMatch.Size = new System.Drawing.Size(326, 561);
             this.treeMatch.TabIndex = 3;
             this.treeMatch.TabStop = false;
             // 
@@ -261,7 +263,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(643, 794);
+            this.tabControl1.Size = new System.Drawing.Size(576, 794);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage2
@@ -272,7 +274,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(635, 765);
+            this.tabPage2.Size = new System.Drawing.Size(568, 765);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Replacement";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -281,35 +283,13 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.button3);
-            this.groupBox4.Controls.Add(this.button2);
             this.groupBox4.Controls.Add(this.tableLayoutPanel1);
-            this.groupBox4.Controls.Add(this.checkBox3);
+            this.groupBox4.Controls.Add(this.chkRange);
             this.groupBox4.Location = new System.Drawing.Point(6, 86);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(623, 89);
+            this.groupBox4.Size = new System.Drawing.Size(556, 89);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(562, 54);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(54, 31);
-            this.button3.TabIndex = 35;
-            this.button3.Text = "Save";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(562, 23);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(54, 31);
-            this.button2.TabIndex = 35;
-            this.button2.Text = "Do";
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
@@ -327,16 +307,16 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(549, 58);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(542, 58);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // txtRangeTo
             // 
             this.txtRangeTo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtRangeTo.Location = new System.Drawing.Point(288, 4);
+            this.txtRangeTo.Location = new System.Drawing.Point(285, 4);
             this.txtRangeTo.Margin = new System.Windows.Forms.Padding(4);
             this.txtRangeTo.Name = "txtRangeTo";
-            this.txtRangeTo.Size = new System.Drawing.Size(257, 50);
+            this.txtRangeTo.Size = new System.Drawing.Size(253, 50);
             this.txtRangeTo.TabIndex = 9;
             this.txtRangeTo.Text = "";
             // 
@@ -344,7 +324,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(267, 0);
+            this.label2.Location = new System.Drawing.Point(264, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 58);
             this.label2.TabIndex = 8;
@@ -357,9 +337,21 @@
             this.txtRangeFrom.Location = new System.Drawing.Point(4, 4);
             this.txtRangeFrom.Margin = new System.Windows.Forms.Padding(4);
             this.txtRangeFrom.Name = "txtRangeFrom";
-            this.txtRangeFrom.Size = new System.Drawing.Size(256, 50);
+            this.txtRangeFrom.Size = new System.Drawing.Size(253, 50);
             this.txtRangeFrom.TabIndex = 1;
             this.txtRangeFrom.Text = "";
+            // 
+            // chkRange
+            // 
+            this.chkRange.AutoSize = true;
+            this.chkRange.Checked = true;
+            this.chkRange.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRange.Location = new System.Drawing.Point(7, 3);
+            this.chkRange.Name = "chkRange";
+            this.chkRange.Size = new System.Drawing.Size(431, 19);
+            this.chkRange.TabIndex = 0;
+            this.chkRange.Text = "Skip The Match In Then Range From Pattern And End Pattern ";
+            this.chkRange.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
@@ -369,7 +361,7 @@
             this.groupBox5.Controls.Add(this.txtReplaceResult);
             this.groupBox5.Location = new System.Drawing.Point(6, 179);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(621, 570);
+            this.groupBox5.Size = new System.Drawing.Size(554, 570);
             this.groupBox5.TabIndex = 13;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Replace Result";
@@ -381,7 +373,7 @@
             this.txtReplaceResult.Margin = new System.Windows.Forms.Padding(4);
             this.txtReplaceResult.Name = "txtReplaceResult";
             this.txtReplaceResult.ReadOnly = true;
-            this.txtReplaceResult.Size = new System.Drawing.Size(615, 549);
+            this.txtReplaceResult.Size = new System.Drawing.Size(548, 549);
             this.txtReplaceResult.TabIndex = 7;
             this.txtReplaceResult.Text = "";
             // 
@@ -392,7 +384,7 @@
             this.groupBox10.Controls.Add(this.txtReplacement);
             this.groupBox10.Location = new System.Drawing.Point(6, 6);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(623, 77);
+            this.groupBox10.Size = new System.Drawing.Size(556, 77);
             this.groupBox10.TabIndex = 6;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Replacement String";
@@ -405,21 +397,9 @@
             this.txtReplacement.Location = new System.Drawing.Point(7, 19);
             this.txtReplacement.Margin = new System.Windows.Forms.Padding(4);
             this.txtReplacement.Name = "txtReplacement";
-            this.txtReplacement.Size = new System.Drawing.Size(609, 51);
+            this.txtReplacement.Size = new System.Drawing.Size(542, 51);
             this.txtReplacement.TabIndex = 5;
             this.txtReplacement.Text = "";
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(7, 3);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(431, 19);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "Skip The Match In Then Range From Pattern And End Pattern ";
-            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // RegexTabPage
             // 
@@ -484,9 +464,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox txtRangeFrom;
         private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox chkMultiline;
+        private System.Windows.Forms.CheckBox chkRange;
     }
 }

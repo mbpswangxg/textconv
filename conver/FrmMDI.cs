@@ -36,7 +36,7 @@ namespace conver
             this.btnMatch.Click += r.btnMatch_Click;
             this.btnReplace.Click += r.btnReplace_Click;
             this.btnSaveRules.Click += r.SaveRules;
-            this.btnShowReplaceFileDialog.Click += r.ShowReplaceFileDialog;
+            this.btnShowReplaceFileDialog.Click += r.btnReplaceFile_Click;
 
             page.Controls.Add(r);
             tabWindow.ResumeLayout();

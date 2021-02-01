@@ -21,12 +21,25 @@ namespace conver
         /// Replace Pattern Format
         /// </summary>
         private const string replaceformat = @"";
-        private RegexOptions options = RegexOptions.None;
         private ReplaceItem repItem = new ReplaceItem();
         private FrmReplaceFiles frmReplaceFiles = new FrmReplaceFiles();
-        public RegexOptions Options
+       
+        public RegexOptions RegexOptions
         {
-            set { options = value; }
+            get
+            {
+                RegexOptions regOptions = RegexOptions.None;
+                if (chkIgnoreCase.Checked)
+                {
+                    regOptions = regOptions | RegexOptions.IgnoreCase;
+                }
+                if (chkMultiline.Checked)
+                {
+                    regOptions = regOptions | RegexOptions.Multiline;
+                }
+
+                return regOptions;
+            }
         }
 
         public RegexTabPage()
@@ -49,15 +62,7 @@ namespace conver
         {
             MessageBox.Show("Show Replace Rules OK");
         }
-        /// <summary>
-        /// Do regex match, show the result on tree.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void ShowReplaceFileDialog(object sender, EventArgs e)
-        {
-            frmReplaceFiles.Show(); 
-        }
+        
         /// <summary>
         /// Do regex match, show the result on tree.
         /// </summary>
@@ -68,7 +73,7 @@ namespace conver
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtPattern.Text)) return;
 
-            Regex reg = new Regex(txtPattern.Text, options);
+            Regex reg = new Regex(txtPattern.Text, RegexOptions);
             this.matches = reg.Matches(txtInput.Text);
             BindMatchTree(matches, reg);
             
@@ -82,25 +87,17 @@ namespace conver
         /// <param name="e"></param>
         public void btnReplace_Click(object sender, EventArgs e)
         {
-            InitRule();
-
-            Regex reg = new Regex(txtPattern.Text, options);
-            txtReplaceResult.Text = reg.Replace(txtInput.Text, MatchReplacer);
-        }
-        private void InitRule()
-        {
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtReplacement.Text)) return;
 
             repItem.pattern = txtPattern.Text;
             repItem.replacement = txtReplacement.Text;
-            
-            /*if (chkRange.Checked)
-            {
-                if (rdoRangeSkip.Checked) repItem.RangeCheck = ReplaceChecks.skip;
-                if (rdoRangeDo.Checked) repItem.RangeCheck = ReplaceChecks.replace;
-            }
-            *//*repItem.filefilter = txtFileFilter.Text;*//*
+
+            repItem.rangeFrom = txtRangeFrom.Text;
+            repItem.rangeTo = txtRangeTo.Text;
+            repItem.rangeSkip = chkRange.Checked;
+
+            /*repItem.filefilter = txtFileFilter.Text;*//*
             //repItem.repfile = txtReplacementFile.Text;
 
             repItem.FileFilterCheck = ReplaceChecks.none;
@@ -110,13 +107,11 @@ namespace conver
                 if (rdoFilterDo.Checked) repItem.FileFilterCheck = ReplaceChecks.replace;
             }*/
             repItem.InitReplaceRule();
-        }
-        private string MatchReplacer(Match m)
-        {
-            string newV = Regex.Replace(m.Value, txtPattern.Text, txtReplacement.Text, options);
 
-            return newV;
+            txtReplaceResult.Text = repItem.replaceText(txtInput.Text);
         }
+
+
         /// <summary>
         /// Show Pattern Config file.
         /// </summary>
@@ -145,8 +140,8 @@ namespace conver
         /// <param name="e"></param>
         public void btnReplaceFile_Click(object sender, EventArgs e)
         {
-            /*FrmReplaceFile frm = new FrmReplaceFile();
-            frm.Show();*/
+            frmReplaceFiles.Show();
+            frmReplaceFiles.Activate();
         }
 
         /// <summary>
@@ -226,21 +221,5 @@ namespace conver
             }
         }
         #endregion
-
-        private void chkRange_CheckedChanged(object sender, EventArgs e)
-        {
-            /*rdoRangeSkip.Enabled = chkRange.Checked;
-            rdoRangeDo.Enabled = chkRange.Checked;
-            txtRangeFrom.Enabled = chkRange.Checked;
-            txtRangeTo.Enabled = chkRange.Checked;*/
-
-        }
-
-        private void chkFileFilter_CheckedChanged(object sender, EventArgs e)
-        {
-            /*rdoFilterSkip.Enabled = chkFileFilter.Checked;
-            rdoFilterDo.Enabled = chkFileFilter.Checked;
-            *//*txtFileFilter.Enabled = chkFileFilter.Checked;*/
-        }
     }
 }

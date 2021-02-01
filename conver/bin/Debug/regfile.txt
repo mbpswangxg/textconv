@@ -32,7 +32,24 @@ TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM/DD'\s*\)\s*,\s*'YYYY/FMMM/DD'\s
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'FMMM'\s*\)	FORMAT($1, '%M')
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM'\s*\)	FORMAT($1, 'yyyy/M')
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM/DD'\s*\)	FORMAT($1, 'yyyy/M/d')
-TO_CHAR=TO_CHAR\(\s*([^,\(\)]+)\)	CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\(([^,\(\)]+)\)	CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\((CONVERT\([^\)]+SUBSTR\w+\([^\)]+\)[^\)]*\))\)	CONVERT(varchar, $1)
+
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
+TO_CHAR=to_char\(([^,]+),'Day'\)	DATENAME(dw, $1)
+#TO_CHAR=to_char\((.+),'YYYY/MM/DD'\)	CONVERT(varchar, $1, 111)
+
+ADD_MONTH=add_months\(([^,]+),([^,]+)\)	DATEADD(month,$2,$1)
+
+#TO_NUMBER=TO_NUMBER\((SUBSTR\w*\([^\(\)]+\)[-\s\w]*)\)	CONVERT(decimal, $1)
+#TO_NUMBER=TO_NUMBER\(([\w\.]+)\)	CONVERT(decimal, $1)
+#TO_NUMBER=TO_NUMBER\(([^\)]+\)\)\))\)	CONVERT(decimal, $1)
+TO_NUMBER=TO_NUMBER\(	CONVERT(decimal, (
+
+LPAD=LPAD\(([^,]+),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
+LPAD=lpad\((substr\w*[^\)]+[^,]*),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
 
 SUBSTRING=((?:^|[^\.\w]))SUBSTR\s*\(	$1SUBSTRING(
 LENGTH=((?:^|[^\.\w]))LENGTH\s*\(	$1LEN(
@@ -46,19 +63,19 @@ SYSDATE	GETDATE()
 #@COMMAND_KEYWORD=pattern
 # textconv -c COMMAND_KEYWORD
 #-------------------------------------------
-:ORA_OR=\|\|	+	rangefrom=\s+(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
+ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
-:UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
-:UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
-:LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
+UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
+LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
-:UCASE_COL=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	UCASE_GROUP=1,3	ignoreCase=false
-:UCASE_COL="\s*SET\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
-:UCASE_COL="\s*WHERE\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
-:UCASE_COL="\s*AND\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
-:UCASE_COL="\s*ORDER BY\s+(\w+\.)(\w*[a-z]+\w*)	UCASE_GROUP=2	ignoreCase=false
-:UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
-:UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*SET\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+UCASE_COL="\s*WHERE\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+UCASE_COL="\s*AND\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+UCASE_COL="\s*ORDER BY\s+(\w+\.)(\w*[a-z]+\w*)	UCASE_GROUP=2	ignoreCase=false
+UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
 
 DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
@@ -71,13 +88,20 @@ DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w']+\)),([^,\(\)]+),([^,\(\)]+),([^,]+,[^\
 DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([\s\w]+\([^,]+,[^,]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
 DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([\s\w]+\([^,]+,[^\)]+\)[^\)]+)\)	CASE $1 WHEN $2 THEN $3 ELSE $4 END
 DECODE=DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 WHEN $6 THEN $7 END
+DECODE=DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 END
 
 #DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 #DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,\)]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 ELSE $6 END
 TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
 
-WHEN_NULL=WHEN null THEN	WHEN IS null THEN
-UserTransaction	Transaction
+WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
+UserTransaction=new UserTransaction\(\)	Transaction
+usertabcol=select [\w,\s]+from user_tab_columns where table_name='(\w+)'	repfile=repfiles/selectUserTabCol.sql
+usertabcol=column_name[^"]+"	null=c.name as col_name , ty.name as data_type , c.precision as length_val "	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
+usertabcol=data_scale as length_decimal	null=c.max_length as length_decimal	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
+usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns c on t.object_id = c.object_id inner join sys.types ty on ty.user_type_id = c.user_type_id "
+usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
+insertscript=(\<head\>)	null=$1\r\n<script src="jae/migration/util.js"></script>	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
 #==============================================
 #JSP
 #==============================================

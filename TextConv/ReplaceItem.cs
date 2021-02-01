@@ -14,8 +14,8 @@ namespace TextConv
 
         public string pattern = string.Empty;
         public string replacement = string.Empty;
-        public bool ignoreCase = true;
-        public bool multiLine = true;
+        public bool IgnoreCase = true;
+        public bool Multiline = true;
         public string ExcapeText;
 
 
@@ -39,7 +39,10 @@ namespace TextConv
         private Regex valReg = null;
         private List<LineMatch> keys = new List<LineMatch>();
         private List<LineMatch> vals = new List<LineMatch>();
-        
+        public List<string> iffindstrs = new List<string>();
+        public List<string> ifnotfindstrs = new List<string>();
+        public bool iffindand=true;
+
         private int lineNo = 0;
         public ReplaceItem() { }
         public ReplaceItem(string args) {
@@ -71,16 +74,16 @@ namespace TextConv
             // ３番目以降のパラメータはOptionで、必須ではない
             for (int i = 2; i < words.Length; i++)
             {
-                m = Regex.Match(words[i], @"ignoreCase=(true|false)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"IgnoreCase=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    ignoreCase = bool.Parse(m.Groups[1].Value);
+                    IgnoreCase = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"multiline=(true|false)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"Multiline=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    multiLine = !bool.Parse(m.Groups[1].Value);
+                    Multiline = !bool.Parse(m.Groups[1].Value);
                     continue;
                 }
                 
@@ -96,7 +99,7 @@ namespace TextConv
                     rangeTo = m.Groups[1].Value;
                     continue;
                 }
-                m = Regex.Match(words[i], @"rangeSkip=(true|false)");
+                m = Regex.Match(words[i], @"rangeSkip=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     this.rangeSkip = bool.Parse(m.Groups[1].Value);
@@ -109,10 +112,28 @@ namespace TextConv
                     filefilter = m.Groups[1].Value;
                     continue;
                 }
-                m = Regex.Match(words[i], @"fileSkip=(true|false)");
+                m = Regex.Match(words[i], @"fileSkip=(true|false)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     this.fileSkip = bool.Parse(m.Groups[1].Value);
+                    continue;
+                }
+                m = Regex.Match(words[i], @"iffindstr=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    iffindstrs.Add(m.Groups[1].Value);
+                    continue;
+                }
+                m = Regex.Match(words[i], @"ifnotfindstr=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    ifnotfindstrs.Add(m.Groups[1].Value);
+                    continue;
+                }
+                m = Regex.Match(words[i], @"iffindand=(true|false)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    this.iffindand = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
             }
@@ -124,16 +145,24 @@ namespace TextConv
             get
             {
                 RegexOptions regOptions = RegexOptions.None;
-                if (ignoreCase)
+                if (IgnoreCase)
                 {
                     regOptions = regOptions | RegexOptions.IgnoreCase;
                 }
-                if (multiLine)
+                if (Multiline)
                 {
                     regOptions = regOptions | RegexOptions.Multiline;
                 }
 
                 return regOptions;
+            }
+        }
+        public bool HasRangeCheck
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo)) return false;
+                return true;
             }
         }
         public void InitReplaceRule()
@@ -168,13 +197,7 @@ namespace TextConv
                 return !this.fileSkip;
             }
         }
-        public bool HasRangeCheck
-        {
-            get {
-                if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo)) return false;
-                return true;
-            }
-        }
+        
         public void beforeReplace(string[] lines)
         {
             //　範囲判定不要の場合、処理対象外
@@ -196,6 +219,7 @@ namespace TextConv
         {
             //　範囲判定不要の場合、処理対象外
             if (!HasRangeCheck) return;
+            
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -204,7 +228,148 @@ namespace TextConv
             keys.Sort(CompareLineMatch);
             vals.Sort(CompareLineMatch);
         }
-        public bool isInRange(int currentLineNo, Match m)
+
+        private bool mustExist(List<string> lines)
+        {
+            if (iffindstrs.Count > 0)
+            {
+                // and 条件の場合、TrueForAllで判定
+                if (iffindand)
+                {
+                    
+                    //一つ条件が満たさない場合、不合格として、処理終了
+                    if (iffindstrs.TrueForAll(r => lines.Exists(l => Regex.IsMatch(l, r))))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else // or 条件の場合、Existsで判定
+                {
+                    //一つ条件も満たさない場合、不合格として、処理終了
+                    if (iffindstrs.Exists(r => lines.Exists(l => Regex.IsMatch(l, r))))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool mustNotExist(List<string> lines)
+        {
+            if (ifnotfindstrs.Count > 0)
+            {
+                // and 条件の場合、Existsで判定
+                if (iffindand)
+                {
+                    //一つ条件が満たす場合、不合格として、処理終了
+                    if (ifnotfindstrs.Exists(r => lines.Exists(l => Regex.IsMatch(l, r))))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else // or 条件の場合、TrueForAllで判定
+                {
+                    //全条件が満たす場合、不合格として、処理終了
+                    if (ifnotfindstrs.TrueForAll(r => lines.Exists(l => Regex.IsMatch(l, r))))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool mustExist(string content)
+        {
+            if (iffindstrs.Count > 0)
+            {
+                // and 条件の場合、TrueForAllで判定
+                if (iffindand)
+                {
+                    //一つ条件が満たさない場合、不合格として、処理終了
+                    if (iffindstrs.TrueForAll(r => Regex.IsMatch(content, r)))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else // or 条件の場合、Existsで判定
+                {
+                    //一つ条件も満たさない場合、不合格として、処理終了
+                    if (iffindstrs.Exists(r => Regex.IsMatch(content, r)))
+                    {
+                        return true;
+                    }
+                    else 
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool mustNotExist(string content)
+        {
+            if (ifnotfindstrs.Count > 0)
+            {
+                // and 条件の場合、Existsで判定
+                if (iffindand)
+                {
+                    //一つ条件が満たす場合、不合格として、処理終了
+                    if (ifnotfindstrs.Exists(r => Regex.IsMatch(content, r)))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else // or 条件の場合、TrueForAllで判定
+                {
+                    //全条件が満たす場合、不合格として、処理終了
+                    if (ifnotfindstrs.TrueForAll(r => Regex.IsMatch(content, r)))
+                    {
+                        return false;
+                    }else
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool isInRange(int currentLineNo, Match m)
         {
             //今の行番に一番近い先頭行を取得
             LineMatch fromMatch = keys.FindLast(fm => (fm.lineNo == currentLineNo && fm.Match.Index<= m.Index) || fm.lineNo < currentLineNo);
@@ -250,6 +415,15 @@ namespace TextConv
 
         public string replaceText(string content)
         {
+            if (!mustExist(content) || !mustNotExist(content))
+            {
+                //見つかるべきものは見つからない場合、
+                //見つからなくべきものが見つかった場合、
+                //いずれも不合格として、処理終了
+                return content;
+            }
+
+            beforeReplace(content);
             //==============================
             Regex reg = new Regex(pattern, RegexOptions);
             if (reg.IsMatch(content))
@@ -262,6 +436,16 @@ namespace TextConv
 
         public bool replaceLines(string[] lines)
         {
+            List<string> tmpLines = new List<string>(lines);
+            if (!mustExist(tmpLines) || !mustNotExist(tmpLines))
+            {
+                //見つかるべきものは見つからない場合、
+                //見つからなくべきものが見つかった場合、
+                //いずれも不合格として、処理終了
+                return false;
+            }
+
+            beforeReplace(lines);
             //==============================
             string nline = string.Empty;
             bool hasChanged = false;
@@ -300,30 +484,21 @@ namespace TextConv
             if (!File.Exists(file)) return;
             if (isSkipFile(file)) return;
             currentfile = file;
-            if (currentfile.Contains("search.js"))
-            {
-                Console.WriteLine(file);
-            }
-            string newContent = string.Empty;
-            if (!multiLine)
+            
+            if (!Multiline)
             {
                 string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
-                beforeReplace(lines);
                 if (replaceLines(lines))
                 {
-                    FileInfo fi = new FileInfo(file);
                     File.WriteAllLines(file, lines, FileHelper.Encoding);
                 }
-                newContent = string.Join("\n", lines);
             }
             else
             {
                 string content = File.ReadAllText(file, FileHelper.Encoding);
-                beforeReplace(content);
-                newContent = replaceText(content);
+                string newContent = replaceText(content);
                 if (!content.Equals(newContent))
                 {
-                    FileInfo fi = new FileInfo(file);
                     File.WriteAllText(file, newContent, FileHelper.Encoding);
                 }
             }
