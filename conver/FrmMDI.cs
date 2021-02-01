@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -16,6 +17,8 @@ namespace conver
         public FrmMDI()
         {
             InitializeComponent();
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.save_Click);
+            this.saveToolStripButton.Click += new System.EventHandler(this.save_Click);
         }
         private void FrmMDI_Load(object sender, EventArgs e)
         {
@@ -24,33 +27,43 @@ namespace conver
 
         #region User Menu
         private void ShowNewForm(object sender, EventArgs e)
-        {  
+        {
+            tabWindow.SelectedTab = NewTabPage("Regex" + childFormNumber++);
+        }
+        private TabPage NewTabPage(string pageText) 
+        {
             tabWindow.SuspendLayout();
-            TabPage page = new TabPage( "Regex" + childFormNumber++);
+            TabPage page = new TabPage(pageText);
             tabWindow.TabPages.Add(page);
             RegexTabPage r = new RegexTabPage();
             r.Dock = DockStyle.Fill;
             r.TabStop = false;
+            r.Name = "RegexTabPage";
 
             this.KeyDown += r.FrmRegex_KeyDown;
             this.btnMatch.Click += r.btnMatch_Click;
             this.btnReplace.Click += r.btnReplace_Click;
-            this.btnSaveRules.Click += r.SaveRules;
-            this.btnShowReplaceFileDialog.Click += r.btnReplaceFile_Click;
+            this.btnReplaceFile.Click += r.btnReplaceFile_Click;
 
             page.Controls.Add(r);
             tabWindow.ResumeLayout();
-            tabWindow.SelectedTab = page;
+            return page;
         }
-
         private void OpenFile(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            openFileDialog.Filter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog.Filter = "Yml (*.yml)|*.yml|Yaml (*.yaml)|*.yaml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                string FileName = openFileDialog.FileName;
+                //Open a new TabPage.
+                FileInfo fi = new FileInfo(openFileDialog.FileName);
+                tabWindow.SelectedTab = NewTabPage(fi.Name);
+                tabWindow.SelectedTab.ToolTipText = fi.FullName;
+
+                Control[] ctrs = tabWindow.SelectedTab.Controls.Find("RegexTabPage", false);
+                RegexTabPage regexTab = (RegexTabPage)ctrs.First();
+                regexTab.LoadRules(openFileDialog.FileName);
             }
         }
 
@@ -58,13 +71,31 @@ namespace conver
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*";
+            saveFileDialog.Filter = "Yml (*.yml)|*.yml|Yaml (*.yaml)|*.yaml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                string FileName = saveFileDialog.FileName;
+                Control[] ctrs = tabWindow.SelectedTab.Controls.Find("RegexTabPage", false);
+                RegexTabPage regexTab =(RegexTabPage) ctrs.First();
+                regexTab.SaveRules(saveFileDialog.FileName);
+                FileInfo fi = new FileInfo(saveFileDialog.FileName);
+                tabWindow.SelectedTab.Text = fi.Name;
+                tabWindow.SelectedTab.ToolTipText = fi.FullName;
             }
         }
-        
+        private void save_Click(object sender, EventArgs e)
+        {
+            string filepath = tabWindow.SelectedTab.ToolTipText;
+            if (File.Exists(filepath))
+            {
+                Control[] ctrs = tabWindow.SelectedTab.Controls.Find("RegexTabPage", false);
+                RegexTabPage regexTab = (RegexTabPage)ctrs.First();
+                regexTab.SaveRules(filepath);
+            }
+            else
+            {
+                SaveAsToolStripMenuItem_Click(sender, e);
+            }
+        }
         private void mnuCloseTab_Click(object sender, EventArgs e)
         {
             TabPage closingPage = tabWindow.SelectedTab;
@@ -117,6 +148,7 @@ namespace conver
             }
         }
         #endregion
+
 
     }
 }

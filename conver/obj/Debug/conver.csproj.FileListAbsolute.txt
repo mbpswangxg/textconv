@@ -41,3 +41,5 @@ C:\tool\textconv\conver\bin\Debug\TextConv.exe.config
 C:\tool\textconv\conver\obj\Debug\conver.csproj.CopyComplete
 D:\workspace\C#\textconv\conver\bin\Debug\repfiles\selectUserTabCol.sql
 C:\tool\textconv\conver\bin\Debug\repfiles\selectUserTabCol.sql
+C:\tool\textconv\conver\bin\Debug\YamlDotNet.dll
+C:\tool\textconv\conver\bin\Debug\YamlDotNet.xml

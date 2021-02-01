@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using TextConv;
+using YamlDotNet.Serialization;
+using System.IO;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace conver
 {
@@ -22,8 +25,7 @@ namespace conver
         /// </summary>
         private const string replaceformat = @"";
         private ReplaceItem repItem = new ReplaceItem();
-        private FrmReplaceFiles frmReplaceFiles = new FrmReplaceFiles();
-       
+        
         public RegexOptions RegexOptions
         {
             get
@@ -58,11 +60,73 @@ namespace conver
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void SaveRules(object sender, EventArgs e)
+        public void SaveRules(string filepath)
         {
-            MessageBox.Show("Show Replace Rules OK");
+            var serializer = new Serializer();
+            using (StreamWriter writer = File.CreateText(filepath))
+            {
+                UI2Data();
+                serializer.Serialize(writer, repItem);
+            }
+            MessageBox.Show("Replace Rule Saved In: "+ filepath,"File Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        
+        /// <summary>
+        /// Do regex match, show the result on tree.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void LoadRules(string filepath)
+        {
+            var deserializer = new Deserializer();
+            
+            using (StreamReader reader = File.OpenText(filepath))
+            {
+                repItem = deserializer.Deserialize<ReplaceItem>(reader);
+                Data2UI(repItem);
+            }
+        }
+        private void UI2Data()
+        {
+            repItem.Name = txtRuleName.Text;
+            repItem.Desc = txtRuleDesc.Text;
+
+            repItem.pattern = txtPattern.Text;
+            repItem.replacement = txtReplacement.Text;
+            repItem.inputContent = txtInput.Text;
+
+            repItem.IgnoreCase = chkIgnoreCase.Checked;
+            repItem.Multiline = chkMultiline.Checked;
+
+            repItem.rangeFrom = txtRangeFrom.Text;
+            repItem.rangeTo = txtRangeTo.Text;
+            repItem.rangeSkip = chkRange.Checked;
+
+            repItem.destFolder = txtDestFolder.Text;
+            repItem.filefilter = txtFileFilter.Text;
+            repItem.fileSkip = chkFileSkip.Checked;
+          
+        }
+        private void Data2UI(ReplaceItem repItem)
+        {
+            txtRuleName.Text = repItem.Name;
+            txtRuleDesc.Text = repItem.Desc;
+
+            txtPattern.Text = repItem.pattern;
+            txtReplacement.Text = repItem.replacement;
+            txtInput.Text = repItem.inputContent;
+
+            chkIgnoreCase.Checked = repItem.IgnoreCase;
+            chkMultiline.Checked = repItem.Multiline;
+
+            txtRangeFrom.Text = repItem.rangeFrom;
+            txtRangeTo.Text = repItem.rangeTo;
+            chkRange.Checked = repItem.rangeSkip;
+
+            txtDestFolder.Text = repItem.destFolder;
+            txtFileFilter.Text = repItem.filefilter;
+            chkFileSkip.Checked = repItem.fileSkip;
+        }
+
         /// <summary>
         /// Do regex match, show the result on tree.
         /// </summary>
@@ -90,49 +154,12 @@ namespace conver
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtReplacement.Text)) return;
 
-            repItem.pattern = txtPattern.Text;
-            repItem.replacement = txtReplacement.Text;
-
-            repItem.rangeFrom = txtRangeFrom.Text;
-            repItem.rangeTo = txtRangeTo.Text;
-            repItem.rangeSkip = chkRange.Checked;
-
-            /*repItem.filefilter = txtFileFilter.Text;*//*
-            //repItem.repfile = txtReplacementFile.Text;
-
-            repItem.FileFilterCheck = ReplaceChecks.none;
-            if (chkFileFilter.Checked)
-            {
-                if (rdoFilterSkip.Checked) repItem.FileFilterCheck = ReplaceChecks.skip;
-                if (rdoFilterDo.Checked) repItem.FileFilterCheck = ReplaceChecks.replace;
-            }*/
+            UI2Data();
             repItem.InitReplaceRule();
 
             txtReplaceResult.Text = repItem.replaceText(txtInput.Text);
         }
 
-
-        /// <summary>
-        /// Show Pattern Config file.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void btnOpen_Click(object sender, EventArgs e)
-        {
-            /*string txtopener = Xmler.GetAppSettingValue("txtopener");
-            string replacepatterns = Xmler.GetAppSettingValue("replacepatterns");
-
-            if (!string.IsNullOrEmpty(txtopener))
-            {
-                Process.Start(txtopener, replacepatterns);
-            }
-            else
-            {
-                MessageBox.Show("Txt File Editor is Missing or not Config."
-                    + "\nPlease Confirm the [txtopener] on *.exe.config ");
-            }*/
-
-        }
         /// <summary>
         /// Show Replace files window.
         /// </summary>
@@ -140,8 +167,7 @@ namespace conver
         /// <param name="e"></param>
         public void btnReplaceFile_Click(object sender, EventArgs e)
         {
-            frmReplaceFiles.Show();
-            frmReplaceFiles.Activate();
+            MessageBox.Show("btnReplaceFile_Click");
         }
 
         /// <summary>
@@ -160,7 +186,7 @@ namespace conver
                     btnReplace_Click(sender, e);
                     break;
                 case Keys.F7:
-                    btnOpen_Click(sender, e);
+                    //btnOpen_Click(sender, e);
                     break;
                 case Keys.F8:
                     btnReplaceFile_Click(sender, e);
@@ -221,5 +247,15 @@ namespace conver
             }
         }
         #endregion
+
+        private void btnSelectFolder_Click(object sender, EventArgs e)
+        {   
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+            if (folderDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                txtDestFolder.Text = folderDialog.SelectedPath;
+            }
+
+        }
     }
 }

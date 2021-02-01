@@ -17,12 +17,13 @@ namespace TextConv
         public bool IgnoreCase = true;
         public bool Multiline = true;
         public string ExcapeText;
-
+        public string inputContent = string.Empty;
 
         public string rangeFrom = string.Empty;
         public string rangeTo = string.Empty;
         public bool rangeSkip;
 
+        public string destFolder = string.Empty;
         public string filefilter = string.Empty;
         public bool fileSkip;
 
@@ -156,6 +157,10 @@ namespace TextConv
 
                 return regOptions;
             }
+            private set
+            {
+
+            }
         }
         public bool HasRangeCheck
         {
@@ -163,6 +168,10 @@ namespace TextConv
             {
                 if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo)) return false;
                 return true;
+            }
+            private set
+            {
+
             }
         }
         public void InitReplaceRule()
