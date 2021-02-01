@@ -12,7 +12,10 @@ INSTR=INSTR\(([^,]+),([^\)]+)\)	CHARINDEX($2,$1)	ignoreCase=true
 TO_DATE=TO_DATE\(([^,]+),\s*'YYYYMM'\s*\)	CONVERT(datetime, $1+'01')
 TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM'\s*\)	CONVERT(datetime, $1+'/01')
 TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(datetime, $1)
-TO_DATE=TO_DATE\(([^,]+),([^\)]+)\)	CONVERT(datetime2, $1)
+TO_DATE=to_date\(([^,]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(datetime, $1)
+TO_DATE=TO_DATE\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)	CONVERT(datetime2, $1)
+TO_DATE=to_date\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)	CONVERT(datetime2, $1)
+
 
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
@@ -29,7 +32,24 @@ TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM/DD'\s*\)\s*,\s*'YYYY/FMMM/DD'\s
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'FMMM'\s*\)	FORMAT($1, '%M')
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM'\s*\)	FORMAT($1, 'yyyy/M')
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM/DD'\s*\)	FORMAT($1, 'yyyy/M/d')
-TO_CHAR=TO_CHAR\(\s*([^,\(\)]+)\)	CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\(([^,\(\)]+)\)	CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\((CONVERT\([^\)]+SUBSTR\w+\([^\)]+\)[^\)]*\))\)	CONVERT(varchar, $1)
+
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
+TO_CHAR=to_char\(([^,]+),'Day'\)	DATENAME(dw, $1)
+#TO_CHAR=to_char\((.+),'YYYY/MM/DD'\)	CONVERT(varchar, $1, 111)
+
+ADD_MONTH=add_months\(([^,]+),([^,]+)\)	DATEADD(month,$2,$1)
+
+#TO_NUMBER=TO_NUMBER\((SUBSTR\w*\([^\(\)]+\)[-\s\w]*)\)	CONVERT(decimal, $1)
+#TO_NUMBER=TO_NUMBER\(([\w\.]+)\)	CONVERT(decimal, $1)
+#TO_NUMBER=TO_NUMBER\(([^\)]+\)\)\))\)	CONVERT(decimal, $1)
+TO_NUMBER=TO_NUMBER\(	CONVERT(decimal, (
+
+LPAD=LPAD\(([^,]+),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
+LPAD=lpad\((substr\w*[^\)]+[^,]*),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
 
 SUBSTRING=((?:^|[^\.\w]))SUBSTR\s*\(	$1SUBSTRING(
 LENGTH=((?:^|[^\.\w]))LENGTH\s*\(	$1LEN(
@@ -43,19 +63,19 @@ SYSDATE	GETDATE()
 #@COMMAND_KEYWORD=pattern
 # textconv -c COMMAND_KEYWORD
 #-------------------------------------------
-:ORA_OR=\|\|	+	rangefrom=\s+(if|while)\s*\(	rangeto=\)[^\)\{]*\{	skipedRange=true
+ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
-:UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
-:UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
-:LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
+UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
+LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
-:UCASE_COL=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	UCASE_GROUP=1,3	ignoreCase=false
-:UCASE_COL="\s*SET\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
-:UCASE_COL="\s*WHERE\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
-:UCASE_COL="\s*AND\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
-:UCASE_COL="\s*ORDER BY\s+(\w+\.)(\w*[a-z]+\w*)	UCASE_GROUP=2	ignoreCase=false
-:UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
-:UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*SET\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+UCASE_COL="\s*WHERE\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+UCASE_COL="\s*AND\s+(\w*[a-z]+\w*)\s*=	UCASE_GROUP=1	ignoreCase=false
+UCASE_COL="\s*ORDER BY\s+(\w+\.)(\w*[a-z]+\w*)	UCASE_GROUP=2	ignoreCase=false
+UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
 
 DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
@@ -97,3 +117,8 @@ td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W
 colwidth=(\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>)	repfile=repfiles/html2table.txt	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	multiline=true	filefilter=draft\w*.html
 td3=((\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>\s+)\<td)\>	null=$1 style="text-align: center;">	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	multiline=true	filefilter=draft\w*.html
 td4=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html
+#colclass=col width="92"	null=col class="W120"
+#colclass=col width="120"	null=col class="W120"
+#colclass=col width="100"	null=col class="W120"
+#colclass=col width="85"	null=col width="75"
+colclass=td class="VA_T W100"	null=td class="VA_T W120"

@@ -94,7 +94,7 @@ namespace conver
 
             repItem.pattern = txtPattern.Text;
             repItem.replacement = txtReplacement.Text;
-            repItem.RangeCheck = ReplaceChecks.none;
+            
             /*if (chkRange.Checked)
             {
                 if (rdoRangeSkip.Checked) repItem.RangeCheck = ReplaceChecks.skip;

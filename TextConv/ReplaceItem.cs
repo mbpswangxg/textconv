@@ -31,16 +31,15 @@ namespace TextConv
         public string cmdKey = string.Empty;
         public string repCmdKey = string.Empty;
 
-        public RegexOptions regOptions;
         public string repfile = string.Empty;
+        public string currentfile = string.Empty;
 
-        
         public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
         private Regex keyReg = null;
         private Regex valReg = null;
         private List<LineMatch> keys = new List<LineMatch>();
         private List<LineMatch> vals = new List<LineMatch>();
-
+        
         private int lineNo = 0;
         public ReplaceItem() { }
         public ReplaceItem(string args) {
@@ -100,7 +99,7 @@ namespace TextConv
                 m = Regex.Match(words[i], @"rangeSkip=(true|false)");
                 if (m.Success)
                 {
-                    this.rangeSkip = !bool.Parse(m.Groups[1].Value);
+                    this.rangeSkip = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
 
@@ -113,25 +112,36 @@ namespace TextConv
                 m = Regex.Match(words[i], @"fileSkip=(true|false)");
                 if (m.Success)
                 {
-                    this.fileSkip = !bool.Parse(m.Groups[1].Value);
+                    this.fileSkip = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
             }
 
             InitReplaceRule();
         }
-        public void InitReplaceRule()
+        public RegexOptions RegexOptions
         {
-            if (!string.IsNullOrEmpty(rangeFrom) && !string.IsNullOrEmpty(rangeTo))
+            get
             {
-                regOptions = RegexOptions.Multiline;
+                RegexOptions regOptions = RegexOptions.None;
                 if (ignoreCase)
                 {
-                    regOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase;
+                    regOptions = regOptions | RegexOptions.IgnoreCase;
+                }
+                if (multiLine)
+                {
+                    regOptions = regOptions | RegexOptions.Multiline;
                 }
 
-                keyReg = new Regex(rangeFrom, regOptions);
-                valReg = new Regex(rangeTo, regOptions);
+                return regOptions;
+            }
+        }
+        public void InitReplaceRule()
+        {
+            if (HasRangeCheck)
+            {
+                keyReg = new Regex(rangeFrom, RegexOptions);
+                valReg = new Regex(rangeTo, RegexOptions);
             }
         }
 
@@ -158,11 +168,18 @@ namespace TextConv
                 return !this.fileSkip;
             }
         }
-
+        public bool HasRangeCheck
+        {
+            get {
+                if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo)) return false;
+                return true;
+            }
+        }
         public void beforeReplace(string[] lines)
         {
             //　範囲判定不要の場合、処理対象外
-            //if (RangeCheck == ReplaceChecks.none) return;
+            if (!HasRangeCheck) return;
+            
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -178,7 +195,7 @@ namespace TextConv
         public void beforeReplace (string content)
         {
             //　範囲判定不要の場合、処理対象外
-            //if (RangeCheck == ReplaceChecks.none) return;
+            if (!HasRangeCheck) return;
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -190,17 +207,19 @@ namespace TextConv
         public bool isInRange(int currentLineNo, Match m)
         {
             //今の行番に一番近い先頭行を取得
-            LineMatch fromMatch = keys.FindLast(fm => fm.lineNo <= currentLineNo);
+            LineMatch fromMatch = keys.FindLast(fm => (fm.lineNo == currentLineNo && fm.Match.Index<= m.Index) || fm.lineNo < currentLineNo);
             
             if (fromMatch != null)
             {
                 //先頭行対応する直後行を取得
-                LineMatch toMatch = vals.Find(tm => fromMatch.lineNo <= tm.lineNo);
+                LineMatch toMatch = vals.Find(tm => (fromMatch.lineNo == tm.lineNo && fromMatch.Match.Index <= tm.Match.Index)
+                                                    || fromMatch.lineNo < tm.lineNo);
                 if (toMatch != null)
                 {
-                    //今の行番に一番近い後ろ行を取得
-                    LineMatch toMatch2 = vals.Find(tm => currentLineNo <= tm.lineNo);
-                    return toMatch.Equals(toMatch2);
+                    if (toMatch.lineNo > currentLineNo)
+                        return true;
+                    else if (toMatch.lineNo == currentLineNo && toMatch.Match.Index >= m.Index) 
+                        return true;
                 }
             }
             return false;
@@ -208,9 +227,6 @@ namespace TextConv
 
         private void fillMatches(int lineNo, string line)
         {
-            //　範囲判定不要の場合、処理対象外
-            //if (RangeCheck == ReplaceChecks.none) return;
-
             MatchCollection m1 = keyReg.Matches(line);
             foreach(Match k in m1)
             {
@@ -235,7 +251,7 @@ namespace TextConv
         public string replaceText(string content)
         {
             //==============================
-            Regex reg = new Regex(pattern, regOptions);
+            Regex reg = new Regex(pattern, RegexOptions);
             if (reg.IsMatch(content))
             {
                 content = reg.Replace(content, MatchReplacer);
@@ -250,7 +266,7 @@ namespace TextConv
             string nline = string.Empty;
             bool hasChanged = false;
             bool innerChanged = false;
-            Regex reg = new Regex(pattern, regOptions);
+            Regex reg = new Regex(pattern, RegexOptions);
             for (int i = 0; i < lines.Length; i++)
             {
                 nline = lines[i];
@@ -282,12 +298,14 @@ namespace TextConv
         public void ReplaceFile(string file)
         {
             if (!File.Exists(file)) return;
-
-            
             if (isSkipFile(file)) return;
-
+            currentfile = file;
+            if (currentfile.Contains("search.js"))
+            {
+                Console.WriteLine(file);
+            }
             string newContent = string.Empty;
-            if (!multiLine)
+            //if (!multiLine)
             {
                 string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
                 beforeReplace(lines);
@@ -298,31 +316,17 @@ namespace TextConv
                 }
                 newContent = string.Join("\n", lines);
             }
-            else
-            {
-                string content = File.ReadAllText(file, FileHelper.Encoding);
-                beforeReplace(content);
-                newContent = replaceText(content);
-                if (!content.Equals(newContent))
-                {
-                    FileInfo fi = new FileInfo(file);
-                    File.WriteAllText(file, newContent, FileHelper.Encoding);
-                }
-            }
-
-            /*//特殊コマンドを除き、漏れはないか？(?:^|[^\.\w])substr\b
-            if (!Regex.IsMatch(this.cmd, @":\w+"))
-            {
-                MatchCollection ms = Regex.Matches(newContent, @"(?:^|[^\.\w])" + this.cmd + @"\b[^\n]+", regOptions);
-                foreach (Match m in ms)
-                {
-                    if (!m.Value.StartsWith("."))
-                    {
-                        msgs.Add(string.Format("{0}\t{1}\t{2}", currentfile, m.Value, "★ERROR"));
-                    }
-                }
-            }*/
-            
+            //else
+            //{
+            //    string content = File.ReadAllText(file, FileHelper.Encoding);
+            //    beforeReplace(content);
+            //    newContent = replaceText(content);
+            //    if (!content.Equals(newContent))
+            //    {
+            //        FileInfo fi = new FileInfo(file);
+            //        File.WriteAllText(file, newContent, FileHelper.Encoding);
+            //    }
+            //}
         }
 
         private string MatchReplacer(Match m)
@@ -330,26 +334,26 @@ namespace TextConv
             string oldV = m.Value;
             string newV = m.Value;
 
-            /*if (RangeCheck != ReplaceChecks.none)
+            if (HasRangeCheck)
             {
                 //範囲チェックあるの場合
                 if (isInRange(lineNo, m))
                 {
                     //範囲内のスキップ対象であれば、変更せずに戻る
-                    if (RangeCheck == ReplaceChecks.skip) return m.Value;
+                    if (rangeSkip) return m.Value;
                 }
                 else
                 {
-                    //範囲外のチェック対象であれば、変更せずに戻る
-                    if (RangeCheck == ReplaceChecks.replace) return m.Value;
+                    //範囲外のチェック対象であれば、
+                    if (!rangeSkip) return m.Value;
                 }
-            }*/
+            }
 
             if (string.IsNullOrEmpty(repCmdKey)
                 || repCmdKey.Equals("null")
                 || repCmdKey.Equals("repfile"))
             {
-                newV = Regex.Replace(m.Value, pattern, replacement, regOptions);
+                newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
             else if (repCmdKey.EndsWith("CASE_GROUP"))
             {
@@ -408,10 +412,10 @@ namespace TextConv
                     "注意: [=]が存在するreplacementであれば,repCmdKeyの命名が必須で,defaultでnull=replacementのformatにしてください",
                     repCmdKey, replacement);
 
-                newV = Regex.Replace(m.Value, pattern, replacement, regOptions);
+                newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
 
-            //Console.WriteLine("{0}\t{1}\t{2}", currentfile, oldV, newV);
+            Console.WriteLine("{0}\t{1}\t{2}", currentfile, oldV, newV);
             return newV;
         }
 

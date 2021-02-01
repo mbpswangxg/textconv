@@ -10,62 +10,45 @@ namespace TextConv
     {
         private string cmd;
         private List<ReplaceItem> rules;
-        private string currentfile = string.Empty;
-        private int currentLineNo = 0;
-        private ReplaceItem currentRule = null;
-        private RegexOptions regOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
-        private string filefilter = string.Empty;
-        
-        public List<string> msgs;
 
-        public RexgexUtils(string cmd, List<ReplaceItem> allRules, string filepattern)
+        public RexgexUtils(string cmd, List<ReplaceItem> allRules)
         {
             this.cmd = cmd;
-            this.filefilter = filepattern;
-            this.rules = allRules.FindAll(r => r.cmdKey.Contains(cmd) ||  Regex.IsMatch(r.pattern, cmd, regOptions));
-            msgs = new List<string>();
+            this.rules = allRules.FindAll(r => r.cmdKey.Equals(cmd, StringComparison.OrdinalIgnoreCase) || Regex.IsMatch(r.pattern, cmd,RegexOptions.IgnoreCase));
         }
 
         #region Replace File
         public void ReplaceFolder(string folderPath)
         {
             if (!Directory.Exists(folderPath)) return;
-            msgs.Clear();
-
+            
             DirectoryInfo di = new DirectoryInfo(folderPath);
-            ReplaceFolder(di);
-        }
-        private void ReplaceFolder(DirectoryInfo di)
-        {
-            ReplaceFiles(di.GetFiles());
+        
+            //replace by file 
+            foreach (FileInfo file in di.GetFiles())
+            {
+                foreach (var rule in this.rules)
+                {
+                    rule.ReplaceFile(file.FullName);
+                }
+            }
+
+            //go to 
             foreach (var sdi in di.GetDirectories())
             {
-                ReplaceFolder(sdi);
+                ReplaceFolder(sdi.FullName);
             }
         }
-        private void ReplaceFiles(FileInfo[] files)
-        {
-            foreach (FileInfo file in files)
-            {
-                if (file.Extension.EndsWith("bak")) continue;
-                if (!string.IsNullOrEmpty(this.filefilter))
-                {
-                    if (!Regex.IsMatch(file.FullName, this.filefilter)) continue;
-                }
 
-                ReplaceFile(file.FullName);
-            }
-        }
-        public void ReplaceFile(string file)
+       /* public void ReplaceFile(string file)
         {
             if (!File.Exists(file)) return;
             
-            this.currentfile = file;
-            this.currentLineNo = 0;
             string newContent = string.Empty;
             foreach (var rule in this.rules) 
             {
                 if (rule.isSkipFile(file)) continue;
+                rule.currentfile = file;
                 
                 if (!rule.multiLine)
                 {
@@ -104,7 +87,7 @@ namespace TextConv
                 }
             }
         }
-        
+        */
         //============================================================================
         #endregion
     }

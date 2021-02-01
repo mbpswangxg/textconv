@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="RexgexUtils.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ReplaceItem.cs~RF387797f5.TMP" />
   </ItemGroup>
 
