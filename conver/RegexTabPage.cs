@@ -25,7 +25,8 @@ namespace conver
         /// </summary>
         private const string replaceformat = @"";
         private ReplaceItem repItem = new ReplaceItem();
-        
+        private List<ReplaceItem> rules = new List<ReplaceItem>();
+
         public RegexOptions RegexOptions
         {
             get
@@ -47,11 +48,6 @@ namespace conver
         public RegexTabPage()
         {
             InitializeComponent();
-            //txtReplaceRule.Text = ReplaceLoader.SampleTemplate;
-            //TreeDataBinder.DataBind(treeTemplate, ReplaceLoader.TemplateDataSet, "template");
-            /*chkRange_CheckedChanged(chkRange, null);
-            chkFileFilter_CheckedChanged(chkRange, null);*/
-
         }
 
         #region

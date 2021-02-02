@@ -17,7 +17,6 @@ D:\workspace\C#\textconv\conver\bin\Debug\TextConv.pdb
 D:\workspace\C#\textconv\conver\bin\Debug\TextConv.exe.config
 D:\workspace\C#\textconv\conver\obj\Debug\conver.csproj.CopyComplete
 D:\workspace\C#\textconv\conver\obj\Debug\conver.RegexTabPage.resources
-D:\workspace\C#\textconv\conver\obj\Debug\conver.FrmReplaceFiles.resources
 C:\tool\textconv\conver\obj\Debug\conver.csprojAssemblyReference.cache
 C:\tool\textconv\conver\obj\Debug\conver.FrmMDI.resources
 C:\tool\textconv\conver\obj\Debug\conver.FrmReplaceFiles.resources
@@ -43,3 +42,5 @@ D:\workspace\C#\textconv\conver\bin\Debug\repfiles\selectUserTabCol.sql
 C:\tool\textconv\conver\bin\Debug\repfiles\selectUserTabCol.sql
 C:\tool\textconv\conver\bin\Debug\YamlDotNet.dll
 C:\tool\textconv\conver\bin\Debug\YamlDotNet.xml
+D:\workspace\C#\textconv\conver\bin\Debug\YamlDotNet.dll
+D:\workspace\C#\textconv\conver\bin\Debug\YamlDotNet.xml
