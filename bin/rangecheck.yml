@@ -1,0 +1,54 @@
+Name: ''
+Desc: ''
+pattern: '\<td\>'
+replacement: <td class="A_★">
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  <tr class="H040">
+          <td colspan="2">
+            <table border="0" class="FONT11 WMAX" cellspacing="0" cellpadding="0">
+              <col class="A_L" />
+              <col width="50%" />
+              <col class="A_R W100" />
+              <col class="A_R W100" />
+              <tr>
+                <td>&nbsp;
+                  <IMART type="input" style="button" value="取り止め" class="BTN04" id="BTNID_CANCEL" onClick="return fnc_confirm(3);"></IMART>
+                  <IMART type="submit" id="BTN_CANCEL" action="actionCancel" style="visibility:hidden; width:0"></IMART>
+                </td>
+                <td class="A_C">
+                  <IMART type="input" style="button" value="台帳" class="BTN02 W045" onClick="return fnc_confirm(5);"></IMART>
+                  <IMART type="link" id="LNK_SEARCH" page=S_PATH_SEARCH style="visibility:hidden;width:0;"></IMART>
+                </td>
+                <td>
+                  <IMART type="input" style="button" value="一時保存" class="BTN04" id="BTNID_SAVE" onClick="getElement('BTN_SAVE').click();"></IMART>
+                  <IMART type="submit" id="BTN_SAVE" action="actionSave" style="visibility:hidden; width:0"></IMART>
+                </td>
+                <td>
+                  <IMART type="input" style="button" value=p_sDraftValue class="BTN04" id="BTNID_DRAFT" onClick="return fnc_confirm(1);"></IMART>
+
+                  <IMART type="submit" id="BTN_DRAFT" action="actionDraft" style="visibility:hidden; width:0"></IMART>
+                  <IMART type="submit" id="BTN_ROUTE" action="actionRoute" style="visibility:hidden; width:0"></IMART>
+                  <IMART type="submit" id="BTN_RELOAD" action="actionReload" style="visibility:hidden; width:0"></IMART>
+                </td>
+              </tr>
+            </table>
+rangeFrom: '\<td\>'
+rangeTo: DRAFT
+rangeSkip: false
+destFolder: ''
+filefilter: test.txt
+fileSkip: true
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+iffindstrs: []
+ifnotfindstrs: []
+iffindand: true
+repResults:
+- <td class="A_★">
+RegexOptions: IgnoreCase, Multiline
+HasRangeCheck: true

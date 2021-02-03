@@ -99,6 +99,7 @@ namespace conver
                 Control[] ctrs = tabWindow.SelectedTab.Controls.Find("RegexTabPage", false);
                 RegexTabPage regexTab = (RegexTabPage)ctrs.First();
                 regexTab.SaveRules(filepath);
+                ShowMessage("Replace Rule Saved In: " + filepath);
             }
             else
             {
@@ -110,6 +111,12 @@ namespace conver
             TabPage closingPage = tabWindow.SelectedTab;
             tabWindow.TabPages.Remove(closingPage);
             closingPage.Dispose();
+        }
+        private void ShowMessage(string message)
+        {
+            lblStatusMessage.Text = message;
+            tbMessage.Text = message;
+
         }
         #endregion
 

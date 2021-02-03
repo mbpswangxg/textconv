@@ -649,5 +649,30 @@ namespace TextConv
             return newV;
         }
 
+        public void AppendToCommandFile(string path)
+        {
+            SaveAsCommand(path, true);
+        }
+        public void SaveAsCommand(string path, bool append)
+        {
+            List<string> lstCmd = new List<string>();
+            lstCmd.Add(string.Format("cmdkey={0}", pattern));
+            lstCmd.Add(string.Format("repname={0}", replacement));
+            if (HasRangeCheck)
+            {
+                lstCmd.Add(string.Format("rangeSkip={0}", rangeSkip));
+                lstCmd.Add(string.Format("rangeFrom={0}", rangeFrom));
+                lstCmd.Add(string.Format("rangeTo={0}", rangeTo));
+            }
+            string cmd = string.Join("\t", lstCmd);
+            if (append)
+            {
+                File.AppendAllText(path, cmd);
+            }
+            else
+            {
+                File.WriteAllText(path, cmd);
+            }
+        }
     }
 }

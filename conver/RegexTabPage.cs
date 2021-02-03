@@ -64,8 +64,24 @@ namespace conver
                 UI2Data();
                 serializer.Serialize(writer, repItem);
             }
-            MessageBox.Show("Replace Rule Saved In: "+ filepath,"File Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            string ruleFile= Xmler.GetAppSettingValue("ruleCmdFileName", "rule_cmdstr.txt");
+            string cmdFolder = Xmler.GetAppSettingValue("ruleCmdFolder");
+            if (string.IsNullOrEmpty(cmdFolder))
+            {
+                cmdFolder = Application.StartupPath;
+            }
+            if (!Directory.Exists(cmdFolder))
+            {
+                Directory.CreateDirectory(cmdFolder);
+            }
+            if (!cmdFolder.EndsWith("\\"))
+            {
+                cmdFolder = cmdFolder + @"\";
+            }
+            repItem.AppendToCommandFile(cmdFolder + ruleFile);
         }
+        
         /// <summary>
         /// Do regex match, show the result on tree.
         /// </summary>
