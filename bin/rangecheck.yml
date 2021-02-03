@@ -1,7 +1,7 @@
 Name: ''
 Desc: ''
 pattern: '\<td\>'
-replacement: <td class="A_★">
+replacement: <td class="A_R">
 IgnoreCase: true
 Multiline: true
 ExcapeText: 
@@ -49,6 +49,6 @@ iffindstrs: []
 ifnotfindstrs: []
 iffindand: true
 repResults:
-- <td class="A_★">
+- <td class="A_R">
 RegexOptions: IgnoreCase, Multiline
 HasRangeCheck: true

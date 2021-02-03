@@ -664,7 +664,7 @@ namespace TextConv
                 lstCmd.Add(string.Format("rangeFrom={0}", rangeFrom));
                 lstCmd.Add(string.Format("rangeTo={0}", rangeTo));
             }
-            string cmd = string.Join("\t", lstCmd);
+            string cmd = string.Join("\t", lstCmd) + "\n";
             if (append)
             {
                 File.AppendAllText(path, cmd);
