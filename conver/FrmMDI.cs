@@ -33,8 +33,8 @@ namespace conver
         private TabPage NewTabPage(string pageText) 
         {
             tabWindow.SuspendLayout();
-            TabPage page = new TabPage(pageText);
-            tabWindow.TabPages.Add(page);
+            tabWindow.TabPages.Add(pageText, pageText);
+            TabPage page = tabWindow.TabPages[pageText];
             RegexTabPage r = new RegexTabPage();
             r.Dock = DockStyle.Fill;
             r.TabStop = false;
@@ -52,14 +52,23 @@ namespace conver
         private void OpenFile(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            openFileDialog.InitialDirectory = Application.StartupPath;
             openFileDialog.Filter = "Yml (*.yml)|*.yml|Yaml (*.yaml)|*.yaml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
+                
                 //Open a new TabPage.
                 FileInfo fi = new FileInfo(openFileDialog.FileName);
-                tabWindow.SelectedTab = NewTabPage(fi.Name);
-                tabWindow.SelectedTab.ToolTipText = fi.FullName;
+                int idx = tabWindow.TabPages.IndexOfKey(fi.Name);
+                if (idx >= 0)
+                {
+                    tabWindow.SelectedTab = tabWindow.TabPages[idx];
+                }
+                else 
+                {
+                    tabWindow.SelectedTab = NewTabPage(fi.Name);
+                    tabWindow.SelectedTab.ToolTipText = fi.FullName;
+                }
 
                 Control[] ctrs = tabWindow.SelectedTab.Controls.Find("RegexTabPage", false);
                 RegexTabPage regexTab = (RegexTabPage)ctrs.First();
@@ -70,7 +79,7 @@ namespace conver
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            saveFileDialog.InitialDirectory = Application.StartupPath;
             saveFileDialog.Filter = "Yml (*.yml)|*.yml|Yaml (*.yaml)|*.yaml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {

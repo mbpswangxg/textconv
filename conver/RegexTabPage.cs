@@ -149,11 +149,19 @@ namespace conver
         {
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtReplacement.Text)) return;
+            //Match first
+            btnMatch_Click(sender, e);
 
             UI2Data();
             repItem.InitReplaceRule();
 
             txtReplaceResult.Text = repItem.replaceText(txtInput.Text);
+            HighLight hl = new HighLight(txtReplaceResult);
+            hl.Reset2Default();            
+            foreach (string result in repItem.repResults)
+            {
+                hl.Highlight(result);
+            }
         }
 
         /// <summary>

@@ -450,6 +450,7 @@
             this.btnReplaceFile.Size = new System.Drawing.Size(98, 24);
             this.btnReplaceFile.Text = "Replace Files(F8)";
             this.btnReplaceFile.ToolTipText = "Show Replace Files Dialog";
+            this.btnReplaceFile.Visible = false;
             // 
             // helpToolStripButton
             // 

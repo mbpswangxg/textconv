@@ -6,7 +6,7 @@ namespace TextConv
     {
         public int lineNo;
         public Match Match;
-
+        public LineMatch() { }
         public LineMatch(int lineNo, Match match)
         {
             this.lineNo = lineNo;

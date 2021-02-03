@@ -35,7 +35,7 @@ namespace TextConv
         public string repfile = string.Empty;
         public string currentfile = string.Empty;
 
-        public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
+        private Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
         private Regex keyReg = null;
         private Regex valReg = null;
         private List<LineMatch> keys = new List<LineMatch>();
@@ -43,7 +43,9 @@ namespace TextConv
         public List<string> iffindstrs = new List<string>();
         public List<string> ifnotfindstrs = new List<string>();
         public bool iffindand=true;
-
+        
+        public List<string> repResults = new List<string>();
+        
         private int lineNo = 0;
         public ReplaceItem() { }
         public ReplaceItem(string args) {
@@ -461,6 +463,7 @@ namespace TextConv
             }
 
             beforeReplace(content);
+            repResults.Clear();
             //==============================
             Regex reg = new Regex(pattern, RegexOptions);
             if (reg.IsMatch(content))
@@ -483,6 +486,7 @@ namespace TextConv
             }
 
             beforeReplace(lines);
+            repResults.Clear();
             //==============================
             string nline = string.Empty;
             bool hasChanged = false;
@@ -637,8 +641,11 @@ namespace TextConv
 
                 newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
-
-            Console.WriteLine("{0}\t{1}\t{2}", currentfile, oldV, newV);
+            if (!oldV.Equals(newV))
+            {
+                repResults.Add(newV);
+                Console.WriteLine("{0}\t{1}\t{2}", currentfile, oldV, newV);
+            }
             return newV;
         }
 
