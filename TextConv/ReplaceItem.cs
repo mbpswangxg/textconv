@@ -222,6 +222,7 @@ namespace TextConv
             }
             keys.Sort(CompareLineMatch);
             vals.Sort(CompareLineMatch);
+            fillRangeMatches();
         }
 
         public void beforeReplace (string content)
@@ -236,6 +237,7 @@ namespace TextConv
             fillMatches(0, content);
             keys.Sort(CompareLineMatch);
             vals.Sort(CompareLineMatch);
+            fillRangeMatches();
         }
 
         private bool mustExist(List<string> lines)
@@ -380,20 +382,13 @@ namespace TextConv
         }
         private bool isInRange(int currentLineNo, Match m)
         {
-            //今の行番に一番近い先頭行を取得
-            LineMatch fromMatch = keys.FindLast(fm => (fm.lineNo == currentLineNo && fm.Match.Index<= m.Index) || fm.lineNo < currentLineNo);
-            
-            if (fromMatch != null)
+            LineMatch curMatch = new LineMatch(currentLineNo, m);
+            foreach (KeyValuePair<LineMatch, LineMatch>kv in rangeMatches)
             {
-                //先頭行対応する直後行を取得
-                LineMatch toMatch = vals.Find(tm => (fromMatch.lineNo == tm.lineNo && fromMatch.Match.Index <= tm.Match.Index)
-                                                    || fromMatch.lineNo < tm.lineNo);
-                if (toMatch != null)
+                //範囲内：fromMatch - currentMatch <= 0 && endMatch - currentMatch >= 0
+                if (CompareLineMatch(kv.Key, curMatch) <= 0 && CompareLineMatch(kv.Value, curMatch) >= 0)
                 {
-                    if (toMatch.lineNo > currentLineNo)
-                        return true;
-                    else if (toMatch.lineNo == currentLineNo && toMatch.Match.Index >= m.Index) 
-                        return true;
+                    return true;
                 }
             }
             return false;
@@ -412,7 +407,40 @@ namespace TextConv
                 vals.Add(new LineMatch(lineNo, v));
             }
         }
-
+        private void fillRangeMatches()
+        {
+            LineMatch firstKey, firstVal, foundKey;
+            while (keys.Count > 0)
+            {
+                firstKey = keys[0];
+                while (vals.Count > 0)
+                {
+                    firstVal = vals[0];
+                    //vmを条件として、keysに一番最大のkeyを探す
+                    foundKey = keys.FindLast(key => (key.lineNo == firstVal.lineNo && key.Match.Index <= firstVal.Match.Index)
+                                                 || (key.lineNo < firstVal.lineNo));
+                    if(foundKey == null)
+                    {
+                        //見つからない場合、valがkeyより先に現れ、無視
+                        vals.RemoveAt(0);
+                        continue;
+                    }
+                    //一番最大のkeyとfmが同じものであれば、ペアー成立
+                    if (firstKey.Equals(foundKey))
+                    {
+                        rangeMatches.Add(firstKey, firstVal);
+                        vals.RemoveAt(0);
+                        break;
+                    }
+                    else
+                    {
+                        //valの先頭に、複数keyが存在する場合、whileを抜いて、無効keyを減らす
+                        break;
+                    }
+                }
+                keys.RemoveAt(0);
+            } 
+        }
         private static int CompareLineMatch(LineMatch x, LineMatch y)
         {
             if (x.lineNo != y.lineNo)

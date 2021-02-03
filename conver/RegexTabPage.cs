@@ -253,5 +253,17 @@ namespace conver
             }
 
         }
+
+        private void chkRange_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkRange.Checked)
+            {
+                chkRange.Text = "Skip(Undo) Replace The Match In the Range.";
+            }
+            else
+            {
+                chkRange.Text = "Do Replace The Match In the Range.";
+            }
+        }
     }
 }
