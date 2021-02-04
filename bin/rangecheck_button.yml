@@ -1,7 +1,7 @@
 Name: ''
 Desc: ''
-pattern: '\<col([^\<]*) width="50%"(\s*\/\>)'
-replacement: <col$1$2
+pattern: '\<td\>'
+replacement: <td class="A_R">
 IgnoreCase: true
 Multiline: true
 ExcapeText: 
@@ -36,8 +36,8 @@ inputContent: >-
                 </td>
               </tr>
             </table>
-rangeFrom: cellpadding="0"\>
-rangeTo: '\<tr'
+rangeFrom: '\<td\>'
+rangeTo: DRAFT
 rangeSkip: false
 destFolder: ''
 filefilter: test.txt
@@ -50,7 +50,6 @@ iffindstrs: []
 ifnotfindstrs: []
 iffindand: true
 repResults:
-- <col />
-- <col class="A_C" />
+- <td class="A_R">
 RegexOptions: IgnoreCase, Multiline
 HasRangeCheck: true

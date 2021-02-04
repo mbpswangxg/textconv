@@ -1,0 +1,51 @@
+Name: delcomment
+Desc: 無効なIMARTタグ削除
+pattern: '\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)'
+replacement: $1
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  sSetReason += " + TO_CLOB('" + sReason + sNewLine + "')";
+
+
+  CAST('" + sReason + sNewLine + "' AS NVARCHAR("+ (sReason.length + sNewLine.length) + "))";
+
+  CAST('" + sReason + sNewLine + "' AS NVARCHAR("+ (sReason.length + sNewLine.length) + "))";
+
+
+  <!--
+      <IMART type="submit" action="actionCheck" value="入力チェック" class="BTN04"></IMART>
+
+      <IMART type="submit" id="BTN_DRAFT" action="actionDraft" value=p_aoSP.DRAFT_BTN class="BTN04"></IMART>
+  -->
+
+
+  <!--
+      <IMART type="submit" action="actionCheck" value="入力チェック" class="BTN04"></IMART>
+
+      <IMART type="submit" id="BTN_DRAFT" action="actionDraft" value=p_aoSP.DRAFT_BTN class="BTN04"></IMART>
+  -->
+    <!-- 画面項目保持用 -->
+    <!--部内上司承認者設定フォームの値 -->
+    <IMART type="input" style="hidden" name="HID_BOSS_HISTORY_ID" value=p_aoSP.HID_BOSS_HISTORY_ID></IMART>
+rangeFrom: '\<\!--'
+rangeTo: --\>
+rangeSkip: false
+destFolder: ''
+filefilter: test.txt
+fileSkip: true
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+iffindstrs: []
+ifnotfindstrs: []
+iffindand: true
+repResults:
+- >2
+
+- >2
+
+RegexOptions: IgnoreCase, Multiline
+HasRangeCheck: true
