@@ -34,6 +34,7 @@ namespace TextConv
 
         public string repfile = string.Empty;
         public string currentfile = string.Empty;
+        public string skipwords = string.Empty;
 
         public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
         private Regex keyReg = null;
@@ -69,7 +70,7 @@ namespace TextConv
                 
                 if (repCmdKey.Equals("repfile"))
                 {
-                    readRepfile(replacement);
+                    replacement = readRepfile(replacement);
                 }
             }
             // ３番目以降のパラメータはOptionで、必須ではない
@@ -137,6 +138,16 @@ namespace TextConv
                     this.iffindand = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
+                m = Regex.Match(words[i], @"skipwords=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    this.skipwords = m.Groups[1].Value;
+                    if (File.Exists(this.skipwords))
+                    {
+                        this.skipwords = File.ReadAllText(this.skipwords);
+                    }
+                    continue;
+                }
             }
 
             InitReplaceRule();
@@ -183,14 +194,14 @@ namespace TextConv
             }
         }
 
-        private void readRepfile(string filepath)
+        private string readRepfile(string filepath)
         {
             if (!File.Exists(filepath))
             {
                 Console.WriteLine("not found repfile:{0}", filepath);
-                return;
+                return filepath;
             }
-            replacement = File.ReadAllText(filepath);
+            return File.ReadAllText(filepath);
         }
 
         public bool isSkipFile(string filepath)
@@ -548,6 +559,9 @@ namespace TextConv
                     {
                         foreach (Capture cpt in m.Groups[i].Captures)
                         {
+                            //SKIP対象の場合、スキップ
+                            if (Regex.IsMatch(skipwords, cpt.Value, RegexOptions.IgnoreCase)) continue;
+
                             if (Regex.IsMatch(repCmdKey, "LCASE"))
                             {
                                 newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToLower());
@@ -603,14 +617,10 @@ namespace TextConv
             }
             else
             {
-                Console.WriteLine("repCmdKey:{0},replacement:{1}. " +
-                    "注意: [=]が存在するreplacementであれば,repCmdKeyの命名が必須で,defaultでnull=replacementのformatにしてください",
-                    repCmdKey, replacement);
-
                 newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
 
-            Console.WriteLine("{0}\t{1}\t{2}", currentfile, oldV, newV);
+            Console.WriteLine("{0}\t{1}\t{2}\t{3}", currentfile, pattern, oldV, newV);
             return newV;
         }
 
