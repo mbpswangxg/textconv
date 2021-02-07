@@ -8,3 +8,12 @@ cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=
 
 cmdkey=\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)	repname=$1	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
 
+cmdkey=([\d_]*)([a-z_]*chgsys)	repname=$1TEST
+cmdkey="\s*AND\s+[a-z]\.(\w*)\s*[!=\<\>]+\s*[a-z\.]*(\w*)\s*"	repname=$1 escapeXml="false" $2
+cmdkey="\s*AND\s+[a-z]\.(\w*)\s*[!=\<\>]+\s*[a-z\.]*(\w*)\s*"	repname=$1 escapeXml="false" $2
+cmdkey="\s*WHERE\s+[a-z]*\.*(\w*)\s*[!=\<\>]+\s*[a-z]*\.*(\w*)\s*"	repname=$1 escapeXml="false" $2
+cmdkey=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	repname=$1 escapeXml="false" $2
+cmdkey=(\s*)(\<script src="csjs\/im_window.js"\>)	repname=$1	rangeSkip=False	rangeFrom=INSERT[\w\s]+\(	rangeTo=\)
+cmdkey=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1)))+$1
+cmdkey=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1))+$1
+cmdkey=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1))+$1

@@ -100,6 +100,10 @@ namespace conver
         private void UI2Data()
         {
             repItem.Name = txtRuleName.Text;
+            if (string.IsNullOrEmpty(repItem.Name))
+            {
+                repItem.Name = "cmdkey";
+            }
             repItem.Desc = txtRuleDesc.Text;
 
             repItem.pattern = txtPattern.Text;
