@@ -1,0 +1,41 @@
+Name: ''
+Desc: ''
+pattern: ([\d_]*)([a-z_]*chgsys)
+replacement: $1TEST
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  <database jndi-name="jdbc/0002_aee_chgsys">
+  		 <driver>
+  		 <type>com.microsoft.sqlserver.jdbc.SQLServerDriver</type>
+  		 <url>jdbc:sqlserver://192.16.108.27:1433;DatabaseName=NGYU022_JAE</url>
+  		 <user>CHGSYSWANG</user>
+  		 <password>CHGSYS_WANG001</password>
+  		 <init-param>
+  		   <param-name>SelectMethod</param-name>
+  		   <param-value>cursor</param-value>
+  		 </init-param>
+  	   </driver>
+  		<max-connections>20</max-connections>
+  		<prepared-statement-cache-size>0</prepared-statement-cache-size>
+  	</database>
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: test.txt
+fileSkip: true
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+iffindstrs: []
+ifnotfindstrs: []
+iffindand: true
+repResults:
+- 0002_TEST
+- TEST
+- TEST
+RegexOptions: IgnoreCase, Multiline
+HasRangeCheck: false

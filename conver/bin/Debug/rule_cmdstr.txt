@@ -1,0 +1,1 @@
+cmdkey=\<td\>	repname=<td class="A_★">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=DRAFT

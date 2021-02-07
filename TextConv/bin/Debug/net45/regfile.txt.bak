@@ -1,4 +1,4 @@
-﻿#comment start with #, and no range comments.
+#comment start with #, and no range comments.
 #[0]:pattern, [1]:replacement,[2-n]:regex ignoreCase=false, default true.
 #------------------------------------------------
 #general command:
@@ -12,8 +12,10 @@ INSTR=INSTR\(([^,]+),([^\)]+)\)	CHARINDEX($2,$1)	ignoreCase=true
 TO_DATE=TO_DATE\(([^,]+),\s*'YYYYMM'\s*\)	CONVERT(datetime, $1+'01')
 TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM'\s*\)	CONVERT(datetime, $1+'/01')
 TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(datetime, $1)
-TO_DATE=TO_DATE\(([^,]+),([^\)]+)\)	CONVERT(datetime2, $1)
+TO_DATE=to_date\(([^,]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(datetime, $1)
 TO_DATE=TO_DATE\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)	CONVERT(datetime2, $1)
+TO_DATE=to_date\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)	CONVERT(datetime2, $1)
+
 
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
@@ -23,43 +25,39 @@ TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'FMDD'\s*\)	FORMAT($1, '%d')
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY'\s*\)	FORMAT($1, 'yyyy')
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'MM'\s*\)	FORMAT($1, 'MM')
 TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'DD'\s*\)	FORMAT($1, 'dd')
-
 TO_CHAR=TO_CHAR\(([^,\n]+),\s*'[9,]*999'\s*\)	FORMAT($1, '#,###')
-
 TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYYMM'\s*\)\s*,\s*'FMMM'\s*\)	FORMAT(CONVERT(datetime,$1+'01'), '%M')
 TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM'\s*\)\s*,\s*'YYYY/FMMM'\s*\)	FORMAT(CONVERT(datetime,$1+'/01'), 'yyyy/M')
 TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM/DD'\s*\)\s*,\s*'YYYY/FMMM/DD'\s*\)	FORMAT(CONVERT(datetime,$1), 'yyyy/M/d')
-
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'FMMM'\s*\)	FORMAT($1, '%M')
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM'\s*\)	FORMAT($1, 'yyyy/M')
 TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM/DD'\s*\)	FORMAT($1, 'yyyy/M/d')
-TO_CHAR=TO_CHAR\(\s*([^,\(\)]+)\)	CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\(([^,\(\)]+)\)	CONVERT(varchar, $1)
 TO_CHAR=TO_CHAR\((CONVERT\([^\)]+SUBSTR\w+\([^\)]+\)[^\)]*\))\)	CONVERT(varchar, $1)
 
 TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
 TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
 TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
-TO_CHAR=TO_CHAR\(([^,]+),'Day'\)	DATENAME(dw, $1)
+TO_CHAR=to_char\(([^,]+),'Day'\)	DATENAME(dw, $1)
+#TO_CHAR=to_char\((.+),'YYYY/MM/DD'\)	CONVERT(varchar, $1, 111)
+
+ADD_MONTH=add_months\(([^,]+),([^,]+)\)	DATEADD(month,$2,$1)
 
 #TO_NUMBER=TO_NUMBER\((SUBSTR\w*\([^\(\)]+\)[-\s\w]*)\)	CONVERT(decimal, $1)
 #TO_NUMBER=TO_NUMBER\(([\w\.]+)\)	CONVERT(decimal, $1)
 #TO_NUMBER=TO_NUMBER\(([^\)]+\)\)\))\)	CONVERT(decimal, $1)
-TO_NUMBER=TO_NUMBER\(	CONVERT(decimal,
-
-ADD_MONTH=add_months\(([^,]+),([^,]+)\)	DATEADD(month,$2,$1)
+TO_NUMBER=TO_NUMBER\(	CONVERT(decimal, (
 
 LPAD=LPAD\(([^,]+),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
 LPAD=lpad\((substr\w*[^\)]+[^,]*),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
 
 SUBSTRING=((?:^|[^\.\w]))SUBSTR\s*\(	$1SUBSTRING(
-SUBSTRING=(SUBSTRING\([^,]+),\s*0\s*	$1,1
-
 LENGTH=((?:^|[^\.\w]))LENGTH\s*\(	$1LEN(
 NVL=((?:^|[^\.\w]))NVL\s*\(	$1ISNULL(
 
-ROWID=COUNT\([\w+\.]*ROWID\)	COUNT(*)
+COUNTROW=COUNT\([\w+\.]*ROWID\)	COUNT(*)
 
-SYSDATE=SYSDATE	GETDATE()
+SYSDATE	GETDATE()
 
 #special command.
 #@COMMAND_KEYWORD=pattern
@@ -67,8 +65,8 @@ SYSDATE=SYSDATE	GETDATE()
 #-------------------------------------------
 ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
-UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false	exludefile=repfiles/LColumns.txt
-UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false	excludewords=a,b,c	excludefile=repfiles/LColumns.txt
+UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
 LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
 UCASE_COL=^\s*\+\s+"(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*	UCASE_GROUP=1,3	ignoreCase=false
@@ -95,11 +93,9 @@ DECODE=DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)
 #DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 #DECODE\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,\)]+)\)	CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 ELSE $6 END
 TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
-TO_CLOB=TO_CLOB\('\W+(\w+)\s*\+\s*(\w+)\W+'\)	CAST('" + $1 + $2 + "' AS NVARCHAR(" + ($1.length + $2.length) + "))
 
 WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
 UserTransaction=new UserTransaction\(\)	Transaction
-
 usertabcol=select [\w,\s]+from user_tab_columns where table_name='(\w+)'	repfile=repfiles/selectUserTabCol.sql
 usertabcol=column_name[^"]+"	null=c.name as col_name , ty.name as data_type , c.precision as length_val "	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 usertabcol=data_scale as length_decimal	null=c.max_length as length_decimal	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
@@ -107,15 +103,13 @@ usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns 
 usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 insertscript=(\s*)(\<script src="csjs\/im_window.js"\>)	null=$1<script src="jae/migration/util.js"></script>$1$2	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
 insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
-
-DATENULL==(\s*"'"\s*\+\s*(p_aoSP\["[A-Za-z_]+"\])\s*\+\s*"'")	null== isBlank\($2\) \? "NULL"\: $1
 #==============================================
 #JSP
 #==============================================
 "IM_MAIN"	"_top"
 imDesignCss=\<IMART\s+type="imDesignCss"\>\<\/IMART\>\s*$	
 imDesignCss=\<imart\s+type="imDesignCss"\/\>\s*$	
-
+HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=record.DISP_MSG)	$1 escapeXml="false" $2
 
 #==============================================
 #HTML
@@ -126,30 +120,17 @@ repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]
 nowrap1=(\<td class="output"\s*)(\>セキュリティ\<font)	null=$1 style="white-space: nowrap;"$2
 font1=(font-family: '[^'"]+')"	$1;"
 ouput1=(\<td[^\<\>]+class="output)\s+VWRITE"\>(承認者コメント参照)	null=$1"><div style="display: inline-block;" class="VWRITE">$2</div>
-td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	multiline=true	filefilter=draft\w*.html
-HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(:\w+.DISP_MSG|\w+.(START|End|ALL)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
-CIMART=<!--[^(IMART)-]+IMART[^-]+-->	
+td2=\<col\s+class="W0\w+"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	rangefrom=\<table rangeto=\<tr
+tdaddclass=\<td\>	null=\<td class="A_R"\>	rangefrom=\<td	rangeto(=id|name)="BTNID_DRAFT"
+tdaddclass=\<td\>	null=\<td class="A_R"\>	rangefrom=\<td	rangeto(=id|name)="BTNID_SAVE"
 
-btnAlignR=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html
+colwidth=(\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>)	repfile=repfiles/html2table.txt	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	multiline=true	filefilter=draft\w*.html
+td3=((\<col\s+width="\d+%"\s*\/>\s*){5}(<tr\>\s+)\<td)\>	null=$1 style="text-align: center;">	rangefrom=\<table\s+border="0"\s+class="FONT11 WMAX" 	rangeto=\<\/table\>	requiredRange=true	multiline=true	filefilter=draft\w*.html
+td4=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html
 #colclass=col width="92"	null=col class="W120"
 #colclass=col width="120"	null=col class="W120"
 #colclass=col width="100"	null=col class="W120"
 #colclass=col width="85"	null=col width="75"
 colclass=td class="VA_T W100"	null=td class="VA_T W120"
-
-cmdkey=\<col class="(\w+)\s+W150"	repname=<col class="$1"	rangeSkip=False	rangeFrom=cellpadding="0"\>	rangeTo=\<tr
-cmdkey=\<col([^\<]*) width="50%"(\s*\/\>)	repname=<col$1$2	rangeSkip=False	rangeFrom=cellpadding="0"\>	rangeTo=\<tr
-cmdkey=\<td\>	repname=<td class="A_L">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionCancel
-cmdkey=\<td\>	repname=<td class="A_L">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionDeny
-cmdkey=\<td\>	repname=<td class="A_L">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionBack
-
-cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionSave
-cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionDraft
-cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionApprv
-
-#==============================================
-#JS  
-#==============================================
-PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
-decodeURI=decodeURI	htmlDecode
-delcomment=\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)	repname=$1	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+btn02=class="BTN02"	null=class="BTN02 W045"	
+flowment=col class="W020"	null=col class="W090" rangefrom=\<hr" rangeTo=フローコメント	

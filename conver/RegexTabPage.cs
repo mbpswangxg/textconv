@@ -64,8 +64,24 @@ namespace conver
                 UI2Data();
                 serializer.Serialize(writer, repItem);
             }
-            MessageBox.Show("Replace Rule Saved In: "+ filepath,"File Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            string ruleFile= Xmler.GetAppSettingValue("ruleCmdFileName", "rule_cmdstr.txt");
+            string cmdFolder = Xmler.GetAppSettingValue("ruleCmdFolder");
+            if (string.IsNullOrEmpty(cmdFolder))
+            {
+                cmdFolder = Application.StartupPath;
+            }
+            if (!Directory.Exists(cmdFolder))
+            {
+                Directory.CreateDirectory(cmdFolder);
+            }
+            if (!cmdFolder.EndsWith("\\"))
+            {
+                cmdFolder = cmdFolder + @"\";
+            }
+            repItem.AppendToCommandFile(cmdFolder + ruleFile);
         }
+        
         /// <summary>
         /// Do regex match, show the result on tree.
         /// </summary>
@@ -84,6 +100,10 @@ namespace conver
         private void UI2Data()
         {
             repItem.Name = txtRuleName.Text;
+            if (string.IsNullOrEmpty(repItem.Name))
+            {
+                repItem.Name = "cmdkey";
+            }
             repItem.Desc = txtRuleDesc.Text;
 
             repItem.pattern = txtPattern.Text;
@@ -149,11 +169,19 @@ namespace conver
         {
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtReplacement.Text)) return;
+            //Match first
+            btnMatch_Click(sender, e);
 
             UI2Data();
             repItem.InitReplaceRule();
 
             txtReplaceResult.Text = repItem.replaceText(txtInput.Text);
+            HighLight hl = new HighLight(txtReplaceResult);
+            hl.Reset2Default();            
+            foreach (string result in repItem.repResults)
+            {
+                hl.Highlight(result);
+            }
         }
 
         /// <summary>
@@ -252,6 +280,18 @@ namespace conver
                 txtDestFolder.Text = folderDialog.SelectedPath;
             }
 
+        }
+
+        private void chkRange_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkRange.Checked)
+            {
+                chkRange.Text = "Skip(Undo) Replace The Match In the Range.";
+            }
+            else
+            {
+                chkRange.Text = "Do Replace The Match In the Range.";
+            }
         }
     }
 }

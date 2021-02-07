@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace TextConv
 {
-    class Program
+    public class Program
     {
 
         static void Main(string[] args)
@@ -76,7 +76,7 @@ namespace TextConv
                 items.Add(new ReplaceItem(line));
             }
         }
-        private static void ReplaceFolder(string folderPath, List<ReplaceItem> rules)
+        public static void ReplaceFolder(string folderPath, List<ReplaceItem> rules)
         {
             DirectoryInfo di = new DirectoryInfo(folderPath);
 

@@ -79,6 +79,8 @@
             this.tabWindow = new System.Windows.Forms.TabControl();
             this.mnuTabWindow = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuCloseTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tbMessage = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -351,7 +353,8 @@
             this.btnReplace,
             this.toolStripSeparator5,
             this.btnReplaceFile,
-            this.helpToolStripButton});
+            this.helpToolStripButton,
+            this.tbMessage});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(832, 27);
@@ -450,6 +453,7 @@
             this.btnReplaceFile.Size = new System.Drawing.Size(98, 24);
             this.btnReplaceFile.Text = "Replace Files(F8)";
             this.btnReplaceFile.ToolTipText = "Show Replace Files Dialog";
+            this.btnReplaceFile.Visible = false;
             // 
             // helpToolStripButton
             // 
@@ -465,7 +469,8 @@
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel});
+            this.toolStripStatusLabel,
+            this.lblStatusMessage});
             this.statusStrip.Location = new System.Drawing.Point(0, 664);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(832, 22);
@@ -505,6 +510,19 @@
             this.mnuCloseTab.Size = new System.Drawing.Size(102, 22);
             this.mnuCloseTab.Text = "Close";
             this.mnuCloseTab.Click += new System.EventHandler(this.mnuCloseTab_Click);
+            // 
+            // lblStatusMessage
+            // 
+            this.lblStatusMessage.Name = "lblStatusMessage";
+            this.lblStatusMessage.Size = new System.Drawing.Size(122, 17);
+            this.lblStatusMessage.Text = "Messge Of Operation.";
+            // 
+            // tbMessage
+            // 
+            this.tbMessage.Font = new System.Drawing.Font("Yu Gothic UI", 12F, System.Drawing.FontStyle.Bold);
+            this.tbMessage.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.tbMessage.Name = "tbMessage";
+            this.tbMessage.Size = new System.Drawing.Size(0, 24);
             // 
             // FrmMDI
             // 
@@ -584,6 +602,8 @@
         private System.Windows.Forms.ContextMenuStrip mnuTabWindow;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseTab;
         private System.Windows.Forms.ToolStripButton btnReplaceFile;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatusMessage;
+        private System.Windows.Forms.ToolStripLabel tbMessage;
     }
 }
 

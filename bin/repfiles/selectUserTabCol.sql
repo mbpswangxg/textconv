@@ -1,0 +1,1 @@
+﻿select c.name AS column_name,ty.name AS data_type,c.max_length AS data_length,c.precision AS data_precision from sys.tables t inner join sys.columns c on t.object_id = c.object_id inner join sys.types ty on ty.user_type_id = c.user_type_id where t.name = '$1' order by c.column_id
