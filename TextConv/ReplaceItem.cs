@@ -35,15 +35,17 @@ namespace TextConv
         public string repfile = string.Empty;
         public string currentfile = string.Empty;
         public string skipwords = string.Empty;
-
-        public Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
+        
+        private Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
         private Regex keyReg = null;
         private Regex valReg = null;
         private List<LineMatch> keys = new List<LineMatch>();
         private List<LineMatch> vals = new List<LineMatch>();
-        public List<string> iffindstrs = new List<string>();
-        public List<string> ifnotfindstrs = new List<string>();
-        public bool iffindand=true;
+        private List<string> iffindstrs = new List<string>();
+        private List<string> ifnotfindstrs = new List<string>();
+        private bool iffindand=true;
+        
+        private HashSet<string> excludeWords = new HashSet<string>();
 
         private int lineNo = 0;
         public ReplaceItem() { }
@@ -138,14 +140,16 @@ namespace TextConv
                     this.iffindand = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
-                m = Regex.Match(words[i], @"skipwords=([^\t]+)", RegexOptions.IgnoreCase);
+                m = Regex.Match(words[i], @"excludewords=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    this.skipwords = m.Groups[1].Value;
-                    if (File.Exists(this.skipwords))
-                    {
-                        this.skipwords = File.ReadAllText(this.skipwords);
-                    }
+                    this.excludeWords.UnionWith(Regex.Split(m.Groups[1].Value, @"[\t,;]+"));
+                    continue;
+                }
+                m = Regex.Match(words[i], @"excludefile=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    FillFromFile(m.Groups[1].Value, this.excludeWords);
                     continue;
                 }
             }
@@ -523,7 +527,23 @@ namespace TextConv
                 }
             }
         }
+        private void FillFromFile(string file, HashSet<string> myset)
+        {
+            if (!File.Exists(file)) return;
 
+            string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
+            foreach(string line in lines)
+            {
+                //空行を飛ばす
+                if (Regex.IsMatch(line, @"^\s*$")) continue;
+
+                //コメント行を飛ばす
+                if (Regex.IsMatch(line, @"^(#|;|\-\-|\/\/)")) continue;
+
+                myset.UnionWith(Regex.Split(line, "[\t,;]+"));
+            }
+        }
+        
         private string MatchReplacer(Match m)
         {
             string oldV = m.Value;
@@ -560,7 +580,7 @@ namespace TextConv
                         foreach (Capture cpt in m.Groups[i].Captures)
                         {
                             //SKIP対象の場合、スキップ
-                            if (Regex.IsMatch(skipwords, cpt.Value, RegexOptions.IgnoreCase)) continue;
+                            if (this.excludeWords.Contains(cpt.Value)) continue;
 
                             if (Regex.IsMatch(repCmdKey, "LCASE"))
                             {
