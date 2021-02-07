@@ -34,8 +34,8 @@ namespace TextConv
 
         public string repfile = string.Empty;
         public string currentfile = string.Empty;
-        public string skipwords = string.Empty;
-        
+        public List<string> repResults = new List<string>();
+
         private Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
         private Regex keyReg = null;
         private Regex valReg = null;
@@ -46,7 +46,7 @@ namespace TextConv
         private bool iffindand=true;
         
         private HashSet<string> excludeWords = new HashSet<string>();
-
+        
         private int lineNo = 0;
         public ReplaceItem() { }
         public ReplaceItem(string args) {
@@ -154,9 +154,8 @@ namespace TextConv
                 }
             }
 
-            InitReplaceRule();
         }
-        public RegexOptions RegexOptions
+        private RegexOptions RegexOptions
         {
             get
             {
@@ -172,32 +171,31 @@ namespace TextConv
 
                 return regOptions;
             }
-            private set
-            {
-
-            }
         }
-        public bool HasRangeCheck
+        private bool HasRangeCheck
         {
             get
             {
                 if (string.IsNullOrEmpty(rangeFrom) || string.IsNullOrEmpty(rangeTo)) return false;
                 return true;
             }
-            private set
-            {
-
-            }
         }
-        public void InitReplaceRule()
+        
+        public void AppendToCommandFile(string file)
         {
+            List<string> lstParams = new List<string>();
+            if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = this.Name;
+            lstParams.Add(string.Format("{0}={1}", this.cmdKey, this.pattern));
+            lstParams.Add(string.Format("repCmdKey={0}", this.replacement));
             if (HasRangeCheck)
             {
-                keyReg = new Regex(rangeFrom, RegexOptions);
-                valReg = new Regex(rangeTo, RegexOptions);
+                lstParams.Add(string.Format("rangeSkip={0}", this.rangeSkip));
+                lstParams.Add(string.Format("rangeFrom={0}", this.rangeFrom));
+                lstParams.Add(string.Format("rangeTo={0}", this.rangeTo));
             }
-        }
 
+            File.AppendAllText(file, string.Join("\t", lstParams)+"\n");
+        }
         private string readRepfile(string filepath)
         {
             if (!File.Exists(filepath))
@@ -208,7 +206,7 @@ namespace TextConv
             return File.ReadAllText(filepath);
         }
 
-        public bool isSkipFile(string filepath)
+        private bool isSkipFile(string filepath)
         {
             if (string.IsNullOrEmpty(filefilter)) return false;
             
@@ -221,12 +219,14 @@ namespace TextConv
                 return !this.fileSkip;
             }
         }
-        
-        public void beforeReplace(string[] lines)
+
+        private void beforeReplace(string[] lines)
         {
             //　範囲判定不要の場合、処理対象外
             if (!HasRangeCheck) return;
-            
+            keyReg = new Regex(rangeFrom, RegexOptions);
+            valReg = new Regex(rangeTo, RegexOptions);
+
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -239,11 +239,14 @@ namespace TextConv
             vals.Sort(CompareLineMatch);
         }
 
-        public void beforeReplace (string content)
+        private void beforeReplace (string content)
         {
             //　範囲判定不要の場合、処理対象外
             if (!HasRangeCheck) return;
-            
+
+            keyReg = new Regex(rangeFrom, RegexOptions);
+            valReg = new Regex(rangeTo, RegexOptions);
+
             rangeMatches.Clear();
             keys.Clear();
             vals.Clear();
@@ -565,7 +568,7 @@ namespace TextConv
             }
 
             if (string.IsNullOrEmpty(repCmdKey)
-                || repCmdKey.Equals("null")
+                || repCmdKey.Equals("null") || repCmdKey.Equals("repCmdKey")
                 || repCmdKey.Equals("repfile"))
             {
                 replacement = replacement.Replace("\\n", "\n");
@@ -640,7 +643,11 @@ namespace TextConv
                 newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
 
-            Console.WriteLine("{0}\t{1}\t{2}\t{3}", currentfile, pattern, oldV, newV);
+            if (!newV.Equals(oldV))
+            {
+                repResults.Add(newV);
+                Console.WriteLine("{0}\t{1}\t{2}\t{3}", currentfile, pattern, oldV, newV);
+            }
             return newV;
         }
 

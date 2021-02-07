@@ -173,7 +173,6 @@ namespace conver
             btnMatch_Click(sender, e);
 
             UI2Data();
-            repItem.InitReplaceRule();
 
             txtReplaceResult.Text = repItem.replaceText(txtInput.Text);
             HighLight hl = new HighLight(txtReplaceResult);
