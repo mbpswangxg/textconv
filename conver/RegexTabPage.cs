@@ -90,12 +90,20 @@ namespace conver
         public void LoadRules(string filepath)
         {
             var deserializer = new Deserializer();
-            
-            using (StreamReader reader = File.OpenText(filepath))
+
+            try
             {
-                repItem = deserializer.Deserialize<ReplaceItem>(reader);
-                Data2UI(repItem);
+                using (StreamReader reader = File.OpenText(filepath))
+                {
+                    repItem = deserializer.Deserialize<ReplaceItem>(reader);
+                    Data2UI(repItem);
+                }
+
+            }catch(Exception e)
+            {
+                MessageBox.Show(e.Message+ "\n"+ e.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+           
         }
         private void UI2Data()
         {

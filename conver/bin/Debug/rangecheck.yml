@@ -45,10 +45,5 @@ cmdKey: ''
 repCmdKey: ''
 repfile: ''
 currentfile: ''
-iffindstrs: []
-ifnotfindstrs: []
-iffindand: true
 repResults:
 - <td class="A_★">
-RegexOptions: IgnoreCase, Multiline
-HasRangeCheck: true
