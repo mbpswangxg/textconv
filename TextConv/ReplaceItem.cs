@@ -180,11 +180,16 @@ namespace TextConv
                 return true;
             }
         }
-        
-        public void AppendToCommandFile(string file)
+
+        public void AppendToCommandFile(string path)
+        {
+            WriteCommandFile(path, true);
+        }
+        public void WriteCommandFile(string path, bool append)
         {
             List<string> lstParams = new List<string>();
             if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = this.Name;
+            if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = "cmdKey";
             lstParams.Add(string.Format("{0}={1}", this.cmdKey, this.pattern));
             lstParams.Add(string.Format("repCmdKey={0}", this.replacement));
             if (HasRangeCheck)
@@ -193,8 +198,15 @@ namespace TextConv
                 lstParams.Add(string.Format("rangeFrom={0}", this.rangeFrom));
                 lstParams.Add(string.Format("rangeTo={0}", this.rangeTo));
             }
-
-            File.AppendAllText(file, string.Join("\t", lstParams)+"\n");
+            string cmd = string.Join("\t", lstParams) + "\n";
+            if (append)
+            {
+                File.AppendAllText(path, cmd);
+            }
+            else
+            {
+                File.WriteAllText(path, cmd);
+            }
         }
         private string readRepfile(string filepath)
         {
