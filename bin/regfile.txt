@@ -160,6 +160,11 @@ cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=
 cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionDraft
 cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionApprv
 
+incfile=\<span[^\(\)]+fnc_openAccount\(\);"\>	repCmdKey=<IMART type="include" page=S_PATH_KEIRIFILE></IMART>	rangeSkip=False	rangeFrom=\<td class="TDCELLCOLOR VA_M"\>	rangeTo=\</td\>	filefilter=\w*cmold.\w+
+incfile=(\<\/IMART\>\s+)(\<noscript\>)	repfile=repfiles/htmlFormFileUpload.txt	ifnotfindstr=page=S_PATH_UPLOAD
+incfile=(ファイルアップロード\s+)(var S_REDIRECT_INDEX)	repfile=repfiles/jsFormFileUpload.txt	iffindstr=var p_clProposal  = include	iffindstr=var S_PATH_UPLOAD   = p_sGrp
+incfile=(ファイルアップロード\s+)(var S_REDIRECT_INDEX)	repfile=repfiles/jsFormFileUpload2.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp
+
 #==============================================
 #JS  
 #==============================================

@@ -1,0 +1,3 @@
+﻿$1var S_PATH_UPLOAD   = p_sGrp + "/0000_common/proposal/res/pop_upload";  //ファイルアップロード
+var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
+$2

@@ -1,0 +1,10 @@
+﻿$1<!-- アップロード-->
+<IMART type="form" method="POST" name="FRM_UPLOAD" page=S_PATH_UPLOAD target="UPLOAD">
+  <IMART type="input" style="hidden" name="OID" value=p_aoSP.OID></IMART>
+  <IMART type="input" style="hidden" name="PROCESS_OID" value=p_aoSP.PROCESS_OID></IMART>
+  <IMART type="input" style="hidden" name="CALLBACK_FNC" value="fnc_callbackUpload"></IMART>
+  <IMART type="input" style="hidden" name="FILE_TYPE" value=""></IMART>
+  <IMART type="input" style="hidden" name="FILE_PATH" value=""></IMART>
+  <IMART type="input" style="hidden" name="FILE_NAME" value=""></IMART>
+</IMART type="form">
+$2

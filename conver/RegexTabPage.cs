@@ -17,10 +17,6 @@ namespace conver
     public partial class RegexTabPage : UserControl
     {
         /// <summary>
-        /// Matches Collection Result.
-        /// </summary>
-        private MatchCollection matches;
-        /// <summary>
         /// Replace Pattern Format
         /// </summary>
         private const string replaceformat = @"";
@@ -161,10 +157,31 @@ namespace conver
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtPattern.Text)) return;
 
+            HighLight hl = new HighLight(txtInput);
+            hl.Reset2Default();
+            treeMatch.Nodes.Clear();
+
+            List<Match> matches = new List<Match>();
+
             Regex reg = new Regex(txtPattern.Text, RegexOptions);
-            this.matches = reg.Matches(txtInput.Text);
-            BindMatchTree(matches, reg);
-            
+            matches.AddRange(reg.Matches(txtInput.Text).Cast<Match>());
+            BindMatchTree(matches, hl, reg);
+
+            if (!string.IsNullOrEmpty(txtRangeFrom.Text))
+            {
+                Regex reg1 = new Regex(txtRangeFrom.Text, RegexOptions);
+                matches.Clear();
+                matches.AddRange(reg1.Matches(txtInput.Text).Cast<Match>());
+                BindMatchTree(matches, hl, reg1);
+            }
+            if (!string.IsNullOrEmpty(txtRangeTo.Text))
+            {
+                Regex reg1 = new Regex(txtRangeTo.Text, RegexOptions);
+                matches.Clear();
+                matches.AddRange(reg1.Matches(txtInput.Text).Cast<Match>());
+                BindMatchTree(matches, hl, reg1);
+            }
+
             tabResult.SelectedTab = tpMatch;
         }
 
@@ -233,11 +250,8 @@ namespace conver
         /// Show the match result on tree.
         /// </summary>
         /// <param name="matches"></param>
-        private void BindMatchTree(MatchCollection matches, Regex reg)
+        private void BindMatchTree(List<Match> matches, HighLight hl, Regex reg)
         {
-            HighLight hl = new HighLight(txtInput);
-            hl.Reset2Default();
-            treeMatch.Nodes.Clear();
             foreach (Match match in matches)
             {
                 hl.Highlight(match);
@@ -300,5 +314,6 @@ namespace conver
                 chkRange.Text = "Do Replace The Match In the Range.";
             }
         }
+
     }
 }

@@ -584,6 +584,8 @@ namespace TextConv
                 || repCmdKey.Equals("repfile"))
             {
                 replacement = replacement.Replace("\\n", "\n");
+                replacement = replacement.Replace("\\t", "\t");
+                
                 newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
             else if (repCmdKey.EndsWith("CASE_GROUP"))
