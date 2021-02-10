@@ -16,14 +16,10 @@ namespace TextConv
             //==============================================================
             if (args.Length < 2)
             {
-                Console.WriteLine("TextConv -c COMMAND_KEY [-d srcfolder]");
+                Console.WriteLine("TextConv [-c COMMAND_KEY] [-r ruleFile] [-d srcfolder]");
                 return;
             }
             string cmd = getValue("-c", args);
-            if (string.IsNullOrEmpty(cmd)) {
-                Console.WriteLine("TextConv -c COMMAND_KEY [-d srcfolder]");
-                return;
-            }
             
             string folder = getValue("-d", args);
             if (string.IsNullOrEmpty(folder))
@@ -35,23 +31,13 @@ namespace TextConv
                 Console.WriteLine("App.config setting srcfolder is required.");
                 return;
             }
-            //==============================================================
-            List<ReplaceItem> items = new List<ReplaceItem>();
-            readRegfile(items);
-            List<ReplaceItem> rules = items.FindAll(r => r.cmdKey.Equals(cmd, StringComparison.OrdinalIgnoreCase) || Regex.IsMatch(r.pattern, cmd, RegexOptions.IgnoreCase));
-            
-            if (Directory.Exists(folder) && rules.Count > 0) 
+            string ruleFile = getValue("-r", args);
+            if (string.IsNullOrEmpty(ruleFile))
             {
-                ReplaceFolder(folder, rules);
+                ruleFile = Xmler.GetAppSettingValue("regfile", "regfile.txt");
             }
-            //foreach(var e in utils.msgs)
-            //{
-            //    Console.WriteLine(e);
-            //}
-
-            //Console.WriteLine("ERROR COUNT: {0}, SKIP COUNT: {1}", 
-            //    utils.msgs.Count(r=>r.EndsWith("ERROR")),
-            //    utils.msgs.Count(r => r.EndsWith("SKIP")));
+            //==============================================================
+            ReplaceFolder(folder, ruleFile, cmd);
         }
         
         private static string getValue(string cmdPattern, string[] args) 
@@ -65,15 +51,33 @@ namespace TextConv
                 return "";
             }
         }
-        private static void readRegfile(List<ReplaceItem> items) 
+        private static void readRegfile(List<ReplaceItem> items, string ruleFilePath) 
         {
-            string[] lines = File.ReadAllLines("regfile.txt");
+            string[] lines = File.ReadAllLines(ruleFilePath);
             foreach(var line in lines) 
             {
                 if (string.IsNullOrEmpty(line)) continue;
                 if (line.StartsWith("#")) continue;
                 
                 items.Add(new ReplaceItem(line));
+            }
+        }
+        public static void ReplaceFolder(string folder, string ruleFile)
+        {
+            ReplaceFolder(folder, ruleFile, string.Empty);
+        }
+        public static void ReplaceFolder(string folder, string ruleFile, string cmd)
+        {
+            List<ReplaceItem> rules = new List<ReplaceItem>();
+            readRegfile(rules, ruleFile);
+            if (!string.IsNullOrEmpty(cmd))
+            {
+                rules.RemoveAll(r => !r.cmdKey.Equals(cmd, StringComparison.OrdinalIgnoreCase)
+                                  && !Regex.IsMatch(r.pattern, cmd, RegexOptions.IgnoreCase));
+            }
+            if (Directory.Exists(folder) && rules.Count > 0)
+            {
+                ReplaceFolder(folder, rules);
             }
         }
         public static void ReplaceFolder(string folderPath, List<ReplaceItem> rules)
