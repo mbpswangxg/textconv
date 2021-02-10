@@ -2,9 +2,9 @@
 source replacer witten by c#.net
 
 ## 1. Parameters  
- - -c cmdkey: the name of a replace rule.  
- - -d destfolder: a folder for the destination files of replacement.  
- - -r rulefile: save rules of replacement. split with \t. like 
+ - -c cmdkey: the name of a replace rule.  optional. if it's empty, all rules in the rulefile are used.
+ - -d destfolder: a folder for the destination files of replacement. required. pre-set in textconv.config. 
+ - -r rulefile: save rules of replacement. split with \t. . required. pre-set in textconv.config. rule examples like 
    - UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false	exludefile=repfiles/LColumns.txt
    - UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false	excludewords=a,b,c	excludefile=repfiles/LColumns.txt
    - LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
