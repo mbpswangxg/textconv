@@ -17,3 +17,8 @@ cmdkey=(\s*)(\<script src="csjs\/im_window.js"\>)	repname=$1	rangeSkip=False	ran
 cmdkey=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1)))+$1
 cmdkey=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1))+$1
 cmdkey=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1))+$1
+cmdkey=(var S_PAGE_THIS[^;]+;\s+)	repCmdKey=$1var S_PATH_UPLOAD   = p_sGrp + "/0000_common/proposal/res/pop_upload";  //ファイルアップロード
+var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
+cmdkey=\<title\>(.+;)([^;]+)\<\/title\>	repCmdKey=<title>&lt;AD01&gt;aaaa</title>
+cmdkey=\s+ function fnc_openAccount\(\)\{[^\}]+\}(\s*)
+	repCmdKey=$1

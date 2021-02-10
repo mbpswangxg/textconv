@@ -1,0 +1,41 @@
+Name: cmdkey
+Desc: description of rule.
+pattern: (var S_PAGE_THIS[^;]+;\s+)
+replacement: >-
+  $1var S_PATH_UPLOAD   = p_sGrp + "/0000_common/proposal/res/pop_upload";  //ファイルアップロード
+
+  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
+
+
+  // フロー参照用
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: test.txt
+fileSkip: true
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+repResults:
+- >-
+  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
+
+
+
+  var S_PATH_UPLOAD   = p_sGrp + "/0000_common/proposal/res/pop_upload";  //ファイルアップロード
+
+  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
+- >-
+  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
+
+
+  var S_PATH_UPLOAD   = p_sGrp + "/0000_common/proposal/res/pop_upload";  //ファイルアップロード
+
+  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";

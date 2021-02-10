@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-c insertscript"
+      "commandLineArgs": "-c showtitle -d C:\\tmp\\wangx\\_projects\\jae\\develop\\jae\\jae\\src\\main\\jssp\\src\\jae\\0019_conengplan"
     }
   }
 }

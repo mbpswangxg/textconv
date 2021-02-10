@@ -120,6 +120,12 @@ imDesignCss=\<imart\s+type="imDesignCss"\/\>\s*$
 #==============================================
 #HTML
 #==============================================
+showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
+showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
+showtitle=(\s*)(function openWindow\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	ifnotfindstr=(\s*)(function\s+fnc_setThisForm\()	replaceIndexes=1
+showtitle=(\s*)(function openWindow\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	ifnotfindstr=(\s*)(function\s+fnc_setThisForm\()	replaceIndexes=1
+
+
 repfile2=(\<table\>?[^\>]*\>\s*)(\<col width="75" \/\>\s*\<col class="W045" \/\>\s*\<col\s*\/>)	repfile=repfiles/html1-td.txt	multiline=true	filefilter=draft\w*.html
 repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]+>\s*<input[^\<\>]+onClick="([^"]+)">\s*<\/td\>	repfile=repfiles/html1.txt	multiline=true
 

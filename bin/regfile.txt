@@ -72,7 +72,7 @@ UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w
 UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
 LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
-UCASE_COL=\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
+UCASE_COL=\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt
 UCASE_COL="'([\s,]*(\w+))+[\s,]*"	UCASE_GROUP=1,2	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
 UCASE_COL="[\s,]*\w+\((\w+)\)[^"]*"	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
 UCASE_COL=\s*\w+\((\w+)\)\s*	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
@@ -119,7 +119,10 @@ usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELE
 insertscript=(\s*)(\<script src="csjs\/im_window.js"\>)	null=$1<script src="jae/migration/util.js"></script>$1$2	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
 insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
 
-showtitle=(\s*)(function (fnc_setThisForm|openWindow))	null=$1window.top.document.title = document.title;$1$2	iffindstr=function\s+(fnc_setThisForm|openWindow)	ifnotfindstr=window.top.document.title = document.title;
+showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
+showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
+showtitle=(\s*)(function openWindow\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	ifnotfindstr=(\s*)(function\s+fnc_setThisForm\()	replaceIndexes=1
+showtitle=(\s*)(function openWindow\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	ifnotfindstr=(\s*)(function\s+fnc_setThisForm\()	replaceIndexes=1
 
 DATENULL==(\s*"'"\s*\+\s*(p_aoSP\["[A-Za-z_]+"\])\s*\+\s*"'")	null== isBlank\($2\) \? "NULL"\: $1
 #==============================================
@@ -160,10 +163,88 @@ cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=
 cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionDraft
 cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=actionApprv
 
-incfile=\<span[^\(\)]+fnc_openAccount\(\);"\>	repCmdKey=<IMART type="include" page=S_PATH_KEIRIFILE></IMART>	rangeSkip=False	rangeFrom=\<td class="TDCELLCOLOR VA_M"\>	rangeTo=\</td\>	filefilter=\w*cmold.\w+
-incfile=(\<\/IMART\>\s+)(\<noscript\>)	repfile=repfiles/htmlFormFileUpload.txt	ifnotfindstr=page=S_PATH_UPLOAD
-incfile=(ファイルアップロード\s+)(var S_REDIRECT_INDEX)	repfile=repfiles/jsFormFileUpload.txt	iffindstr=var p_clProposal  = include	iffindstr=var S_PATH_UPLOAD   = p_sGrp
-incfile=(ファイルアップロード\s+)(var S_REDIRECT_INDEX)	repfile=repfiles/jsFormFileUpload2.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp
+delfunc=\s+ function fnc_openAccount\(\)\{[^\}]+\}(\s*)	repCmdKey=$1	iffindstr=経理見解ファイル	iffindstr=fnc_openAccount
+delfunc=\s+ function fnc_callbackAct\(res\)\{[^\}]+\}else\{[^\}]+\}\s+\}(\s*)	repCmdKey=$1	iffindstr=経理見解ファイル	iffindstr=fnc_callbackAct
+
+incfile=\<span id="ACT_EXIST"[^\(\)]+fnc_openAccount\(\);"\>	repCmdKey=<IMART type="include" page=S_PATH_KEIRIFILE></IMART>	rangeFrom=経理見解ファイル	rangeTo=\</tr\>	iffindstr=経理見解ファイル
+incfile=(\<\/IMART\>[^\n]*)(\s+\<noscript\>)	repfile=repfiles/htmlFormFileUpload.txt	ifnotfindstr=page=S_PATH_UPLOAD	iffindstr=経理見解ファイル	rangeFrom=S_PATH_SESSCLEAR	rangeTo=noscript
+incfile=(ファイルアップロード\s+)(var S_REDIRECT_INDEX)	repfile=repfiles/jsFormFileUpload.txt	iffindstr=var p_clProposal  = include	iffindstr=var S_PATH_UPLOAD   = p_sGrp	filefilter=\b(act|view)\w*.js
+incfile=(var S_REDIRECT_INDEX[^;]+;)(\s*)	repfile=repfiles/jsFormFileUpload1.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp	filefilter=\b(act|view)\w*.js
+incfile=(S_PAGE_THIS[^;]+S_PGNM;)(\s*)	repfile=repfiles/jsFormFileUpload1.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp	filefilter=\b(act|view)\w*.js
+incfile=(S_PAGE_FILEINFO[^;]+fileinfo";)(\s*)	repfile=repfiles/jsFormFileUpload1.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp	filefilter=\b(act|view)\w*.js
+
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案内容入力</title>	filefilter=\bdraft1.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案内容入力</title>	filefilter=\bdraft1_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案内容入力</title>	filefilter=\bdraft1_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案内容入力</title>	filefilter=\bdraft1_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案内容入力</title>	filefilter=\bdraft1_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案内容入力</title>	filefilter=\bdraft1_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案内容入力</title>	filefilter=\bdraft1_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案内容入力</title>	filefilter=\bdraft1_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案元承認</title>	filefilter=\bapprvsub.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案元承認</title>	filefilter=\bapprvsub_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案元承認</title>	filefilter=\bapprvsub_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案元承認</title>	filefilter=\bapprvsub_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案元承認</title>	filefilter=\bapprvsub_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案元承認</title>	filefilter=\bapprvsub_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案元承認</title>	filefilter=\bapprvsub_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案元承認</title>	filefilter=\bapprvsub_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般経理起案内容入力</title>	filefilter=\bact_draft.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備経理起案内容入力</title>	filefilter=\bact_draft_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発経理起案内容入力</title>	filefilter=\bact_draft_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具経理起案内容入力</title>	filefilter=\bact_draft_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設経理起案内容入力</title>	filefilter=\bact_draft_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）経理起案内容入力</title>	filefilter=\bact_draft_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造経理起案内容入力</title>	filefilter=\bact_draft_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却経理起案内容入力</title>	filefilter=\bact_draft_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般経理起案内容承認</title>	filefilter=\bact_apprv.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備経理起案内容承認</title>	filefilter=\bact_apprv_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発経理起案内容承認</title>	filefilter=\bact_apprv_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具経理起案内容承認</title>	filefilter=\bact_apprv_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設経理起案内容承認</title>	filefilter=\bact_apprv_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）経理起案内容承認</title>	filefilter=\bact_apprv_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造経理起案内容承認</title>	filefilter=\bact_apprv_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却経理起案内容承認</title>	filefilter=\bact_apprv_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般経理起案元承認</title>	filefilter=\bact_apprvsub.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備経理起案元承認</title>	filefilter=\bact_apprvsub_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発経理起案元承認</title>	filefilter=\bact_apprvsub_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具経理起案元承認</title>	filefilter=\bact_apprvsub_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設経理起案元承認</title>	filefilter=\bact_apprvsub_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）経理起案元承認</title>	filefilter=\bact_apprvsub_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造経理起案元承認</title>	filefilter=\bact_apprvsub_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却経理起案元承認</title>	filefilter=\bact_apprvsub_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般汎用起案内容入力</title>	filefilter=\bgen_draft.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備汎用起案内容入力</title>	filefilter=\bgen_draft_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発汎用起案内容入力</title>	filefilter=\bgen_draft_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具汎用起案内容入力</title>	filefilter=\bgen_draft_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設汎用起案内容入力</title>	filefilter=\bgen_draft_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）汎用起案内容入力</title>	filefilter=\bgen_draft_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造汎用起案内容入力</title>	filefilter=\bgen_draft_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却汎用起案内容入力</title>	filefilter=\bgen_draft_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般汎用起案内容承認</title>	filefilter=\bgen_apprvsub.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備汎用起案内容承認</title>	filefilter=\bgen_apprvsub_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発汎用起案内容承認</title>	filefilter=\bgen_apprvsub_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具汎用起案内容承認</title>	filefilter=\bgen_apprvsub_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設汎用起案内容承認</title>	filefilter=\bgen_apprvsub_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）汎用起案内容承認</title>	filefilter=\bgen_apprvsub_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造汎用起案内容承認</title>	filefilter=\bgen_apprvsub_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却汎用起案内容承認</title>	filefilter=\bgen_apprvsub_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案内容合議/決裁承認</title>	filefilter=\bapprv.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案内容合議/決裁承認</title>	filefilter=\bapprv_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案内容合議/決裁承認</title>	filefilter=\bapprv_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案内容合議/決裁承認</title>	filefilter=\bapprv_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案内容合議/決裁承認</title>	filefilter=\bapprv_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案内容合議/決裁承認</title>	filefilter=\bapprv_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案内容合議/決裁承認</title>	filefilter=\bapprv_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案内容合議/決裁承認</title>	filefilter=\bapprv_adel.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案内容表示</title>	filefilter=\bview.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案内容表示</title>	filefilter=\bview_ceqp.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案内容表示</title>	filefilter=\bview_cdev.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案内容表示</title>	filefilter=\bview_cmold.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案内容表示</title>	filefilter=\bview_anew.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案内容表示</title>	filefilter=\bview_arep.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案内容表示</title>	filefilter=\bview_aupd.html
+htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案内容表示</title>	filefilter=\bview_adel.html
 
 #==============================================
 #JS  

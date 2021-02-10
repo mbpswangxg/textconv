@@ -44,10 +44,14 @@ namespace TextConv
         private List<string> iffindstrs = new List<string>();
         private List<string> ifnotfindstrs = new List<string>();
         private bool iffindand=true;
-        
+
         private HashSet<string> excludeWords = new HashSet<string>();
-        
+        private HashSet<string> matchIndexes = new HashSet<string>();
+        private bool skipMatchIndex = false;
+
         private int lineNo = 0;
+        private int matchIndex = 0;
+
         public ReplaceItem() { }
         public ReplaceItem(string args) {
             string splitWords = Xmler.GetAppSettingValue("splitwords", ";;;");
@@ -150,6 +154,18 @@ namespace TextConv
                 if (m.Success)
                 {
                     FillFromFile(m.Groups[1].Value, this.excludeWords);
+                    continue;
+                }
+                m = Regex.Match(words[i], @"replaceIndexes=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    this.matchIndexes.UnionWith(Regex.Split(m.Groups[1].Value, @"[\t,;]+"));
+                    continue;
+                }
+                m = Regex.Match(words[i], @"skipMatchIndex=(true|false)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    this.skipMatchIndex = bool.Parse(m.Groups[1].Value);
                     continue;
                 }
             }
@@ -467,6 +483,7 @@ namespace TextConv
             Regex reg = new Regex(pattern, RegexOptions);
             if (reg.IsMatch(content))
             {
+                matchIndex = 0;
                 content = reg.Replace(content, MatchReplacer);
             }
             //==============================
@@ -561,9 +578,26 @@ namespace TextConv
         
         private string MatchReplacer(Match m)
         {
+            matchIndex++;
             string oldV = m.Value;
             string newV = m.Value;
-
+            if (matchIndexes.Count > 0) 
+            {
+                if (matchIndexes.Contains(matchIndex.ToString()))
+                {
+                    if (skipMatchIndex)
+                    {
+                        return m.Value;
+                    }
+                }
+                else
+                {
+                    if (!skipMatchIndex)
+                    {
+                        return m.Value;
+                    }
+                }
+            }
             if (HasRangeCheck)
             {
                 //範囲チェックあるの場合
