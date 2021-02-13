@@ -121,10 +121,8 @@ namespace conver
             repItem.rangeTo = txtRangeTo.Text;
             repItem.rangeSkip = chkRange.Checked;
 
-            repItem.destFolder = txtDestFolder.Text;
-            repItem.filefilter = txtFileFilter.Text;
-            repItem.fileSkip = chkFileSkip.Checked;
-          
+            repItem.destFolder = txtCommand.Text;
+            
         }
         private void Data2UI(ReplaceItem repItem)
         {
@@ -142,9 +140,7 @@ namespace conver
             txtRangeTo.Text = repItem.rangeTo;
             chkRange.Checked = repItem.rangeSkip;
 
-            txtDestFolder.Text = repItem.destFolder;
-            txtFileFilter.Text = repItem.filefilter;
-            chkFileSkip.Checked = repItem.fileSkip;
+            txtCommand.Text = repItem.destFolder;
         }
 
         /// <summary>
@@ -304,7 +300,7 @@ namespace conver
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
             if (folderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                txtDestFolder.Text = folderDialog.SelectedPath;
+                txtCommand.Text = folderDialog.SelectedPath;
             }
 
         }

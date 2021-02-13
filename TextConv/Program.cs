@@ -16,7 +16,7 @@ namespace TextConv
             //==============================================================
             if (args.Length < 2)
             {
-                Console.WriteLine("TextConv [-c COMMAND_KEY] [-r ruleFile] [-d srcfolder]");
+                Console.WriteLine("TextConv [-c COMMAND_KEY] [-r ruleFile] [-d srcfolder] [-f srcfile]");
                 return;
             }
             string cmd = getValue("-c", args);
@@ -26,7 +26,8 @@ namespace TextConv
             {
                 folder = Xmler.GetAppSettingValue("srcfolder");
             }
-            if (string.IsNullOrEmpty(folder))
+            string destFile = getValue("-f", args);
+            if (string.IsNullOrEmpty(folder) || string.IsNullOrEmpty(destFile))
             {
                 Console.WriteLine("App.config setting srcfolder is required.");
                 return;
@@ -37,7 +38,15 @@ namespace TextConv
                 ruleFile = Xmler.GetAppSettingValue("regfile", "regfile.txt");
             }
             //==============================================================
-            ReplaceFolder(folder, ruleFile, cmd);
+            if (!string.IsNullOrEmpty(folder))
+            {
+                ReplaceFolder(folder, ruleFile, cmd);
+            }
+            if (!string.IsNullOrEmpty(destFile))
+            {
+                ReplaceFolder(folder, ruleFile, cmd);
+            }
+
         }
         
         private static string getValue(string cmdPattern, string[] args) 
@@ -97,6 +106,36 @@ namespace TextConv
             foreach (var sdi in di.GetDirectories())
             {
                 ReplaceFolder(sdi.FullName, rules);
+            }
+        }
+
+        public static void RelaceFile(string destfile, string ruleFile)
+        {
+            RelaceFile(destfile, ruleFile, string.Empty);
+        }
+        public static void RelaceFile(string destfile, string ruleFile, string cmd)
+        {
+            List<ReplaceItem> rules = new List<ReplaceItem>();
+            readRegfile(rules, ruleFile);
+            if (!string.IsNullOrEmpty(cmd))
+            {
+                rules.RemoveAll(r => !r.cmdKey.Equals(cmd, StringComparison.OrdinalIgnoreCase)
+                                  && !Regex.IsMatch(r.pattern, cmd, RegexOptions.IgnoreCase));
+            }
+            
+            if (File.Exists(destfile) && rules.Count > 0)
+            {
+                RelaceFile(destfile, rules);
+            }
+        }
+        public static void RelaceFile(string destfile, List<ReplaceItem> rules)
+        {
+            FileInfo file = new FileInfo(destfile);
+            if (!file.Exists) return;
+
+            foreach (var rule in rules)
+            {
+                rule.ReplaceFile(file.FullName);
             }
         }
     }
