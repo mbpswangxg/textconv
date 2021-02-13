@@ -48,6 +48,7 @@ namespace TextConv
         private HashSet<string> excludeWords = new HashSet<string>();
         private HashSet<string> matchIndexes = new HashSet<string>();
         private bool skipMatchIndex = false;
+        private string excludefile = string.Empty;
         private List<string> dicwords = new List<string>();
 
         private int lineNo = 0;
@@ -154,6 +155,7 @@ namespace TextConv
                 m = Regex.Match(words[i], @"excludefile=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
+                    this.excludefile = m.Groups[1].Value;
                     FillFromFile(m.Groups[1].Value, this.excludeWords);
                     continue;
                 }
@@ -213,15 +215,8 @@ namespace TextConv
             List<string> lstParams = new List<string>();
             if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = this.Name;
             if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = "cmdKey";
-            lstParams.Add(string.Format("{0}={1}", this.cmdKey, this.pattern));
-            lstParams.Add(string.Format("repCmdKey={0}", this.replacement));
-            if (HasRangeCheck)
-            {
-                lstParams.Add(string.Format("rangeSkip={0}", this.rangeSkip));
-                lstParams.Add(string.Format("rangeFrom={0}", this.rangeFrom));
-                lstParams.Add(string.Format("rangeTo={0}", this.rangeTo));
-            }
-            string cmd = string.Join("\t", lstParams) + "\n";
+            
+            string cmd = this.ToCommandLine() + "\n";
             if (append)
             {
                 File.AppendAllText(path, cmd);
@@ -230,6 +225,57 @@ namespace TextConv
             {
                 File.WriteAllText(path, cmd);
             }
+        }
+        public string ToCommandLine()
+        {
+            List<string> lstParams = new List<string>();
+            if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = this.Name;
+            if (string.IsNullOrEmpty(this.cmdKey)) this.cmdKey = "cmdKey";
+            lstParams.Add(string.Format("{0}={1}", this.cmdKey, this.pattern));
+            lstParams.Add(string.Format("repCmdKey={0}", this.replacement));
+            lstParams.Add(string.Format("IgnoreCase={0}", this.IgnoreCase));
+            lstParams.Add(string.Format("Multiline={0}", this.Multiline));
+            if (HasRangeCheck)
+            {
+                lstParams.Add(string.Format("rangeSkip={0}", this.rangeSkip));
+                lstParams.Add(string.Format("rangeFrom={0}", this.rangeFrom));
+                lstParams.Add(string.Format("rangeTo={0}", this.rangeTo));
+            }
+            if (!string.IsNullOrEmpty(this.filefilter))
+            {
+                lstParams.Add(string.Format("fileSkip={0}", this.fileSkip));
+                lstParams.Add(string.Format("filefilter={0}", this.filefilter));
+            }
+            if (!string.IsNullOrEmpty(this.excludefile))
+            {
+                lstParams.Add(string.Format("excludefile={0}", this.excludefile));
+            }
+            if (this.excludeWords.Count>0)
+            {
+                lstParams.Add(string.Format("excludeWords={0}", string.Join(",", excludeWords)));
+            }
+            foreach(string v in this.iffindstrs)
+            {
+                lstParams.Add(string.Format("iffindstr={0}", v));
+            }
+            foreach (string v in this.ifnotfindstrs)
+            {
+                lstParams.Add(string.Format("ifnotfindstr={0}", v));
+            }
+            if(this.iffindstrs.Count>0 || this.ifnotfindstrs.Count>0)
+            {
+                lstParams.Add(string.Format("iffindand={0}", iffindand));
+            }
+            foreach (string v in this.matchIndexes)
+            {
+                lstParams.Add(string.Format("replaceIndexes={0}", string.Join(",", matchIndexes)));
+            }
+            if (this.matchIndexes.Count > 0)
+            {
+                lstParams.Add(string.Format("skipMatchIndex={0}", this.skipMatchIndex));
+            }
+
+            return string.Join("\t", lstParams) ;
         }
         private string readRepfile(string filepath)
         {
