@@ -479,6 +479,7 @@ namespace TextConv
             }
 
             beforeReplace(content);
+            repResults.Clear();
             //==============================
             Regex reg = new Regex(pattern, RegexOptions);
             if (reg.IsMatch(content))
@@ -502,6 +503,7 @@ namespace TextConv
             }
 
             beforeReplace(lines);
+            repResults.Clear();
             //==============================
             string nline = string.Empty;
             bool hasChanged = false;
