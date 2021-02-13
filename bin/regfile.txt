@@ -41,6 +41,8 @@ TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(
 TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
 TO_CHAR=TO_CHAR\(([^,]+),'Day'\)	DATENAME(dw, $1)
 
+TOSTR=([\w\/]+'\s*\+\s*)(INFO_ID)(\s+AS)	repCmdKey=$1CONVERT(varchar,$2)$3
+
 #TO_NUMBER=TO_NUMBER\((SUBSTR\w*\([^\(\)]+\)[-\s\w]*)\)	CONVERT(decimal, $1)
 #TO_NUMBER=TO_NUMBER\(([\w\.]+)\)	CONVERT(decimal, $1)
 #TO_NUMBER=TO_NUMBER\(([^\)]+\)\)\))\)	CONVERT(decimal, $1)
@@ -62,13 +64,20 @@ ROWID=COUNT\([\w+\.]*ROWID\)	COUNT(*)
 
 SYSDATE=SYSDATE	GETDATE()
 
+TONUM=(FORMAT\()(activity_cd)(,)	repCmdKey=$1CONVERT(decimal,$2)$3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
+
+
 #special command.
 #@COMMAND_KEYWORD=pattern
 # textconv -c COMMAND_KEYWORD
 #-------------------------------------------
 ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
-UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
+CASE_TAB=\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	rangeFrom=FROM	rangeTo=WHERE	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
+CASE_TAB=(?:FROM|UPDATE|DELETE(?:\s+FROM)*|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
+UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js
+LCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js
+
 UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
 LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
@@ -89,6 +98,7 @@ UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)	UCASE_GROUP=1	ignoreCase=false
 UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false
 UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
 UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
+
 
 DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
@@ -143,7 +153,7 @@ nowrap1=(\<td class="output"\s*)(\>セキュリティ\<font)	null=$1 style="whit
 font1=(font-family: '[^'"]+')"	$1;"
 ouput1=(\<td[^\<\>]+class="output)\s+VWRITE"\>(承認者コメント参照)	null=$1"><div style="display: inline-block;" class="VWRITE">$2</div>
 td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	multiline=true	filefilter=draft\w*.html
-HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
+HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(p_sDispInfo|\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
 CIMART=<!--[^(IMART)-]+IMART[^-]+-->	
 
 btnAlignR=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html

@@ -1,0 +1,36 @@
+Name: cmdkey
+Desc: description of rule.
+pattern: ([\w\/]+'\s*\+\s*)(INFO_ID)(\s+AS)
+replacement: $1CONVERT(varchar,$2)$3
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >2-
+   , 'TXT_DISP_INFO_' + INFO_ID AS TXT_DISP_INFO
+    , 'TXT_START_DT_' + INFO_ID AS TXT_START_DT
+    , 'TXT_END_DT_' + INFO_ID AS TXT_END_DT
+    , 'TXT_STATUS_' + INFO_ID AS TXT_STATUS
+    , 'TXT_DISP_ORDER_' + INFO_ID AS TXT_DISP_ORDER
+    , 'document.FRM_QUESTION_RSLT.TXT_START_DT_' + INFO_ID AS doc_st
+    , 'document.FRM_QUESTION_RSLT.TXT_END_DT_' + INFO_ID AS doc_ed 
+  FROM
+    WRC_M_INFORMATION 
+  WHERE
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: test.txt
+fileSkip: true
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+repResults:
+- TXT_DISP_INFO_' + CONVERT(varchar,INFO_ID) AS
+- TXT_START_DT_' + CONVERT(varchar,INFO_ID) AS
+- TXT_END_DT_' + CONVERT(varchar,INFO_ID) AS
+- TXT_STATUS_' + CONVERT(varchar,INFO_ID) AS
+- TXT_DISP_ORDER_' + CONVERT(varchar,INFO_ID) AS
+- TXT_START_DT_' + CONVERT(varchar,INFO_ID) AS
+- TXT_END_DT_' + CONVERT(varchar,INFO_ID) AS

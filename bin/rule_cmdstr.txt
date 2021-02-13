@@ -22,3 +22,6 @@ var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
 cmdkey=\<title\>(.+;)([^;]+)\<\/title\>	repCmdKey=<title>&lt;AD01&gt;aaaa</title>
 cmdkey=\s+ function fnc_openAccount\(\)\{[^\}]+\}(\s*)
 	repCmdKey=$1
+cmdkey=([\w\/]+'\s*\+\s*)(INFO_ID)(\s+AS)	repCmdKey=$1CONVERT(varchar,$2)$3
+cmdkey="[^"]+FORMAT\((\w+)[^"]+"	repCmdKey=$1
+cmdkey=(FORMAT\()(activity_cd)(,)	repCmdKey=$1CONVERT(decimal,$2)$3

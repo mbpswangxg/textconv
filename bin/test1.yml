@@ -1,0 +1,29 @@
+Name: cmdkey
+Desc: description of rule.
+pattern: (FORMAT\()(activity_cd)(,)
+replacement: $1CONVERT(decimal,$2)$3
+IgnoreCase: false
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  sSQL = "SELECT user_cd"
+          + "    , FORMAT(activity_cd, REPLICATE('0',40)) SORT_ACTIVITY_CD"
+          + "    , process_def_cd"
+          + "    , version_cd"
+          + "    , process_cd"
+          + " FROM b_bpw_t_run_user"
+          + " WHERE"
+          + "    process_def_cd = '" + sSubProcDefCd + "'"
+          + "    AND version_cd = '" + sSubProcVer + "'"
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: test.txt
+fileSkip: true
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+repResults:
+- FORMAT(CONVERT(decimal,activity_cd),
