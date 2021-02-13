@@ -211,7 +211,25 @@ namespace conver
         /// <param name="e"></param>
         public void btnReplaceFile_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("btnReplaceFile_Click");
+            string[] lines = Regex.Split(txtCommand.Text, @"\n");
+            List<ReplaceItem> rules = new List<ReplaceItem>();
+            ReplaceItem rule;
+            foreach (string line in lines)
+            {
+                rule = new ReplaceItem(line);
+                rules.Add(rule);
+            }
+            string[] destFiles = Regex.Split(txtDestFiles.Text, @"\n");
+            foreach (string path in destFiles)
+            {
+                if (File.Exists(path))
+                {
+                    TextConv.Program.RelaceFile(path, rules);
+                }else if (Directory.Exists(path))
+                {
+                    TextConv.Program.ReplaceFolder(path, rules);
+                }
+            }
         }
 
         /// <summary>
@@ -302,7 +320,6 @@ namespace conver
             {
                 txtCommand.Text = folderDialog.SelectedPath;
             }
-
         }
 
         private void chkRange_CheckedChanged(object sender, EventArgs e)
@@ -317,5 +334,38 @@ namespace conver
             }
         }
 
+        private void btnLoadRuleFile_Click(object sender, EventArgs e)
+        {
+            string rulefile = cmbRuleFiles.Text;
+            if (!File.Exists(rulefile))
+            {
+                MessageBox.Show("Can't find rulefile: " + rulefile,"Warning", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            string[] lines = File.ReadAllLines(rulefile);
+            foreach(string line in lines)
+            {
+                if (Regex.IsMatch(line, @"^(#|\/\/|;|\s*)$"))
+                {
+                    continue;
+                }
+                listBoxRule.Items.Add(line);
+            }
+        }
+
+        private void listBoxRule_DoubleClick(object sender, EventArgs e)
+        {
+            string text = listBoxRule.SelectedItem.ToString();
+            if (string.IsNullOrEmpty(text)) return;
+
+            if (string.IsNullOrEmpty(txtCommand.Text))
+            {
+                txtCommand.Text = listBoxRule.SelectedItem.ToString();
+            }else
+            {
+                txtCommand.Text = txtCommand.Text + "\n" + text;
+            }
+        }
     }
 }

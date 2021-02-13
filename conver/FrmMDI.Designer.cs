@@ -453,7 +453,6 @@
             this.btnReplaceFile.Size = new System.Drawing.Size(124, 24);
             this.btnReplaceFile.Text = "Replace Files(F8)";
             this.btnReplaceFile.ToolTipText = "Show Replace Files Dialog";
-            this.btnReplaceFile.Visible = false;
             // 
             // helpToolStripButton
             // 
@@ -502,7 +501,7 @@
             this.tabWindow.ContextMenuStrip = this.mnuTabWindow;
             this.tabWindow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabWindow.Location = new System.Drawing.Point(0, 55);
-            this.tabWindow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabWindow.Margin = new System.Windows.Forms.Padding(4);
             this.tabWindow.Name = "tabWindow";
             this.tabWindow.SelectedIndex = 0;
             this.tabWindow.ShowToolTips = true;
@@ -538,7 +537,7 @@
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMDI";
             this.Text = "FrmMDI";
             this.Load += new System.EventHandler(this.FrmMDI_Load);

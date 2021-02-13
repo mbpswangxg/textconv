@@ -42,6 +42,10 @@
             this.treeMatch = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.txtReplacement = new System.Windows.Forms.RichTextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.txtRangeTo = new System.Windows.Forms.RichTextBox();
@@ -50,14 +54,14 @@
             this.chkRange = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.txtReplaceResult = new System.Windows.Forms.RichTextBox();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.txtReplacement = new System.Windows.Forms.RichTextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.txtCommand = new System.Windows.Forms.RichTextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.txtResultFileLogs = new System.Windows.Forms.RichTextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.listBoxRule = new System.Windows.Forms.ListBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txtRuleName = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,15 +71,9 @@
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txtRuleDesc = new System.Windows.Forms.ToolStripTextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.listBoxRule = new System.Windows.Forms.ListBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.btnSaveToRuleFile = new System.Windows.Forms.ToolStripButton();
             this.cmbRuleFiles = new System.Windows.Forms.ToolStripComboBox();
             this.btnLoadRuleFile = new System.Windows.Forms.ToolStripButton();
+            this.txtDestFiles = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.spcFrame)).BeginInit();
             this.spcFrame.Panel1.SuspendLayout();
             this.spcFrame.Panel2.SuspendLayout();
@@ -95,18 +93,6 @@
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -115,11 +101,23 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // spcFrame
@@ -128,7 +126,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.spcFrame.Location = new System.Drawing.Point(4, 35);
-            this.spcFrame.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spcFrame.Margin = new System.Windows.Forms.Padding(4);
             this.spcFrame.Name = "spcFrame";
             // 
             // spcFrame.Panel1
@@ -151,7 +149,7 @@
             this.tabResult.Controls.Add(this.tpMatch);
             this.tabResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabResult.Location = new System.Drawing.Point(0, 0);
-            this.tabResult.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabResult.Margin = new System.Windows.Forms.Padding(4);
             this.tabResult.Name = "tabResult";
             this.tabResult.SelectedIndex = 0;
             this.tabResult.Size = new System.Drawing.Size(749, 764);
@@ -162,9 +160,9 @@
             // 
             this.tpMatch.Controls.Add(this.splitContainer1);
             this.tpMatch.Location = new System.Drawing.Point(4, 25);
-            this.tpMatch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tpMatch.Margin = new System.Windows.Forms.Padding(4);
             this.tpMatch.Name = "tpMatch";
-            this.tpMatch.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tpMatch.Padding = new System.Windows.Forms.Padding(4);
             this.tpMatch.Size = new System.Drawing.Size(741, 735);
             this.tpMatch.TabIndex = 0;
             this.tpMatch.Text = "Input/Match";
@@ -208,7 +206,7 @@
             // 
             this.txtPattern.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPattern.Location = new System.Drawing.Point(3, 17);
-            this.txtPattern.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPattern.Margin = new System.Windows.Forms.Padding(4);
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(727, 141);
             this.txtPattern.TabIndex = 3;
@@ -252,7 +250,7 @@
             // 
             this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtInput.Location = new System.Drawing.Point(3, 17);
-            this.txtInput.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtInput.Margin = new System.Windows.Forms.Padding(4);
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(420, 544);
             this.txtInput.TabIndex = 2;
@@ -276,7 +274,7 @@
             this.treeMatch.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.treeMatch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeMatch.Location = new System.Drawing.Point(3, 17);
-            this.treeMatch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeMatch.Margin = new System.Windows.Forms.Padding(4);
             this.treeMatch.Name = "treeMatch";
             this.treeMatch.Size = new System.Drawing.Size(290, 544);
             this.treeMatch.TabIndex = 3;
@@ -305,6 +303,67 @@
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Replacement";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(3, 2);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.splitContainer5);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.groupBox5);
+            this.splitContainer4.Size = new System.Drawing.Size(499, 731);
+            this.splitContainer4.SplitterDistance = 176;
+            this.splitContainer4.TabIndex = 14;
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.groupBox10);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.groupBox4);
+            this.splitContainer5.Size = new System.Drawing.Size(499, 176);
+            this.splitContainer5.SplitterDistance = 84;
+            this.splitContainer5.TabIndex = 0;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.txtReplacement);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox10.Location = new System.Drawing.Point(0, 0);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox10.Size = new System.Drawing.Size(499, 84);
+            this.groupBox10.TabIndex = 6;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Replacement String";
+            // 
+            // txtReplacement
+            // 
+            this.txtReplacement.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtReplacement.Location = new System.Drawing.Point(7, 19);
+            this.txtReplacement.Margin = new System.Windows.Forms.Padding(4);
+            this.txtReplacement.Name = "txtReplacement";
+            this.txtReplacement.Size = new System.Drawing.Size(487, 58);
+            this.txtReplacement.TabIndex = 5;
+            this.txtReplacement.Text = "";
             // 
             // groupBox4
             // 
@@ -343,7 +402,7 @@
             // 
             this.txtRangeTo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtRangeTo.Location = new System.Drawing.Point(255, 4);
-            this.txtRangeTo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtRangeTo.Margin = new System.Windows.Forms.Padding(4);
             this.txtRangeTo.Name = "txtRangeTo";
             this.txtRangeTo.Size = new System.Drawing.Size(224, 49);
             this.txtRangeTo.TabIndex = 9;
@@ -364,7 +423,7 @@
             // 
             this.txtRangeFrom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtRangeFrom.Location = new System.Drawing.Point(4, 4);
-            this.txtRangeFrom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtRangeFrom.Margin = new System.Windows.Forms.Padding(4);
             this.txtRangeFrom.Name = "txtRangeFrom";
             this.txtRangeFrom.Size = new System.Drawing.Size(223, 49);
             this.txtRangeFrom.TabIndex = 1;
@@ -400,43 +459,18 @@
             // 
             this.txtReplaceResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtReplaceResult.Location = new System.Drawing.Point(3, 17);
-            this.txtReplaceResult.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReplaceResult.Margin = new System.Windows.Forms.Padding(4);
             this.txtReplaceResult.Name = "txtReplaceResult";
             this.txtReplaceResult.ReadOnly = true;
             this.txtReplaceResult.Size = new System.Drawing.Size(493, 532);
             this.txtReplaceResult.TabIndex = 7;
             this.txtReplaceResult.Text = "";
             // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.txtReplacement);
-            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox10.Location = new System.Drawing.Point(0, 0);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox10.Size = new System.Drawing.Size(499, 84);
-            this.groupBox10.TabIndex = 6;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Replacement String";
-            // 
-            // txtReplacement
-            // 
-            this.txtReplacement.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtReplacement.Location = new System.Drawing.Point(7, 19);
-            this.txtReplacement.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtReplacement.Name = "txtReplacement";
-            this.txtReplacement.Size = new System.Drawing.Size(487, 58);
-            this.txtReplacement.TabIndex = 5;
-            this.txtReplacement.Text = "";
-            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.splitContainer3);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(505, 735);
             this.tabPage1.TabIndex = 1;
@@ -463,6 +497,24 @@
             this.splitContainer3.SplitterWidth = 8;
             this.splitContainer3.TabIndex = 40;
             // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.groupBox9);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.groupBox6);
+            this.splitContainer6.Size = new System.Drawing.Size(505, 326);
+            this.splitContainer6.SplitterDistance = 163;
+            this.splitContainer6.TabIndex = 38;
+            // 
             // groupBox9
             // 
             this.groupBox9.Controls.Add(this.txtCommand);
@@ -474,7 +526,7 @@
             this.groupBox9.Size = new System.Drawing.Size(505, 163);
             this.groupBox9.TabIndex = 37;
             this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "TextConv Command";
+            this.groupBox9.Text = "TextConv Command.(\\n for Multilines)";
             // 
             // txtCommand
             // 
@@ -488,7 +540,7 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.txtResultFileLogs);
+            this.groupBox6.Controls.Add(this.txtDestFiles);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -497,18 +549,29 @@
             this.groupBox6.Size = new System.Drawing.Size(505, 159);
             this.groupBox6.TabIndex = 4;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Replace Files Results";
+            this.groupBox6.Text = "Replace Dest File or folder. (\\n for Multilines)";
             // 
-            // txtResultFileLogs
+            // groupBox7
             // 
-            this.txtResultFileLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtResultFileLogs.Location = new System.Drawing.Point(3, 17);
-            this.txtResultFileLogs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtResultFileLogs.Name = "txtResultFileLogs";
-            this.txtResultFileLogs.ReadOnly = true;
-            this.txtResultFileLogs.Size = new System.Drawing.Size(499, 140);
-            this.txtResultFileLogs.TabIndex = 8;
-            this.txtResultFileLogs.Text = "";
+            this.groupBox7.Controls.Add(this.listBoxRule);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox7.Location = new System.Drawing.Point(0, 0);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(505, 401);
+            this.groupBox7.TabIndex = 1;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "TextConv Replace Rules";
+            // 
+            // listBoxRule
+            // 
+            this.listBoxRule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxRule.FormattingEnabled = true;
+            this.listBoxRule.ItemHeight = 15;
+            this.listBoxRule.Location = new System.Drawing.Point(3, 18);
+            this.listBoxRule.Name = "listBoxRule";
+            this.listBoxRule.Size = new System.Drawing.Size(499, 380);
+            this.listBoxRule.TabIndex = 0;
+            this.listBoxRule.DoubleClick += new System.EventHandler(this.listBoxRule_DoubleClick);
             // 
             // toolStripLabel1
             // 
@@ -588,111 +651,20 @@
             this.toolStripSeparator2,
             this.toolStripLabel2,
             this.txtRuleDesc,
-            this.btnSaveToRuleFile,
-            this.toolStripLabel3,
-            this.cmbRuleFiles,
-            this.btnLoadRuleFile});
+            this.btnLoadRuleFile,
+            this.cmbRuleFiles});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1275, 28);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(3, 2);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.splitContainer5);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.groupBox5);
-            this.splitContainer4.Size = new System.Drawing.Size(499, 731);
-            this.splitContainer4.SplitterDistance = 176;
-            this.splitContainer4.TabIndex = 14;
-            // 
-            // splitContainer5
-            // 
-            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer5.Name = "splitContainer5";
-            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer5.Panel1
-            // 
-            this.splitContainer5.Panel1.Controls.Add(this.groupBox10);
-            // 
-            // splitContainer5.Panel2
-            // 
-            this.splitContainer5.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer5.Size = new System.Drawing.Size(499, 176);
-            this.splitContainer5.SplitterDistance = 84;
-            this.splitContainer5.TabIndex = 0;
-            // 
-            // splitContainer6
-            // 
-            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer6.Name = "splitContainer6";
-            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer6.Panel1
-            // 
-            this.splitContainer6.Panel1.Controls.Add(this.groupBox9);
-            // 
-            // splitContainer6.Panel2
-            // 
-            this.splitContainer6.Panel2.Controls.Add(this.groupBox6);
-            this.splitContainer6.Size = new System.Drawing.Size(505, 326);
-            this.splitContainer6.SplitterDistance = 163;
-            this.splitContainer6.TabIndex = 38;
-            // 
-            // listBoxRule
-            // 
-            this.listBoxRule.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxRule.FormattingEnabled = true;
-            this.listBoxRule.ItemHeight = 15;
-            this.listBoxRule.Location = new System.Drawing.Point(3, 18);
-            this.listBoxRule.Name = "listBoxRule";
-            this.listBoxRule.Size = new System.Drawing.Size(499, 380);
-            this.listBoxRule.TabIndex = 0;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.listBoxRule);
-            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox7.Location = new System.Drawing.Point(0, 0);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(505, 401);
-            this.groupBox7.TabIndex = 1;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "TextConv Replace Rules";
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(61, 25);
-            this.toolStripLabel3.Text = "RuleFile";
-            // 
-            // btnSaveToRuleFile
-            // 
-            this.btnSaveToRuleFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnSaveToRuleFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveToRuleFile.Image")));
-            this.btnSaveToRuleFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSaveToRuleFile.Name = "btnSaveToRuleFile";
-            this.btnSaveToRuleFile.Size = new System.Drawing.Size(79, 25);
-            this.btnSaveToRuleFile.Text = "SaveTo=>";
-            // 
             // cmbRuleFiles
             // 
             this.cmbRuleFiles.BackColor = System.Drawing.SystemColors.Info;
             this.cmbRuleFiles.Name = "cmbRuleFiles";
-            this.cmbRuleFiles.Size = new System.Drawing.Size(300, 28);
+            this.cmbRuleFiles.Size = new System.Drawing.Size(400, 28);
+            this.cmbRuleFiles.Text = "regfile.txt";
             // 
             // btnLoadRuleFile
             // 
@@ -700,8 +672,19 @@
             this.btnLoadRuleFile.Image = ((System.Drawing.Image)(resources.GetObject("btnLoadRuleFile.Image")));
             this.btnLoadRuleFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnLoadRuleFile.Name = "btnLoadRuleFile";
-            this.btnLoadRuleFile.Size = new System.Drawing.Size(46, 25);
-            this.btnLoadRuleFile.Text = "Load";
+            this.btnLoadRuleFile.Size = new System.Drawing.Size(102, 25);
+            this.btnLoadRuleFile.Text = "Load RuleFile";
+            this.btnLoadRuleFile.Click += new System.EventHandler(this.btnLoadRuleFile_Click);
+            // 
+            // txtDestFiles
+            // 
+            this.txtDestFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDestFiles.Location = new System.Drawing.Point(3, 17);
+            this.txtDestFiles.Margin = new System.Windows.Forms.Padding(4);
+            this.txtDestFiles.Name = "txtDestFiles";
+            this.txtDestFiles.Size = new System.Drawing.Size(499, 140);
+            this.txtDestFiles.TabIndex = 4;
+            this.txtDestFiles.Text = "";
             // 
             // RegexTabPage
             // 
@@ -709,7 +692,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.spcFrame);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "RegexTabPage";
             this.Size = new System.Drawing.Size(1275, 802);
             this.spcFrame.Panel1.ResumeLayout(false);
@@ -731,21 +714,6 @@
             this.groupBox3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -754,11 +722,26 @@
             this.splitContainer5.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -794,7 +777,6 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.RichTextBox txtCommand;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.RichTextBox txtResultFileLogs;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox txtRuleName;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -809,9 +791,8 @@
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.ListBox listBoxRule;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
-        private System.Windows.Forms.ToolStripButton btnSaveToRuleFile;
         private System.Windows.Forms.ToolStripComboBox cmbRuleFiles;
         private System.Windows.Forms.ToolStripButton btnLoadRuleFile;
+        private System.Windows.Forms.RichTextBox txtDestFiles;
     }
 }
