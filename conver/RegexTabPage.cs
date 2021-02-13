@@ -165,21 +165,21 @@ namespace conver
 
             Regex reg = new Regex(txtPattern.Text, RegexOptions);
             matches.AddRange(reg.Matches(txtInput.Text).Cast<Match>());
-            BindMatchTree(matches, hl, reg);
+            BindMatchTree(matches, hl, reg, "Pattern");
 
             if (!string.IsNullOrEmpty(txtRangeFrom.Text))
             {
                 Regex reg1 = new Regex(txtRangeFrom.Text, RegexOptions);
                 matches.Clear();
                 matches.AddRange(reg1.Matches(txtInput.Text).Cast<Match>());
-                BindMatchTree(matches, hl, reg1);
+                BindMatchTree(matches, hl, reg1, "RangeFrom", Color.Black, Color.LawnGreen);
             }
             if (!string.IsNullOrEmpty(txtRangeTo.Text))
             {
                 Regex reg1 = new Regex(txtRangeTo.Text, RegexOptions);
                 matches.Clear();
                 matches.AddRange(reg1.Matches(txtInput.Text).Cast<Match>());
-                BindMatchTree(matches, hl, reg1);
+                BindMatchTree(matches, hl, reg1, "RangeTo", Color.Black, Color.LawnGreen);
             }
 
             tabResult.SelectedTab = tpMatch;
@@ -246,18 +246,24 @@ namespace conver
         #endregion
 
         #region Bind MatchCollection to Tree
+        private void BindMatchTree(List<Match> matches, HighLight hl, Regex reg, string caption)
+        {
+            BindMatchTree(matches, hl, reg, caption, Color.Black, Color.Yellow);
+        }
         /// <summary>
         /// Show the match result on tree.
         /// </summary>
         /// <param name="matches"></param>
-        private void BindMatchTree(List<Match> matches, HighLight hl, Regex reg)
+        private void BindMatchTree(List<Match> matches, HighLight hl, Regex reg, string caption, Color foreColor, Color backColor)
         {
+            int index = 0;
             foreach (Match match in matches)
             {
-                hl.Highlight(match);
+                hl.Highlight(match, foreColor, backColor);
 
-                TreeNode nodeMatch = treeMatch.Nodes.Add(match.Value);
+                TreeNode nodeMatch = treeMatch.Nodes.Add(string.Format("{0} Match[{1}]:{2}", caption, index, reg.ToString()));
                 BindGroup(nodeMatch, match, reg);
+                index++;
             }
         }
 

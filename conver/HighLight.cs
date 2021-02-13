@@ -20,13 +20,16 @@ namespace conver
             oldForeColor = richTxtBox.ForeColor;
             oldBackColor = richTxtBox.BackColor;
         }
-
         public void Highlight(string highvalue)
+        {
+            Highlight(highvalue, Color.Black, Color.Yellow);
+        }
+        public void Highlight(string highvalue, Color foreColor, Color backColor)
         {
             int start = txtbox.Find(highvalue, 0, RichTextBoxFinds.None);
             while (start >= 0 && start < txtbox.Text.Length)
             {
-                Highlight( start,highvalue.Length);
+                Highlight(start, highvalue.Length, foreColor, backColor);
                 start = start + highvalue.Length;
                 start = txtbox.Find(highvalue, start, RichTextBoxFinds.None);
             }
@@ -34,13 +37,20 @@ namespace conver
 
         public void Highlight(Match match)
         {
-            Highlight(match.Index, match.Length);
+            Highlight(match.Index, match.Length, Color.Black, Color.Yellow);
         }
-
+        public void Highlight(Match match, Color foreColor, Color backColor)
+        {
+            Highlight(match.Index, match.Length, foreColor, backColor);
+        }
         public void Highlight(int start, int length)
         {
+            Highlight(start, length, Color.Black, Color.Yellow);
+        }
+        public void Highlight(int start, int length, Color foreColor, Color backColor)
+        {
             Font f = new Font(txtbox.Font.FontFamily, txtbox.Font.Size, FontStyle.Bold);
-            Highlight( start, length, f, Color.Black, Color.Yellow);
+            Highlight( start, length, f, foreColor, backColor);
         }
 
         public void Highlight(int start, int length, 
