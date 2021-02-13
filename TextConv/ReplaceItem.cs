@@ -49,6 +49,8 @@ namespace TextConv
         private HashSet<string> matchIndexes = new HashSet<string>();
         private bool skipMatchIndex = false;
         private string excludefile = string.Empty;
+        private List<string> dicwords = new List<string>();
+
         private int lineNo = 0;
         private int matchIndex = 0;
 
@@ -147,7 +149,7 @@ namespace TextConv
                 m = Regex.Match(words[i], @"excludewords=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    this.excludeWords.UnionWith(Regex.Split(m.Groups[1].Value, @"[\t,;]+"));
+                    FillSet(m.Groups[1].Value, this.excludeWords);
                     continue;
                 }
                 m = Regex.Match(words[i], @"excludefile=([^\t]+)", RegexOptions.IgnoreCase);
@@ -157,10 +159,16 @@ namespace TextConv
                     FillFromFile(m.Groups[1].Value, this.excludeWords);
                     continue;
                 }
+                m = Regex.Match(words[i], @"dicwordfile=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    FillFromFile(m.Groups[1].Value, this.dicwords);
+                    continue;
+                }
                 m = Regex.Match(words[i], @"replaceIndexes=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    this.matchIndexes.UnionWith(Regex.Split(m.Groups[1].Value, @"[\t,;]+"));
+                    FillSet(m.Groups[1].Value, this.matchIndexes);
                     continue;
                 }
                 m = Regex.Match(words[i], @"skipMatchIndex=(true|false)", RegexOptions.IgnoreCase);
@@ -588,15 +596,15 @@ namespace TextConv
             if (isSkipFile(file)) return;
             currentfile = file;
             
-            if (!Multiline)
-            {
-                string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
-                if (replaceLines(lines))
-                {
-                    File.WriteAllLines(file, lines, FileHelper.Encoding);
-                }
-            }
-            else
+            //if (!Multiline)
+            //{
+            //    string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
+            //    if (replaceLines(lines))
+            //    {
+            //        File.WriteAllLines(file, lines, FileHelper.Encoding);
+            //    }
+            //}
+            //else
             {
                 string content = File.ReadAllText(file, FileHelper.Encoding);
                 string newContent = replaceText(content);
@@ -606,7 +614,7 @@ namespace TextConv
                 }
             }
         }
-        private void FillFromFile(string file, HashSet<string> myset)
+        private void FillFromFile(string file, ICollection<string> myset)
         {
             if (!File.Exists(file)) return;
 
@@ -618,8 +626,7 @@ namespace TextConv
 
                 //コメント行を飛ばす
                 if (Regex.IsMatch(line, @"^(#|;|\-\-|\/\/)")) continue;
-
-                myset.UnionWith(Regex.Split(line, "[\t,;]+"));
+                FillSet(line, myset);
             }
         }
         
@@ -671,23 +678,37 @@ namespace TextConv
             }
             else if (repCmdKey.EndsWith("CASE_GROUP"))
             {
+                HashSet<string> repSet = new HashSet<string>();
+                FillSet(replacement, repSet);
                 for (int i = 0; i < m.Groups.Count; i++)
                 {
-                    if (replacement.Contains(i.ToString()))
+                    if (!repSet.Contains(i.ToString())) continue;
+                    
+                    foreach (Capture cpt in m.Groups[i].Captures)
                     {
-                        foreach (Capture cpt in m.Groups[i].Captures)
-                        {
-                            //SKIP対象の場合、スキップ
-                            if (this.excludeWords.Contains(cpt.Value)) continue;
+                        //SKIP対象の場合、スキップ
+                        if (this.excludeWords.Contains(cpt.Value)) continue;
 
-                            if (Regex.IsMatch(repCmdKey, "LCASE"))
+                        //dicwordsがあれば、優先利用
+                        if (this.dicwords.Count>0)
+                        {
+                            string v = dicwords.Find(x => x.Equals(cpt.Value, StringComparison.CurrentCultureIgnoreCase));
+                            if (string.IsNullOrEmpty(v)) continue;
+                            if (!v.Equals(cpt.Value))
                             {
-                                newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToLower());
+                                newV = Regex.Replace(newV, cpt.Value, v);
                             }
-                            if (Regex.IsMatch(repCmdKey, "UCASE"))
-                            {
-                                newV = Regex.Replace(newV, cpt.Value, cpt.Value.ToUpper());
-                            }
+                            //優先利用の為、処理飛ばす
+                            continue;
+                        }
+
+                        if (Regex.IsMatch(repCmdKey, "LCASE") && !cpt.Value.Equals(cpt.Value.ToLower()))
+                        {
+                            newV = Regex.Replace(newV, @"(\b+)(" + cpt.Value + @")(\b+)", "$1" + cpt.Value.ToLower() + "$3");
+                        }
+                        if (Regex.IsMatch(repCmdKey, "UCASE") && !cpt.Value.Equals(cpt.Value.ToUpper()))
+                        {
+                            newV = Regex.Replace(newV, @"(\b+)(" + cpt.Value + @")(\b+)", "$1" + cpt.Value.ToUpper() + "$3");
                         }
                     }
                 }
@@ -746,5 +767,13 @@ namespace TextConv
             return newV;
         }
 
+        private void FillSet(string content, ICollection<string> destSet)
+        {
+            string[] words = Regex.Split(content, @"[\t,;]+");
+            foreach(var w in words)
+            {
+                destSet.Add(w);
+            }
+        }
     }
 }
