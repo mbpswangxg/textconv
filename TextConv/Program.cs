@@ -27,7 +27,7 @@ namespace TextConv
                 folder = Xmler.GetAppSettingValue("srcfolder");
             }
             string destFile = getValue("-f", args);
-            if (string.IsNullOrEmpty(folder) || string.IsNullOrEmpty(destFile))
+            if (string.IsNullOrEmpty(folder) && string.IsNullOrEmpty(destFile))
             {
                 Console.WriteLine("App.config setting srcfolder is required.");
                 return;

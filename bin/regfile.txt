@@ -65,7 +65,7 @@ ROWID=COUNT\([\w+\.]*ROWID\)	COUNT(*)
 SYSDATE=SYSDATE	GETDATE()
 
 TONUM=(FORMAT\()(activity_cd)(,)	repCmdKey=$1CONVERT(decimal,$2)$3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
-
+LEFTJOIN=(\(\+\))	repWarn=$1★★LEFT JOIN★★
 
 #special command.
 #@COMMAND_KEYWORD=pattern
@@ -152,8 +152,9 @@ repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]
 nowrap1=(\<td class="output"\s*)(\>セキュリティ\<font)	null=$1 style="white-space: nowrap;"$2
 font1=(font-family: '[^'"]+')"	$1;"
 ouput1=(\<td[^\<\>]+class="output)\s+VWRITE"\>(承認者コメント参照)	null=$1"><div style="display: inline-block;" class="VWRITE">$2</div>
-td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	multiline=true	filefilter=draft\w*.html
-HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(p_sDispInfo|\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
+td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>(\s+\<tr\>)	repfile=repfiles/html1-td21.txt	rangefrom=\<table rangeto=フロー参照
+
+HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(p_sDispInfo|\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL|RESULT)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
 CIMART=<!--[^(IMART)-]+IMART[^-]+-->	
 
 btnAlignR=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html
@@ -260,6 +261,7 @@ htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備
 #JS  
 #==============================================
 PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
-#decodeURI=decodeURI	htmlDecode
-delcomment=\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)	repname=$1	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+decodeURI=decodeURI	htmlDecode
+delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*--\>(\s*)	repname=$1	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+
 #webhost=Web.host\(\)	Procedure.getHost()
