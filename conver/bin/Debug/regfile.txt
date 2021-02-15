@@ -67,7 +67,11 @@ SYSDATE=SYSDATE	GETDATE()
 #-------------------------------------------
 ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
-UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false	exludefile=repfiles/LColumns.txt
+CASE_TAB=(?:FROM|UPDATE|DELETE(?:\s+FROM)*|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
+
+#CASE_COL="SELECT\s+(\w+)\s*(,\s*(\w+))*"	LCASE_GROUP=1	excludewords=SELECT,FROM,WHERE	rangeFrom=SELECT	rangeTo=FROM	filefilter=apprv\w*.js
+CASE_COL="[^"]+FORMAT\((\w+)[^"]+"	LCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/excludeColumns.txt	filefilter=\w*(apprv|draft)\w*.js
+
 UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false	excludewords=a,b,c	excludefile=repfiles/LColumns.txt
 LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
@@ -120,6 +124,12 @@ imDesignCss=\<imart\s+type="imDesignCss"\/\>\s*$
 #==============================================
 #HTML
 #==============================================
+showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
+showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
+showtitle=(\s*)(function openWindow\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	ifnotfindstr=(\s*)(function\s+fnc_setThisForm\()	replaceIndexes=1
+showtitle=(\s*)(function openWindow\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	ifnotfindstr=(\s*)(function\s+fnc_setThisForm\()	replaceIndexes=1
+
+
 repfile2=(\<table\>?[^\>]*\>\s*)(\<col width="75" \/\>\s*\<col class="W045" \/\>\s*\<col\s*\/>)	repfile=repfiles/html1-td.txt	multiline=true	filefilter=draft\w*.html
 repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]+>\s*<input[^\<\>]+onClick="([^"]+)">\s*<\/td\>	repfile=repfiles/html1.txt	multiline=true
 

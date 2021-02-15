@@ -43,3 +43,5 @@ C:\tool\textconv\conver\bin\Debug\YamlDotNet.dll
 C:\tool\textconv\conver\bin\Debug\YamlDotNet.xml
 D:\workspace\C#\textconv\conver\bin\Debug\YamlDotNet.dll
 D:\workspace\C#\textconv\conver\bin\Debug\YamlDotNet.xml
+C:\tool\textconv\conver\bin\Debug\repfiles\excludeColumns.txt
+C:\tool\textconv\conver\bin\Debug\repfiles\tablename.txt
