@@ -162,4 +162,5 @@ cmdkey=\<td\>	repname=<td class="A_R">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=
 #==============================================
 PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
 decodeURI=decodeURI	htmlDecode
-delcomment=\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)	repname=$1	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*\s*[^\r\n]*--\>	repname=	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+

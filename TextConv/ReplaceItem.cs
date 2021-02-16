@@ -70,7 +70,7 @@ namespace TextConv
                 pattern = m.Groups[2].Value;
             }
 
-            m = Regex.Match(replacement, @"^(\w+)=(.+)");
+            m = Regex.Match(replacement, @"^(\w+)=(.*)");
             if (m.Success)
             {
                 repCmdKey = m.Groups[1].Value;

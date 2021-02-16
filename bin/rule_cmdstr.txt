@@ -25,3 +25,4 @@ cmdkey=\s+ function fnc_openAccount\(\)\{[^\}]+\}(\s*)
 cmdkey=([\w\/]+'\s*\+\s*)(INFO_ID)(\s+AS)	repCmdKey=$1CONVERT(varchar,$2)$3
 cmdkey="[^"]+FORMAT\((\w+)[^"]+"	repCmdKey=$1
 cmdkey=(FORMAT\()(activity_cd)(,)	repCmdKey=$1CONVERT(decimal,$2)$3
+cmdkey=class="BTN02" 	repCmdKey=class="BTN02 W045" 	IgnoreCase=True	Multiline=True
