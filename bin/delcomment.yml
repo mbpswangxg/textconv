@@ -1,51 +1,33 @@
-Name: delcomment
-Desc: 無効なIMARTタグ削除
-pattern: '\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)'
+Name: cmdkey
+Desc: description of rule.
+pattern: (\<\!--)((?:.*|IMART)[\r\n]*)
 replacement: $1
 IgnoreCase: true
 Multiline: true
 ExcapeText: 
-inputContent: >-
-  sSetReason += " + TO_CLOB('" + sReason + sNewLine + "')";
+inputContent: >2-
+                <td>
+                  <IMART type="c_selectdb" name="SEL_BACK" list=p_aoBackList selected=p_aoSP.SEL_BACK value="value" caption="caption"></IMART>
+                  <input type="button" value="差戻し" class="BTN04" onClick="fnc_confirm(2);" id="BTN_BACK0">
+                  <IMART type="submit" id="BTN_BACK" action="actionBack" value="差戻し" style="width:0; height:0; visibility:hidden"></IMART>
+                </td>
+                <td>
+  <!--          <IMART type="submit" id="BTN_SAVE" action="actionSave" value="一時保存" style="width:0; height:0; visibility:hidden"></IMART>
 
-
-  CAST('" + sReason + sNewLine + "' AS NVARCHAR("+ (sReason.length + sNewLine.length) + "))";
-
-  CAST('" + sReason + sNewLine + "' AS NVARCHAR("+ (sReason.length + sNewLine.length) + "))";
-
-
-  <!--
-      <IMART type="submit" action="actionCheck" value="入力チェック" class="BTN04"></IMART>
-
-      <IMART type="submit" id="BTN_DRAFT" action="actionDraft" value=p_aoSP.DRAFT_BTN class="BTN04"></IMART>
   -->
-
-
-  <!--
-      <IMART type="submit" action="actionCheck" value="入力チェック" class="BTN04"></IMART>
-
-      <IMART type="submit" id="BTN_DRAFT" action="actionDraft" value=p_aoSP.DRAFT_BTN class="BTN04"></IMART>
-  -->
-    <!-- 画面項目保持用 -->
-    <!--部内上司承認者設定フォームの値 -->
-    <IMART type="input" style="hidden" name="HID_BOSS_HISTORY_ID" value=p_aoSP.HID_BOSS_HISTORY_ID></IMART>
+                </td>
+                <td>
+                  <input type="button" value="承認" class="BTN04" onClick="fnc_confirm(1);" id="BTN_APPRV0">
+                  <IMART type="submit" id="BTN_APPRV" action="actionApprv" value="承認" style="width:0; height:0; visibility:hidden"></IMART>
 rangeFrom: '\<\!--'
-rangeTo: --\>
+rangeTo: IMART[\>\s]*--\>
 rangeSkip: false
 destFolder: ''
-filefilter: test.txt
-fileSkip: true
+filefilter: ''
+fileSkip: false
 cmdKey: ''
 repCmdKey: ''
 repfile: ''
 currentfile: ''
-iffindstrs: []
-ifnotfindstrs: []
-iffindand: true
 repResults:
-- >2
-
-- >2
-
-RegexOptions: IgnoreCase, Multiline
-HasRangeCheck: true
+- <!--

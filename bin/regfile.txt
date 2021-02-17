@@ -263,6 +263,7 @@ htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備
 #==============================================
 PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
 decodeURI=decodeURI	htmlDecode
-delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*\s*[^\r\n]*--\>		rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*\s*[^\r\n]*--\>	repname=		rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+delcomment=(\<\!--)((?:.*|IMART)[\r\n]*)	repCmdKey=$1	IgnoreCase=True	Multiline=True	rangeSkip=False	rangeFrom=\<\!--	rangeTo=IMART[\>\s]*--\>
 
 #webhost=Web.host\(\)	Procedure.getHost()
