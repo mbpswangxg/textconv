@@ -130,7 +130,7 @@ usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns 
 usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 insertscript=(\s*)(\<script src="csjs\/im_window.js"\>)	null=$1<script src="jae/migration/util.js"></script>$1$2	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
 insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
-getEleChange=document.getElementById    getElement
+getEleChange=document.getElementById	getElement
 
 showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
 showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
