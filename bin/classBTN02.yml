@@ -1,0 +1,20 @@
+Name: cmdkey
+Desc: description of rule.
+pattern: 'class="BTN02" '
+replacement: 'class="BTN02 W045" '
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: <INPUT type="button" value="削除" class="BTN02" onClick="fnc_delMailList()">
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: ''
+fileSkip: false
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+repResults:
+- 'class="BTN02 W045" '

@@ -1,0 +1,27 @@
+Name: cmdkey
+Desc: description of rule.
+pattern: (\w\.\w+)\s+IS\s+NOT\s+NULL
+replacement: NULLIF($1, '') IS NOT NULL
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  [UTF-8]:           + "    AND b.WKF_PROC_CD IS NOT NULL
+   [UTF-8]:         + "    AND b.WKF_PROC_CD IS NOT NULL"
+       //sWhere += " AND d.WKF_PROC_CD IS NOT NULL";
+       sWhere += " AND D.WKF_PROC_CD IS NOT NULL"
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: ''
+fileSkip: false
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+repResults:
+- NULLIF(b.WKF_PROC_CD, '') IS NOT NULL
+- NULLIF(b.WKF_PROC_CD, '') IS NOT NULL
+- NULLIF(d.WKF_PROC_CD, '') IS NOT NULL
+- NULLIF(D.WKF_PROC_CD, '') IS NOT NULL
