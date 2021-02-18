@@ -58,6 +58,11 @@ namespace TextConv
         public ReplaceItem(string args) {
             string splitWords = Xmler.GetAppSettingValue("splitwords", ";;;");
             string[] words = Regex.Split(args, splitWords);
+            if (words.Length < 2)
+            {
+                string msg = string.Format("★★★args should be splited by tabkey, not spaces.★★★\nargs:【{0}】", args);
+                throw new ArgumentException(msg);
+            } 
 
             Match m;
 
