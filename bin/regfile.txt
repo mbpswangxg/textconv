@@ -118,7 +118,7 @@ DECODE=DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)
 TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
 TO_CLOB=TO_CLOB\('\W+(\w+)\s*\+\s*(\w+)\W+'\)	CAST('" + $1 + $2 + "' AS NVARCHAR(" + ($1.length + $2.length) + "))
 
-WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
+#WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
 UserTransaction=new UserTransaction\(\)	Transaction
 
 usertabcol=select [\w,\s]+from user_tab_columns where table_name='(\w+)'	repfile=repfiles/selectUserTabCol.sql
@@ -128,6 +128,7 @@ usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns 
 usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 insertscript=(\s*)(\<script src="csjs\/im_window.js"\>)	null=$1<script src="jae/migration/util.js"></script>$1$2	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
 insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
+getEleChange=document.getElementById	getElement
 
 showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
 showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
@@ -153,7 +154,7 @@ BTN02W45=class="BTN02" 	repCmdKey=class="BTN02 W045" 	IgnoreCase=True	Multiline=
 nowrap1=(\<td class="output"\s*)(\>セキュリティ\<font)	null=$1 style="white-space: nowrap;"$2
 font1=(font-family: '[^'"]+')"	$1;"
 ouput1=(\<td[^\<\>]+class="output)\s+VWRITE"\>(承認者コメント参照)	null=$1"><div style="display: inline-block;" class="VWRITE">$2</div>
-td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>(\s+\<tr\>)	repfile=repfiles/html1-td21.txt	rangefrom=\<table rangeto=フロー参照
+td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>(\s+\<tr\>)	repfile=repfiles/html1-td2.txt	rangefrom=\<table rangeto=フロー参照
 
 HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(p_sDispInfo|\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL|RESULT)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
 CIMART=<!--[^(IMART)-]+IMART[^-]+-->	
@@ -265,5 +266,11 @@ PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
 decodeURI=decodeURI	htmlDecode
 delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*\s*[^\r\n]*--\>	repname=		rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
 delcomment=(\<\!--)((?:.*|IMART)[\r\n]*)	repCmdKey=$1	IgnoreCase=True	Multiline=True	rangeSkip=False	rangeFrom=\<\!--	rangeTo=IMART[\>\s]*--\>
+
+#delcoimart=(\<\!)--|--(\>)	repname=★
+delcoimart=\<\!--	repname=<!★
+delcoimart=--\>	repname=★>
+delcoimart=<!★[^★]+\<\/?IMART[\s\S]*?★>	repname=	IgnoreCase=True	Multiline=True	rangeSkip=True	rangeFrom=\<script	rangeTo=\<\/script\>
+delcoimart=★	repname=--
 
 #webhost=Web.host\(\)	Procedure.getHost()
