@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-c delcomment -d C:\\resin\\resin-pro-4.0.64\\webapps\\imart\\WEB-INF\\jssp\\src\\jae\\0020_conmnfequip\\equipinspect\\"
+      "commandLineArgs": "-c NULLIF -d C:\\resin\\resin-pro-4.0.64\\webapps\\imart\\WEB-INF\\jssp\\src\\jae\\0020_conmnfequip\\equipinspect\\"
     }
   }
 }

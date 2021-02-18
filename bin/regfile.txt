@@ -99,6 +99,8 @@ UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCa
 UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
 UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
 
+NULLIF=(\s+)(\w\.\w+)\s+IS\s+NOT\s+NULL	repCmdKey=$1NULLIF($2, '') IS NOT NULL	IgnoreCase=True	Multiline=True
+NULLIF=(\s+)(\w+)\s+IS\s+NOT\s+NULL	repCmdKey=$1NULLIF($2, '') IS NOT NULL	IgnoreCase=True	Multiline=True
 
 DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
@@ -118,7 +120,7 @@ DECODE=DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)
 TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
 TO_CLOB=TO_CLOB\('\W+(\w+)\s*\+\s*(\w+)\W+'\)	CAST('" + $1 + $2 + "' AS NVARCHAR(" + ($1.length + $2.length) + "))
 
-WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
+#WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
 UserTransaction=new UserTransaction\(\)	Transaction
 
 usertabcol=select [\w,\s]+from user_tab_columns where table_name='(\w+)'	repfile=repfiles/selectUserTabCol.sql
@@ -128,6 +130,7 @@ usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns 
 usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 insertscript=(\s*)(\<script src="csjs\/im_window.js"\>)	null=$1<script src="jae/migration/util.js"></script>$1$2	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
 insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
+getEleChange=document.getElementById    getElement
 
 showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
 showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
