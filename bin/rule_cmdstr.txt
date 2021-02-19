@@ -28,3 +28,4 @@ cmdkey=(FORMAT\()(activity_cd)(,)	repCmdKey=$1CONVERT(decimal,$2)$3
 cmdkey=class="BTN02" 	repCmdKey=class="BTN02 W045" 	IgnoreCase=True	Multiline=True
 cmdkey=(\<\!--)((?:.*|IMART)[\r\n]*)	repCmdKey=$1	IgnoreCase=True	Multiline=True	rangeSkip=False	rangeFrom=\<\!--	rangeTo=IMART[\>\s]*--\>
 cmdkey=(\w\.\w+)\s+IS\s+NOT\s+NULL	repCmdKey=NULLIF($1, '') IS NOT NULL	IgnoreCase=True	Multiline=True
+cmdkey=(fnc_clearLine\(i_sTarget\)\{\n)(([^\n]+=\s*"";\n)+)(\s+\})	repCmdKey=$1$2      return false;\n$4	IgnoreCase=True	Multiline=True
