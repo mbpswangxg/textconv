@@ -1,4 +1,4 @@
-cd C:\tool\textconv\bin
+cd C:\workspace\textconv\bin
 
 REM set P1=C:\resin\resin-pro-4.0.64\webapps\imart\WEB-INF\jssp\src\jae\0020_conmnfequip\equipinspect\
 set P1=C:\resin\resin-pro-4.0.64\webapps\imart\WEB-INF\jssp\src\jae\0010_conbsnplan\equipchk
@@ -31,4 +31,6 @@ textconv -c showtitle -d %P1%
 
 textconv -c DATENULL -d %P1%
 textconv -c delcoimart -d %P1%
+
+textconv -c PORTAL -d %P1%
 

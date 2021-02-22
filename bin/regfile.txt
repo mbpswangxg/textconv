@@ -191,7 +191,7 @@ incfile=(S_PAGE_FILEINFO[^;]+fileinfo";)(\s*)	repfile=repfiles/jsFormFileUpload1
 #==============================================
 #JS  
 #==============================================
-PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
+PORTAL=\/imart\/.+"\.portal\\n"	repname=/imart/login\n"
 decodeURI=decodeURI	htmlDecode
 delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*\s*[^\r\n]*--\>	repname=		rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
 #delcomment=(\<\!--)((?:.*|IMART)[\r\n]*)	repCmdKey=$1	IgnoreCase=True	Multiline=True	rangeSkip=False	rangeFrom=\<\!--	rangeTo=IMART[\>\s]*--\>
