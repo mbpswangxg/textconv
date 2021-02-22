@@ -1,0 +1,36 @@
+Name: cmdkey
+Desc: description of rule.
+pattern: (fnc_clearLine\(i_sTarget\)\{\n)(([^\n]+=\s*"";\n)+)(\s+\})
+replacement: $1$2      return false;\n$4
+IgnoreCase: true
+Multiline: true
+ExcapeText: 
+inputContent: >-
+  function fnc_callbackSearch(result) {
+        if (result != ""){
+          p_oThisForm.elements["APPRV_USER" + p_sTarget].value    = result[0]["user_cd"];
+          p_oThisForm.elements["APPRV_USER_NAME" + p_sTarget].value = result[0]["user_name"];
+        }
+      }
+
+      function fnc_clearLine(i_sTarget){
+        p_oThisForm.elements["APPRV_USER" + i_sTarget].value      = "";
+        p_oThisForm.elements["APPRV_USER_NAME" + i_sTarget].value   = "";
+      }
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+destFolder: ''
+filefilter: ''
+fileSkip: false
+cmdKey: ''
+repCmdKey: ''
+repfile: ''
+currentfile: ''
+repResults:
+- >-
+  fnc_clearLine(i_sTarget){
+        p_oThisForm.elements["APPRV_USER" + i_sTarget].value      = "";
+        p_oThisForm.elements["APPRV_USER_NAME" + i_sTarget].value   = "";
+        return false;
+      }

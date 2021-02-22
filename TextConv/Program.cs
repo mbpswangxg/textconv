@@ -44,7 +44,7 @@ namespace TextConv
             }
             if (!string.IsNullOrEmpty(destFile))
             {
-                ReplaceFolder(folder, ruleFile, cmd);
+                RelaceFile(destFile, ruleFile, cmd);
             }
 
         }
