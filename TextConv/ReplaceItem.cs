@@ -154,26 +154,26 @@ namespace TextConv
                 m = Regex.Match(words[i], @"excludewords=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    FillSet(m.Groups[1].Value, this.excludeWords);
+                    FileHelper.FillSet(m.Groups[1].Value, this.excludeWords);
                     continue;
                 }
                 m = Regex.Match(words[i], @"excludefile=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
                     this.excludefile = m.Groups[1].Value;
-                    FillFromFile(m.Groups[1].Value, this.excludeWords);
+                    FileHelper.FillFromFile(m.Groups[1].Value, this.excludeWords);
                     continue;
                 }
                 m = Regex.Match(words[i], @"dicwordfile=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    FillFromFile(m.Groups[1].Value, this.dicwords);
+                    FileHelper.FillFromFile(m.Groups[1].Value, this.dicwords);
                     continue;
                 }
                 m = Regex.Match(words[i], @"replaceIndexes=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    FillSet(m.Groups[1].Value, this.matchIndexes);
+                    FileHelper.FillSet(m.Groups[1].Value, this.matchIndexes);
                     continue;
                 }
                 m = Regex.Match(words[i], @"skipMatchIndex=(true|false)", RegexOptions.IgnoreCase);
@@ -619,22 +619,6 @@ namespace TextConv
                 }
             }
         }
-        private void FillFromFile(string file, ICollection<string> myset)
-        {
-            if (!File.Exists(file)) return;
-
-            string[] lines = File.ReadAllLines(file, Config.Encoding);
-            foreach(string line in lines)
-            {
-                //空行を飛ばす
-                if (Regex.IsMatch(line, @"^\s*$")) continue;
-
-                //コメント行を飛ばす
-                if (Regex.IsMatch(line, @"^(#|;|\-\-|\/\/)")) continue;
-                FillSet(line, myset);
-            }
-        }
-        
         private string MatchReplacer(Match m)
         {
             matchIndex++;
@@ -684,7 +668,7 @@ namespace TextConv
             else if (repCmdKey.EndsWith("CASE_GROUP"))
             {
                 HashSet<string> repSet = new HashSet<string>();
-                FillSet(replacement, repSet);
+                FileHelper.FillSet(replacement, repSet);
                 for (int i = 0; i < m.Groups.Count; i++)
                 {
                     if (!repSet.Contains(i.ToString())) continue;
@@ -772,13 +756,5 @@ namespace TextConv
             return newV;
         }
 
-        private void FillSet(string content, ICollection<string> destSet)
-        {
-            string[] words = Regex.Split(content, @"[\t,;]+");
-            foreach(var w in words)
-            {
-                destSet.Add(w);
-            }
-        }
     }
 }

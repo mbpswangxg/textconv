@@ -8,6 +8,7 @@ namespace TextConv
 {
     public class HtmlParser
     {
+        #region static methods
         public static string HistoryFile
         {
             get
@@ -95,5 +96,6 @@ namespace TextConv
 
             return WebUtility.HtmlDecode(sb.ToString());
         }
+        #endregion
     }
 }

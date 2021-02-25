@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace XlsWxg
+namespace TextConv
 {
     public class UtilWxg
     {
