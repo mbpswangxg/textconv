@@ -56,7 +56,7 @@ namespace TextConv
 
         public ReplaceItem() { }
         public ReplaceItem(string args) {
-            string splitWords = Xmler.GetAppSettingValue("splitwords", ";;;");
+            string splitWords = Config.GetAppSettingValue2("splitwords", ";;;");
             string[] words = Regex.Split(args, splitWords);
             if (words.Length < 2)
             {
@@ -603,19 +603,19 @@ namespace TextConv
             
             //if (!Multiline)
             //{
-            //    string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
+            //    string[] lines = File.ReadAllLines(file, Config.Encoding);
             //    if (replaceLines(lines))
             //    {
-            //        File.WriteAllLines(file, lines, FileHelper.Encoding);
+            //        File.WriteAllLines(file, lines, Config.Encoding);
             //    }
             //}
             //else
             {
-                string content = File.ReadAllText(file, FileHelper.Encoding);
+                string content = File.ReadAllText(file, Config.Encoding);
                 string newContent = replaceText(content);
                 if (!content.Equals(newContent))
                 {
-                    File.WriteAllText(file, newContent, FileHelper.Encoding);
+                    File.WriteAllText(file, newContent, Config.Encoding);
                 }
             }
         }
@@ -623,7 +623,7 @@ namespace TextConv
         {
             if (!File.Exists(file)) return;
 
-            string[] lines = File.ReadAllLines(file, FileHelper.Encoding);
+            string[] lines = File.ReadAllLines(file, Config.Encoding);
             foreach(string line in lines)
             {
                 //空行を飛ばす

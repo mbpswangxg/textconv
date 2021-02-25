@@ -1,53 +1,30 @@
 ﻿using HtmlAgilityPack;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
-
-namespace XlsWxg
+namespace TextConv
 {
     public class HtmlParser
     {
-        public static Encoding thisEncoding
+        public static string HistoryFile
         {
             get
             {
-                string encoding = ConfigurationManager.AppSettings.Get("encoding");
-                if (string.IsNullOrEmpty(encoding))
-                {
-                    return Encoding.UTF8;
-                }
-                else
-                {
-                    return Encoding.GetEncoding(encoding);
-                }
+                return Config.GetAppSettingValue2("history.file", "history.txt");
             }
         }
+
         public static string GetInnerText(string htmlpath, string findString)
         {
-            
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.Load(htmlpath, thisEncoding);
-
-            string[] finds = findString.Split(";".ToCharArray());
-            Dictionary<string,  HtmlNodeCollection> lstNode = new Dictionary<string, HtmlNodeCollection>();
-            foreach (var key in finds) 
-            {
-                var ns = htmlDoc.DocumentNode.SelectNodes(key);
-                if (ns == null) continue;
-                lstNode.Add(key, ns);
-            }
+            Dictionary<string, HtmlNodeCollection> lstNode = GetNodes(htmlpath, findString);
 
             StringBuilder sb = new StringBuilder();
-            string tagName = string.Empty;
             foreach (KeyValuePair<string, HtmlNodeCollection> kv in lstNode)
             {
-                tagName = UtilWxg.GetMatchGroup(kv.Key, @"\/\/(\w+)", 1);
-                sb.Append("##").Append(kv.Key).AppendLine();
                 foreach (var n in kv.Value)
                 {
-                    sb.Append("tag:").Append(tagName).Append(",");
                     foreach (var atr in n.Attributes)
                     {
                         sb.Append(atr.Name).Append(":").Append(atr.Value).Append(",");
@@ -56,9 +33,47 @@ namespace XlsWxg
                     sb.AppendLine();
                 }
             }
-            
-            
+
             return WebUtility.HtmlDecode(sb.ToString());
+        }
+        
+        public static string GetOutHtml(string htmlpath, string findString)
+        {
+            Dictionary<string, HtmlNodeCollection> lstNode = GetNodes(htmlpath, findString);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (KeyValuePair<string, HtmlNodeCollection> kv in lstNode)
+            {
+                foreach (var n in kv.Value)
+                {
+                    if (n.Attributes.Contains("type"))
+                    {
+                        sb.Append("type:").Append(n.Attributes["type"].Value).Append(",");
+                    }
+                    sb.Append(n.OuterHtml);
+                    sb.AppendLine();
+                }
+            }
+
+            return WebUtility.HtmlDecode(sb.ToString());
+        }
+        public static Dictionary<string, HtmlNodeCollection> GetNodes(string htmlpath, string findString)
+        {
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.Load(htmlpath, Config.Encoding);
+
+            string[] finds = Regex.Split(findString, @";|\n");
+            Dictionary<string, HtmlNodeCollection> lstNode = new Dictionary<string, HtmlNodeCollection>();
+            foreach (var key in finds)
+            {
+                if (string.IsNullOrEmpty(key)) continue;
+
+                var ns = htmlDoc.DocumentNode.SelectNodes(key);
+                if (ns == null) continue;
+                lstNode.Add(key, ns);
+            }
+
+            return lstNode;
         }
         public static string GetAttText(string htmlpath, string findString)
         {

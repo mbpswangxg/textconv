@@ -24,7 +24,7 @@ namespace TextConv
             string folder = getValue("-d", args);
             if (string.IsNullOrEmpty(folder))
             {
-                folder = Xmler.GetAppSettingValue("srcfolder");
+                folder = Config.GetAppSettingValue("srcfolder");
             }
             string destFile = getValue("-f", args);
             if (string.IsNullOrEmpty(folder) && string.IsNullOrEmpty(destFile))
@@ -35,7 +35,7 @@ namespace TextConv
             string ruleFile = getValue("-r", args);
             if (string.IsNullOrEmpty(ruleFile))
             {
-                ruleFile = Xmler.GetAppSettingValue("regfile", "regfile.txt");
+                ruleFile = Config.GetAppSettingValue2("regfile", "regfile.txt");
             }
             //==============================================================
             if (!string.IsNullOrEmpty(folder))

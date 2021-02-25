@@ -11,21 +11,21 @@ namespace TextConv
         {
             get
             {
-                return Xmler.GetAppSettingValue("gitusername");
+                return Config.GetAppSettingValue("gitusername");
             }
         }
         public static string UserMail
         {
             get
             {
-                return Xmler.GetAppSettingValue("gitusermail");
+                return Config.GetAppSettingValue("gitusermail");
             }
         }
         public static string RepoPath
         {
             get
             {
-                return Xmler.GetAppSettingValue("gitrepopath");
+                return Config.GetAppSettingValue("gitrepopath");
             }
         }
 
