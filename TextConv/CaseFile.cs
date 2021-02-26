@@ -2,8 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Text;
 using System.Net;
 
 namespace TextConv
@@ -16,12 +15,15 @@ namespace TextConv
         public string subFileName;
         public List<CaseItem> listNode = new List<CaseItem>();
 
+        private string htmlPath;
         private HtmlDocument htmlDoc;
         private static string subFilePathSetting = Config.GetAppSettingValue("subHtmlPath");
         public CaseFile(string htmlPath)
         {
+            this.htmlPath = htmlPath;
             this.htmlDoc = new HtmlDocument();
-            this.htmlDoc.Load(htmlPath);
+
+            this.htmlDoc.Load(File.OpenRead(htmlPath), true);
             this.subFileName = UtilWxg.GetMatchGroup(htmlPath, subFilePathSetting, 1);
 
             FileInfo fi = new FileInfo(htmlPath);
@@ -55,19 +57,6 @@ namespace TextConv
                     ci.title = this.title;
                     ci.subpath = this.subFileName;
                     ci.refresh(item, node);
-                    if (item.textName.Contains("xpath"))
-                    {
-                        string textXpath = string.Format(item.textXpath, ci.eventKey);
-                        var n2 = htmlDoc.DocumentNode.SelectNodes(textXpath);
-                        if(n2 != null)
-                        {
-                            string innerText = n2.First().InnerText;
-                            if(Regex.IsMatch(innerText, @"^\w+"))
-                            {
-                                ci.eventName = WebUtility.HtmlDecode(innerText);
-                            }
-                        }
-                    }
                     ci.ToCaseDesc(item, node);
 
                     listNode.Add(ci);
@@ -83,6 +72,14 @@ namespace TextConv
             filePath = UtilWxg.ReplaceKeyValue(filePath, "filename", this.FileName);
             string[] lines = listNode.Select(ci => ci.ToStringLine()).ToArray();
             File.WriteAllLines(filePath, lines);
+
+            UtilWxg.Log(ToStringLine());
+        }
+        public string ToStringLine()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.htmlPath).Append(title).AppendLine();
+            return sb.ToString();
         }
     }
 }

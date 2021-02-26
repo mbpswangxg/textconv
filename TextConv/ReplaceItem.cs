@@ -154,7 +154,7 @@ namespace TextConv
                 m = Regex.Match(words[i], @"excludewords=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    FileHelper.FillSet(m.Groups[1].Value, this.excludeWords);
+                    FileHelper.FillSet(m.Groups[1].Value, this.excludeWords, ",");
                     continue;
                 }
                 m = Regex.Match(words[i], @"excludefile=([^\t]+)", RegexOptions.IgnoreCase);
@@ -173,7 +173,7 @@ namespace TextConv
                 m = Regex.Match(words[i], @"replaceIndexes=([^\t]+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
-                    FileHelper.FillSet(m.Groups[1].Value, this.matchIndexes);
+                    FileHelper.FillSet(m.Groups[1].Value, this.matchIndexes, ",");
                     continue;
                 }
                 m = Regex.Match(words[i], @"skipMatchIndex=(true|false)", RegexOptions.IgnoreCase);
@@ -668,7 +668,7 @@ namespace TextConv
             else if (repCmdKey.EndsWith("CASE_GROUP"))
             {
                 HashSet<string> repSet = new HashSet<string>();
-                FileHelper.FillSet(replacement, repSet);
+                FileHelper.FillSet(replacement, repSet, ",");
                 for (int i = 0; i < m.Groups.Count; i++)
                 {
                     if (!repSet.Contains(i.ToString())) continue;

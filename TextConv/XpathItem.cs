@@ -14,13 +14,12 @@ namespace TextConv
 
         public string eventText;
         public Dictionary<string, string> caseDescMap = new Dictionary<string, string>();
+        public Dictionary<string, string> wordMap = new Dictionary<string, string>();
         public string caseDescFormat;
 
         public string textName;
-        public string textXpath;
-        public string text;
-
-
+        public SortedSet<string> textXpathSet = new SortedSet<string>();
+ 
         public XpathItem(string args)
         {
             string splitWords = Config.GetAppSettingValue2("splitwords", ";;;");
@@ -40,16 +39,17 @@ namespace TextConv
                 name = m.Groups[1].Value;
                 nameXpath = m.Groups[2].Value;
             }
-            text = words[1];
-            m = Regex.Match(text, @"^(\w+)=(.+)");
-            if (m.Success)
+            
+            for (int i = 1; i < words.Length; i++)
             {
-                textName = m.Groups[1].Value;
-                textXpath = m.Groups[2].Value;
-            }
+                m = Regex.Match(words[i], @"^(text\w+)=(.+)");
+                if (m.Success)
+                {
+                    textName = m.Groups[1].Value;
+                    string textXpath = m.Groups[2].Value;
+                    FileHelper.FillFromFile(textXpath, this.textXpathSet, string.Empty);
+                }
 
-            for (int i = 2; i < words.Length; i++)
-            {
                 m = Regex.Match(words[i], @"eventText=(.+)", RegexOptions.IgnoreCase);
                 if (m.Success)
                 {
@@ -68,6 +68,13 @@ namespace TextConv
                 if (m.Success)
                 {
                     caseDescFormat = m.Groups[1].Value;
+                    continue;
+                }
+                m = Regex.Match(words[i], @"worddictionary=([^\t]+)", RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    string wordmapfile = m.Groups[1].Value;
+                    FileHelper.FillFromFile(wordmapfile, this.wordMap);
                     continue;
                 }
             }

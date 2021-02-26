@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -83,6 +84,17 @@ namespace TextConv
             }
             string datas = string.Join(Environment.NewLine, lstTable);
             return header + Environment.NewLine + datas;
+        }
+
+        public static void Log(string content)
+        {
+            string isWriteLog = Config.GetAppSettingValue("writeLog");
+            bool writeLog = false;
+            bool.TryParse(isWriteLog, out writeLog);
+            if (!writeLog) return;
+
+            string currPath = Environment.CurrentDirectory + "\\Application_" + DateTime.Today.ToString("yyyyMMdd") + ".log";
+            File.AppendAllText(currPath, content, Config.Encoding);
         }
     }
 }

@@ -24,7 +24,12 @@ namespace TextConv
 
             File.Move(sourceFileName, destFileName);
         }
-        public static void FillFromFile(string file, Dictionary<string, string> caseDescMap)
+        public static void FillFromFile(string file, Dictionary<string, string> mymap)
+        {
+            string splitWords = Config.GetAppSettingValue("splitwords");
+            FillFromFile(file, mymap, splitWords);
+        }
+        public static void FillFromFile(string file, Dictionary<string, string> mymap, string splitWords)
         {
             if (!File.Exists(file)) return;
 
@@ -35,25 +40,31 @@ namespace TextConv
                 if (Regex.IsMatch(line, @"^\s*$")) continue;
 
                 //コメント行を飛ばす
-                if (Regex.IsMatch(line, @"^(#|;|\-\-|\/\/)")) continue;
-                FillMap(line, caseDescMap);
+                if (Regex.IsMatch(line, @"^#")) continue;
+                FillMap(line, mymap, splitWords);
             }
         }
-        public static void FillMap(string line, Dictionary<string, string> caseDescMap)
+        public static void FillMap(string line, Dictionary<string, string> mymap, string splitWords)
         {
-            string[] words = Regex.Split(line, @"[\t,;=]+");
+            string[] words = Regex.Split(line, splitWords);
             if (words.Length > 1)
             {
-                if (caseDescMap.ContainsKey(words[0]))
+                if (mymap.ContainsKey(words[0]))
                 {
                     throw new Exception(string.Format("dupliated:{0}, line:{1}", words[0], line));
                 }
-                caseDescMap.Add(words[0], words[1]);
+                mymap.Add(words[0], words[1]);
             }
         }
 
         public static void FillFromFile(string file, ICollection<string> myset)
         {
+            string splitWords = Config.GetAppSettingValue("splitwords");
+            FillFromFile(file, myset, splitWords);
+        }
+
+        public static void FillFromFile(string file, ICollection<string> myset, string splitWords)
+        {
             if (!File.Exists(file)) return;
 
             string[] lines = File.ReadAllLines(file, Config.Encoding);
@@ -63,14 +74,20 @@ namespace TextConv
                 if (Regex.IsMatch(line, @"^\s*$")) continue;
 
                 //コメント行を飛ばす
-                if (Regex.IsMatch(line, @"^(#|;|\-\-|\/\/)")) continue;
-                FillSet(line, myset);
+                if (Regex.IsMatch(line, @"^#")) continue;
+                FillSet(line, myset, splitWords);
             }
         }
 
-        public static void FillSet(string content, ICollection<string> destSet)
+        public static void FillSet(string line, ICollection<string> destSet, string splitWords)
         {
-            string[] words = Regex.Split(content, @"[\t,;]+");
+            if (string.IsNullOrEmpty(splitWords))
+            {
+                destSet.Add(line);
+                return;
+            }
+
+            string[] words = Regex.Split(line, splitWords);
             foreach (var w in words)
             {
                 destSet.Add(w);
