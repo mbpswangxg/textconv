@@ -10,6 +10,7 @@ namespace TextConv
 {
     public class CaseItem
     {
+        public int No;
         public string title;
         public string subpath;
         public string eventKey;
@@ -160,6 +161,7 @@ namespace TextConv
         public string ToStringLine()
         {
             List<string> lstItem = new List<string>();
+            lstItem.Add(No.ToString());
             lstItem.Add(title);
             lstItem.Add(subpath);
             lstItem.Add(eventText);

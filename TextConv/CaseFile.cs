@@ -47,30 +47,49 @@ namespace TextConv
         }
         public void Parse(List<XpathItem> ruleItems)
         {
+            listNode.Clear();
+
+            CaseItem ci = new CaseItem();
+            listNode.Add(ci);
+            ci.No = listNode.Count;
+
+            ci.title = this.title;
+            ci.subpath = this.subFileName;
+            ci.eventText = "初期表示";
+            ci.caseDesc = "画面が表示される";
+
             foreach (var item in ruleItems)
             {
                 var ns = htmlDoc.DocumentNode.SelectNodes(item.nameXpath);
                 if (ns == null) continue;
                 foreach(var node in ns)
                 {
-                    CaseItem ci = new CaseItem();
+                    ci = new CaseItem();
+                    listNode.Add(ci);
+                    ci.No = listNode.Count;
+
                     ci.title = this.title;
                     ci.subpath = this.subFileName;
                     ci.refresh(item, node);
                     ci.ToCaseDesc(item, node);
-
-                    listNode.Add(ci);
                 }
             }
         }
         
         public void Export()
         {
-            string filePath = Config.GetAppSettingValue("caseFilePath");
-            filePath = UtilWxg.ReplaceKeyValue(filePath, "title", titleText);
-            
-            filePath = UtilWxg.ReplaceKeyValue(filePath, "filename", this.FileName);
+            string caseFileName = Config.GetAppSettingValue("caseFileName");
+            caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "title", titleText);
+            caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "filename", this.FileName);
+
             string[] lines = listNode.Select(ci => ci.ToStringLine()).ToArray();
+            string exportFolder = Config.GetAppSettingValue2("exportFolder", "exportText");
+            if (!exportFolder.EndsWith("\\")) exportFolder = exportFolder + "\\";
+            if (!Directory.Exists(exportFolder))
+            {
+                Directory.CreateDirectory(exportFolder);
+            }
+            string filePath = exportFolder + caseFileName;
             File.WriteAllLines(filePath, lines);
 
             UtilWxg.Log(ToStringLine());
