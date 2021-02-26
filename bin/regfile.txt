@@ -1,4 +1,4 @@
-﻿#comment start with #, and no range comments.
+#comment start with #, and no range comments.
 #[0]:pattern, [1]:replacement,[2-n]:regex ignoreCase=false, default true.
 #------------------------------------------------
 #general command:
@@ -75,29 +75,29 @@ ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
 CASE_TAB=\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	rangeFrom=FROM	rangeTo=WHERE	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
 CASE_TAB=(?:FROM|UPDATE|DELETE(?:\s+FROM)*|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
-UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js	excludefile=repfiles/extable.txt
-LCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	LCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js
+UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js	excludefile=repfiles/extable.txt
+LCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	LCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
 
 UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
 LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
-UCASE_COL="\s*\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt
-UCASE_COL="'([\s,]*(\w+))+[\s,]*"	UCASE_GROUP=1,2	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt
-UCASE_COL="[\s,]*\w+\((\w+)\)[^"]*"	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
-UCASE_COL="\s*\w+\((\w+)\)\s*	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
-UCASE_COL="[\s,]*(\w+)\s*(,\s*(\w+))*,*"	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=INSERT[\w\s]+\(	rangeTo=\)
-UCASE_COL="\s*SET\s+(\w+)\s*=	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*WHERE\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*'"	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=2	ignoreCase=false
-UCASE_COL="\s*AND\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=1,2	ignoreCase=false
-UCASE_COL="\s*ORDER BY\s+(\w+)\s*"	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false
-UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
-UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="'([\s,]*(\w+))+[\s,]*"	UCASE_GROUP=1,2	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="[\s,]*\w+\((\w+)\)[^"]*"	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*\w+\((\w+)\)\s*	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="[\s,]*(\w+)\s*(,\s*(\w+))*,*"	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=INSERT[\w\s]+\(	rangeTo=\)	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*SET\s+(\w+)\s*=	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*WHERE\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*'"	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=2	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*AND\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=1,2	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*ORDER BY\s+(\w+)\s*"	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
 
 NULLIF=(\s+)(\w\.\w+)\s+IS\s+NOT\s+NULL	repCmdKey=$1NULLIF($2, '') IS NOT NULL	IgnoreCase=True	Multiline=True
 NULLIF=(\s+)(\w+)\s+IS\s+NOT\s+NULL	repCmdKey=$1NULLIF($2, '') IS NOT NULL	IgnoreCase=True	Multiline=True
@@ -201,7 +201,8 @@ delcoimart=\<\!--	repname=<!★
 delcoimart=--\>	repname=★>
 delcoimart=<!★[^★]+\<\/?IMART[\s\S]*?★>	repname=	IgnoreCase=True	Multiline=True	rangeSkip=True	rangeFrom=\<script	rangeTo=\<\/script\>
 delcoimart=★	repname=--
-
+fnc_clearLine=(fnc_clearLine\(i_sTarget\)\{\n)(([^\n]+=\s*"";\n)+)(\s+\})	repCmdKey=$1$2      return false;\n$4	IgnoreCase=True	Multiline=True
+virfile=new VirtualFile	rep=Procedure.migration.storage.virtualFile
 #webhost=Web.host\(\)	Procedure.getHost()
 
 VWRITECHANGE=VWRITE\s+A_C([^\>]+\>)([^\<]+)	repname=$1<div class="VWRITE A_C">$2</div>

@@ -1,6 +1,0 @@
-cmdkey=\<td\>	repname=<td class="A_★">	rangeSkip=False	rangeFrom=\<td\>	rangeTo=DRAFTcmdkey=\<span[^\(\)]+\(\);"\>	repCmdKey=<IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>	rangeSkip=False	rangeFrom=\<td class="TDCELLCOLOR VA_M"\>	rangeTo=\</td/>
-cmdkey=\<span[^\(\)]+fnc_openAccount\(\);"\>	repCmdKey=<IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>	rangeSkip=False	rangeFrom=\<td class="TDCELLCOLOR VA_M"\>	rangeTo=\</td\>
-cmdkey=\<span[^\(\)]+fnc_openAccount\(\);"\>	repCmdKey=<IMART type="include" page=S_PATH_KEIRIFILE></IMART>	rangeSkip=False	rangeFrom=\<td class="TDCELLCOLOR VA_M"\>	rangeTo=\</td\>
-cmdkey=(ファイルアップロード\s+)(var S_REDIRECT_INDEX)	repCmdKey=$1var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";$2
-cmdkey=(var S_PAGE_THIS[^;]+;\s*)	repCmdKey=$1var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
-

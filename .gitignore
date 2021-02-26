@@ -4,11 +4,14 @@ node_modules
 /.vs/**
 
 obj/**
+bak/**
 conver/obj/**
 conver/bin/**
 
 TextConv/obj/**
 TextConv/bin/**
+bin/UT/**
+bin/*.log
 
 # local env files
 .env.local

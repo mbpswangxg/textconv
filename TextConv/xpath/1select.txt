@@ -1,0 +1,1 @@
+﻿//*[(@type='select' or @type='c_selectdb') and (@name='{0}')]/parent::td[1]/preceding-sibling::td/text()
