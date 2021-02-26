@@ -9,7 +9,7 @@ namespace TextConv
 {
     public class Program
     {
-
+        private static string resultFolder = string.Empty;
         static void Main(string[] args)
         {
             //args check 
@@ -41,6 +41,7 @@ namespace TextConv
             string xpath = getValue("-x", args);
             if (!string.IsNullOrEmpty(xpath))
             {
+                resultFolder = UtilWxg.GetMatchGroup(xpath, @"(\w+)\\?$", 1);
                 ruleFile = Config.GetAppSettingValue2("xpathfile", "xpathrule.txt");
                 HtmlParseFolder(xpath, ruleFile);
             }
@@ -194,7 +195,12 @@ namespace TextConv
                 string filePath2 = filePath;
             }
             cf.Parse(ruleItems);
-            cf.Export();
+            cf.Export(resultFolder);
+            Console.WriteLine(string.Format("{0}:casecount={1}",cf.exportFile, cf.listNode.Count));
+            foreach(var msg in cf.errmsgs)
+            {
+                Console.WriteLine(string.Format("   ★Error★:{0}", msg));
+            }
         }
         
         private static void readXpathfile(List<XpathItem> items, string ruleFilePath)

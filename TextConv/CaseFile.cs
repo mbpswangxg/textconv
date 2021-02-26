@@ -14,13 +14,13 @@ namespace TextConv
         public string FileName;
         public string subFileName;
         public List<CaseItem> listNode = new List<CaseItem>();
+        public List<string> errmsgs = new List<string>();
 
-        private string htmlPath;
+        public string exportFile;
         private HtmlDocument htmlDoc;
         private static string subFilePathSetting = Config.GetAppSettingValue("subHtmlPath");
         public CaseFile(string htmlPath)
         {
-            this.htmlPath = htmlPath;
             this.htmlDoc = new HtmlDocument();
 
             this.htmlDoc.Load(File.OpenRead(htmlPath), true);
@@ -72,11 +72,16 @@ namespace TextConv
                     ci.subpath = this.subFileName;
                     ci.refresh(item, node);
                     ci.ToCaseDesc(item, node);
+                    if(string.IsNullOrEmpty(ci.eventName))
+                    {
+                        errmsgs.Add(string.Format("rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}", 
+                            ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name,item.nameXpath));
+                    }
                 }
             }
         }
         
-        public void Export()
+        public void Export(string resultFolder)
         {
             string caseFileName = Config.GetAppSettingValue("caseFileName");
             caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "title", titleText);
@@ -84,21 +89,22 @@ namespace TextConv
 
             string[] lines = listNode.Select(ci => ci.ToStringLine()).ToArray();
             string exportFolder = Config.GetAppSettingValue2("exportFolder", "exportText");
-            if (!exportFolder.EndsWith("\\")) exportFolder = exportFolder + "\\";
+            if (!exportFolder.EndsWith("\\"))
+            {
+                exportFolder = exportFolder + "\\";
+            }
             if (!Directory.Exists(exportFolder))
             {
                 Directory.CreateDirectory(exportFolder);
             }
-            string filePath = exportFolder + caseFileName;
-            File.WriteAllLines(filePath, lines);
+            exportFolder = exportFolder + resultFolder+ "\\";
+            if (!Directory.Exists(exportFolder))
+            {
+                Directory.CreateDirectory(exportFolder);
+            }
 
-            UtilWxg.Log(ToStringLine());
-        }
-        public string ToStringLine()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(this.htmlPath).Append(title).AppendLine();
-            return sb.ToString();
+            exportFile = exportFolder + caseFileName;
+            File.WriteAllLines(exportFile, lines);
         }
     }
 }

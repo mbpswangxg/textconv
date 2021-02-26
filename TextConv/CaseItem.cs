@@ -28,6 +28,8 @@ namespace TextConv
             setEventKeyByAttr(ruleItem, node, "value");
             setEventKeyByAttr(ruleItem, node, "onclick", @"\w+\('(\w+)'", 1);
             setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)\(", 1);
+            setEventKeyByAttr(ruleItem, node, "href", @"\w+\('(\w+)'", 1);
+            setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)\(", 1);
 
             if (ruleItem.name.Contains("button"))
             {

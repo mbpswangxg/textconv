@@ -10,6 +10,8 @@ conver/bin/**
 
 TextConv/obj/**
 TextConv/bin/**
+bin/UT/**
+bin/*.log
 
 # local env files
 .env.local

@@ -1,0 +1,1 @@
+﻿//*[@type='floatingCalendar' and @element='{0}']/ancestor::node()/preceding-sibling::td[1]/text()

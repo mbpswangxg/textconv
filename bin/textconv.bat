@@ -7,4 +7,4 @@ set P1=C:\resin\resin-pro-4.0.64\webapps\imart\WEB-INF\jssp\src\jae\0019_conengp
 
 REM TextConv.exe -c delcoimart -d %P1%
 
-textconv -x DECODE
+textconv -x %P1%
