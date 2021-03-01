@@ -85,6 +85,11 @@ namespace TextConv
                 {
                     replacement = readRepfile(replacement);
                 }
+                else
+                {
+                    replacement = replacement.Replace("\\n", "\n");
+                    replacement = replacement.Replace("\\t", "\t");
+                }
             }
             // ３番目以降のパラメータはOptionで、必須ではない
             for (int i = 2; i < words.Length; i++)
@@ -660,9 +665,6 @@ namespace TextConv
                 || repCmdKey.Equals("null") || repCmdKey.Equals("repCmdKey")
                 || repCmdKey.Equals("repfile"))
             {
-                replacement = replacement.Replace("\\n", "\n");
-                replacement = replacement.Replace("\\t", "\t");
-                
                 newV = Regex.Replace(m.Value, pattern, replacement, RegexOptions);
             }
             else if (repCmdKey.EndsWith("CASE_GROUP"))
