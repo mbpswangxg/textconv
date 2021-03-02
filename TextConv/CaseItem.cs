@@ -27,9 +27,11 @@ namespace TextConv
             setEventKeyByAttr(ruleItem, node, "name");
             setEventKeyByAttr(ruleItem, node, "value");
             setEventKeyByAttr(ruleItem, node, "onclick", @"\w+\('(\w+)'", 1);
-            setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)\(", 1);
-            setEventKeyByAttr(ruleItem, node, "href", @"\w+\('(\w+)'", 1);
-            setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)\(", 1);
+            setEventKeyByAttr(ruleItem, node, "onclick", @"return\s+(\w+\(\d+\))[^""']*", 1);
+            setEventKeyByAttr(ruleItem, node, "onclick", @"return\s+(\w+)[^""']+", 1);
+            setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)[^""']+", 1);
+
+            setEventKeyByAttr(ruleItem, node, "href", @"(\w+[^""]+)", 1);
 
             if (ruleItem.name.Contains("button"))
             {
@@ -75,6 +77,13 @@ namespace TextConv
             if (Regex.IsMatch(this.eventName, ptwords))
             {
                 this.eventName = UtilWxg.GetMatchGroup(this.eventName, ptwords, 1);
+            }
+            if(!string.IsNullOrEmpty(this.eventKey) && !string.IsNullOrEmpty(this.eventName))
+            {
+                if (Regex.IsMatch(this.eventKey, @"\w+") && !Regex.IsMatch(this.eventName, @"\w+"))
+                {
+                    this.eventName = this.eventKey;
+                }
             }
         }
 
@@ -166,6 +175,8 @@ namespace TextConv
             lstItem.Add(No.ToString());
             lstItem.Add(title);
             lstItem.Add(subpath);
+            lstItem.Add(eventKey);
+            lstItem.Add(eventName);
             lstItem.Add(eventText);
             lstItem.Add(caseDesc);
             lstItem.Add(condition);

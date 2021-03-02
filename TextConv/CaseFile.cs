@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Net;
 
 namespace TextConv
@@ -57,7 +57,7 @@ namespace TextConv
             ci.subpath = this.subFileName;
             ci.eventText = "初期表示";
             ci.caseDesc = "画面が表示される";
-
+            bool writeLog = bool.Parse(Config.GetAppSettingValue("writeLog"));
             foreach (var item in ruleItems)
             {
                 var ns = htmlDoc.DocumentNode.SelectNodes(item.nameXpath);
@@ -74,8 +74,16 @@ namespace TextConv
                     ci.ToCaseDesc(item, node);
                     if(string.IsNullOrEmpty(ci.eventName))
                     {
-                        errmsgs.Add(string.Format("rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}", 
+                        errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}", 
                             ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name,item.nameXpath));
+                    }else if (!Regex.IsMatch(ci.eventName, @"\w+"))
+                    {
+                        errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventName={6}    eventText={1}  caseDesc={2}    nodehtml={3}",
+                            ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.nameXpath, ci.eventName));
+                    }
+                    if (writeLog)
+                    {
+                        errmsgs.Add(" ●INFO●:   " + ci.ToStringLine());
                     }
                 }
             }

@@ -190,7 +190,7 @@ namespace TextConv
         {
             string innerText = string.Empty;
             CaseFile cf = new CaseFile(filePath);
-            if(Regex.IsMatch(filePath, "general2.html"))
+            if(Regex.IsMatch(filePath, "general.html"))
             {
                 string filePath2 = filePath;
             }
@@ -199,7 +199,7 @@ namespace TextConv
             Console.WriteLine(string.Format("{0}:casecount={1}",cf.exportFile, cf.listNode.Count));
             foreach(var msg in cf.errmsgs)
             {
-                Console.WriteLine(string.Format("   ★Error★:{0}", msg));
+                Console.WriteLine(msg);
             }
         }
         
