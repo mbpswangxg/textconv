@@ -61,8 +61,8 @@ namespace conver
                 serializer.Serialize(writer, repItem);
             }
 
-            string ruleFile= Xmler.GetAppSettingValue("ruleCmdFileName", "rule_cmdstr.txt");
-            string cmdFolder = Xmler.GetAppSettingValue("ruleCmdFolder");
+            string ruleFile= Config.GetAppSettingValue2("ruleCmdFileName", "rule_cmdstr.txt");
+            string cmdFolder = Config.GetAppSettingValue("ruleCmdFolder");
             if (string.IsNullOrEmpty(cmdFolder))
             {
                 cmdFolder = Application.StartupPath;
@@ -258,6 +258,7 @@ namespace conver
                 hl.Highlight(match, foreColor, backColor);
 
                 TreeNode nodeMatch = treeMatch.Nodes.Add(string.Format("{0} Match[{1}]:{2}", caption, index, reg.ToString()));
+                nodeMatch.Name = string.Format("{0}:{1}", match.Index, match.Length);
                 BindGroup(nodeMatch, match, reg);
                 index++;
             }
@@ -276,6 +277,7 @@ namespace conver
                 string groupName = reg.GroupNameFromNumber(i);
                 string Value = string.Format("[{0}:{1}]{2}", i, groupName, group.Value);
                 TreeNode nodeGroup = node.Nodes.Add(Value);
+                nodeGroup.Name = string.Format("{0}:{1}", group.Index, group.Length);
                 BindCapture(nodeGroup, group);
             }
         }
@@ -290,7 +292,8 @@ namespace conver
             {
                 string Value = string.Format("[{0}:{1}]:{2}",
                     capture.Index, capture.Length, capture.Value);
-                node.Nodes.Add(Value);
+                TreeNode nodeCapture = node.Nodes.Add(Value);
+                nodeCapture.Name = string.Format("{0}:{1}", capture.Index, capture.Length);
             }
         }
         #endregion
@@ -317,5 +320,17 @@ namespace conver
             }
         }
 
+        private void treeResult_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            Match match = Regex.Match(e.Node.Name, @"^(\d+):(\d+)");
+            if (match.Success)
+            {
+                int index = int.Parse(match.Groups[1].Value);
+                int length = int.Parse(match.Groups[2].Value);
+
+                txtInput.Select(index, length);
+                txtInput.ScrollToCaret();
+            }
+        }
     }
 }

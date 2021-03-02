@@ -11,3 +11,4 @@ p_oResultInfo.END	ページャリンク: >>
 
 p_sBtnVal	起票
 fnc_clearLine	1行クリア
+record.description	添付

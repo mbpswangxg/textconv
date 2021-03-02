@@ -72,11 +72,11 @@
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txtRuleDesc = new System.Windows.Forms.ToolStripTextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.chkXPath = new System.Windows.Forms.ToolStripButton();
             this.btnSaveToRuleFile = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.cmbRuleFiles = new System.Windows.Forms.ToolStripComboBox();
             this.btnLoadRuleFile = new System.Windows.Forms.ToolStripButton();
-            this.chkXPath = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.spcFrame)).BeginInit();
             this.spcFrame.Panel1.SuspendLayout();
             this.spcFrame.Panel2.SuspendLayout();
@@ -161,7 +161,7 @@
             this.tpMatch.Controls.Add(this.splitContainer1);
             this.tpMatch.Location = new System.Drawing.Point(4, 22);
             this.tpMatch.Name = "tpMatch";
-            this.tpMatch.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpMatch.Padding = new System.Windows.Forms.Padding(3);
             this.tpMatch.Size = new System.Drawing.Size(553, 585);
             this.tpMatch.TabIndex = 0;
             this.tpMatch.Text = "Input/Match";
@@ -171,7 +171,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -194,9 +194,9 @@
             this.groupBox1.Controls.Add(this.txtPattern);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(547, 127);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
@@ -215,7 +215,7 @@
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -237,9 +237,9 @@
             this.groupBox2.Controls.Add(this.txtInput);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(317, 449);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
@@ -259,9 +259,9 @@
             this.groupBox3.Controls.Add(this.treeMatch);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(222, 449);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
@@ -276,6 +276,7 @@
             this.treeMatch.Size = new System.Drawing.Size(218, 433);
             this.treeMatch.TabIndex = 3;
             this.treeMatch.TabStop = false;
+            this.treeMatch.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeResult_AfterSelect);
             // 
             // tabControl1
             // 
@@ -283,7 +284,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(385, 611);
@@ -293,9 +294,9 @@
             // 
             this.tabPage2.Controls.Add(this.splitContainer4);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage2.Size = new System.Drawing.Size(377, 585);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Replacement";
@@ -305,7 +306,7 @@
             // 
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer4.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -325,7 +326,7 @@
             // 
             this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer5.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer5.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer5.Name = "splitContainer5";
             this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -346,9 +347,9 @@
             this.groupBox10.Controls.Add(this.txtReplacement);
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(0, 0);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox10.Size = new System.Drawing.Size(373, 66);
             this.groupBox10.TabIndex = 6;
             this.groupBox10.TabStop = false;
@@ -371,9 +372,9 @@
             this.groupBox4.Controls.Add(this.chkRange);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox4.Size = new System.Drawing.Size(373, 70);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
@@ -391,7 +392,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtRangeFrom, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(5, 20);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -433,7 +434,7 @@
             this.chkRange.AutoSize = true;
             this.chkRange.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.chkRange.Location = new System.Drawing.Point(5, 2);
-            this.chkRange.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkRange.Margin = new System.Windows.Forms.Padding(2);
             this.chkRange.Name = "chkRange";
             this.chkRange.Size = new System.Drawing.Size(246, 16);
             this.chkRange.TabIndex = 0;
@@ -446,9 +447,9 @@
             this.groupBox5.Controls.Add(this.txtReplaceResult);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(0, 0);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox5.Size = new System.Drawing.Size(373, 439);
             this.groupBox5.TabIndex = 13;
             this.groupBox5.TabStop = false;
@@ -478,7 +479,7 @@
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer3.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -498,7 +499,7 @@
             // 
             this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer6.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer6.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer6.Name = "splitContainer6";
             this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -519,9 +520,9 @@
             this.groupBox9.Controls.Add(this.txtCommand);
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(0, 0);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox9.Size = new System.Drawing.Size(377, 129);
             this.groupBox9.TabIndex = 37;
             this.groupBox9.TabStop = false;
@@ -531,7 +532,7 @@
             // 
             this.txtCommand.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCommand.Location = new System.Drawing.Point(2, 14);
-            this.txtCommand.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCommand.Margin = new System.Windows.Forms.Padding(2);
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.Size = new System.Drawing.Size(373, 113);
             this.txtCommand.TabIndex = 33;
@@ -542,9 +543,9 @@
             this.groupBox6.Controls.Add(this.txtResultFileLogs);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox6.Size = new System.Drawing.Size(377, 127);
             this.groupBox6.TabIndex = 4;
             this.groupBox6.TabStop = false;
@@ -565,9 +566,9 @@
             this.groupBox7.Controls.Add(this.listBoxRule);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox7.Size = new System.Drawing.Size(377, 320);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
@@ -579,7 +580,7 @@
             this.listBoxRule.FormattingEnabled = true;
             this.listBoxRule.ItemHeight = 12;
             this.listBoxRule.Location = new System.Drawing.Point(2, 14);
-            this.listBoxRule.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBoxRule.Margin = new System.Windows.Forms.Padding(2);
             this.listBoxRule.Name = "listBoxRule";
             this.listBoxRule.Size = new System.Drawing.Size(373, 304);
             this.listBoxRule.TabIndex = 0;
@@ -671,6 +672,19 @@
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // chkXPath
+            // 
+            this.chkXPath.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.chkXPath.Checked = true;
+            this.chkXPath.CheckOnClick = true;
+            this.chkXPath.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkXPath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.chkXPath.Image = ((System.Drawing.Image)(resources.GetObject("chkXPath.Image")));
+            this.chkXPath.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.chkXPath.Name = "chkXPath";
+            this.chkXPath.Size = new System.Drawing.Size(42, 22);
+            this.chkXPath.Text = "XPath";
+            // 
             // btnSaveToRuleFile
             // 
             this.btnSaveToRuleFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -700,19 +714,6 @@
             this.btnLoadRuleFile.Name = "btnLoadRuleFile";
             this.btnLoadRuleFile.Size = new System.Drawing.Size(37, 22);
             this.btnLoadRuleFile.Text = "Load";
-            // 
-            // chkXPath
-            // 
-            this.chkXPath.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.chkXPath.Checked = true;
-            this.chkXPath.CheckOnClick = true;
-            this.chkXPath.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkXPath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.chkXPath.Image = ((System.Drawing.Image)(resources.GetObject("chkXPath.Image")));
-            this.chkXPath.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.chkXPath.Name = "chkXPath";
-            this.chkXPath.Size = new System.Drawing.Size(42, 22);
-            this.chkXPath.Text = "XPath";
             // 
             // RegexTabPage
             // 
