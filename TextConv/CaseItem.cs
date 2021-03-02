@@ -59,7 +59,7 @@ namespace TextConv
                 {
                     HtmlNode firstNode = n2.First();
                     string innerText = firstNode.InnerText;
-                    if (Regex.IsMatch(innerText, @"^\w+"))
+                    if (!string.IsNullOrEmpty(innerText))
                     {
                         this.eventName = WebUtility.HtmlDecode(innerText);
                         break;

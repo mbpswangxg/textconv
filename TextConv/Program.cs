@@ -190,7 +190,7 @@ namespace TextConv
         {
             string innerText = string.Empty;
             CaseFile cf = new CaseFile(filePath);
-            if(Regex.IsMatch(filePath, "mkr_approver.html"))
+            if(Regex.IsMatch(filePath, "general2.html"))
             {
                 string filePath2 = filePath;
             }
