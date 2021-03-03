@@ -2,3 +2,4 @@
 //*[(@type='link' or @href) and (contains(@onclick,'{0}'))]/parent::td/preceding-sibling::td[position()=1]/text()
 //*[(@type='link' or @href) and not(contains(@onclick,'setSortInfo'))]/node()[@alt]
 //*[(@type='link' or @href) and not(contains(@onclick,'setSortInfo'))]/preceding-sibling::text()
+

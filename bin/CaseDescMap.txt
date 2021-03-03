@@ -28,11 +28,7 @@ CSV出力	検索結果がCSVファイルに出力される
 
 
 1行クリア	該当行の設定がクリアされる
-fnc_clickTab(0)	[eventname]タブが展開状態で表示される
-fnc_clickTab(1)	[eventname]タブが展開状態で表示される
-fnc_clickTab(2)	[eventname]タブが展開状態で表示される
-fnc_clickTab(3)	[eventname]タブが展開状態で表示される
-
+fnc_clickTab	[eventname]タブが展開状態で表示される
 openWindow	[eventname]の検索画面が表示される
 fnc_callNewEntry	[eventname]の新規起票画面が表示される
 ヘルプ	関連ヘルプ.pdfが表示される

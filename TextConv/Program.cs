@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using YamlDotNet.Serialization;
 
 namespace TextConv
 {
@@ -38,12 +39,11 @@ namespace TextConv
                 ruleFile = Config.GetAppSettingValue2("regfile", "regfile.txt");
             }
             //==============================================================
-            string xpath = getValue("-x", args);
-            if (!string.IsNullOrEmpty(xpath))
+            string xfolder = getValue("-x", args);
+            if (!string.IsNullOrEmpty(xfolder))
             {
-                resultFolder = UtilWxg.GetMatchGroup(xpath, @"(\w+)\\?$", 1);
-                ruleFile = Config.GetAppSettingValue2("xpathfile", "xpathrule.txt");
-                HtmlParseFolder(xpath, ruleFile);
+                string ruleFolderPath = Config.GetAppSettingValue("xpath.rule.yml");
+                HtmlParseFolder(xfolder, ruleFolderPath);
             }
             else
             {
@@ -153,7 +153,7 @@ namespace TextConv
         #endregion
 
         #region Html Parser for export
-        public static void HtmlParseFolder(string folder, string ruleFile)
+        public static void HtmlParseFolder(string folder, string ruleFolderPath)
         {
             if (!Directory.Exists(folder))
             {
@@ -161,18 +161,17 @@ namespace TextConv
                 return;
             }
 
-            if (!File.Exists(ruleFile))
+            if (!Directory.Exists(ruleFolderPath))
             {
-                Console.WriteLine("★Error★: ruleFile not found:[{0}].", ruleFile);
+                Console.WriteLine("★Error★: ruleFolder not found:[{0}].", ruleFolderPath);
                 return;
             }
-            List<XpathItem> ruleItems = new List<XpathItem>();
-            readXpathfile(ruleItems, ruleFile);
 
-            HtmlParseFolder(folder, ruleItems);
+            List<XPathRuleItem> rules = new List<XPathRuleItem>();
+            LoadXPathRules(rules, ruleFolderPath);
+            HtmlParseFolder(folder, rules);
         }
-
-        private static void HtmlParseFolder(string folder, List<XpathItem> ruleItems)
+        private static void HtmlParseFolder(string folder, List<XPathRuleItem> ruleItems)
         {
             string ext = Config.GetAppSettingValue2("xpath.ext", ".(html?|xml)$");
             foreach (string filePath in Directory.GetFiles(folder))
@@ -186,14 +185,10 @@ namespace TextConv
             }
         }
 
-        private static void HtmlParseFile(string filePath, List<XpathItem> ruleItems)
+
+        private static void HtmlParseFile(string filePath, List<XPathRuleItem> ruleItems)
         {
-            string innerText = string.Empty;
             CaseFile cf = new CaseFile(filePath);
-            if(Regex.IsMatch(filePath, "general.html"))
-            {
-                string filePath2 = filePath;
-            }
             cf.Parse(ruleItems);
             cf.Export(resultFolder);
             Console.WriteLine(string.Format("{0}:casecount={1}",cf.exportFile, cf.listNode.Count));
@@ -203,15 +198,25 @@ namespace TextConv
             }
         }
         
-        private static void readXpathfile(List<XpathItem> items, string ruleFilePath)
+        private static void LoadXPathRules(List<XPathRuleItem> items, string ruleFilePath)
         {
-            string[] lines = File.ReadAllLines(ruleFilePath);
-            foreach (var line in lines)
+            var deserializer = new Deserializer();
+            try
             {
-                if (string.IsNullOrEmpty(line)) continue;
-                if (line.StartsWith("#")) continue;
-
-                items.Add(new XpathItem(line));
+                
+                foreach(var filepath in Directory.GetFiles(ruleFilePath))
+                {
+                    using (StreamReader reader = File.OpenText(filepath))
+                    {
+                        XPathRuleItem r = deserializer.Deserialize<XPathRuleItem>(reader);
+                        items.Add(r);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
         }
         #endregion

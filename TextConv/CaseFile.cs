@@ -45,41 +45,80 @@ namespace TextConv
                 }
             } 
         }
-        public void Parse(List<XpathItem> ruleItems)
+        //public void Parse(List<XpathItem> ruleItems)
+        //{
+        //    listNode.Clear();
+
+        //    CaseItem ci = new CaseItem();
+        //    listNode.Add(ci);
+        //    ci.title = this.title;
+        //    ci.subpath = this.subFileName;
+        //    ci.eventText = "初期表示";
+        //    ci.caseDesc = "画面が表示される";
+        //    bool writeLog = bool.Parse(Config.GetAppSettingValue("writeLog"));
+        //    foreach (var item in ruleItems)
+        //    {
+        //        var ns = htmlDoc.DocumentNode.SelectNodes(item.nameXpath);
+        //        if (ns == null) continue;
+        //        foreach(var node in ns)
+        //        {
+        //            ci = new CaseItem();
+        //            listNode.Add(ci);
+                    
+        //            ci.title = this.title;
+        //            ci.subpath = this.subFileName;
+        //            ci.refresh(item, node);
+        //            ci.ToCaseDesc(item, node);
+        //            if(string.IsNullOrEmpty(ci.eventName))
+        //            {
+        //                errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}", 
+        //                    ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name,item.nameXpath));
+        //            }else if (!Regex.IsMatch(ci.eventName, @"\w+"))
+        //            {
+        //                errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventName={6}    eventText={1}  caseDesc={2}    nodehtml={3}",
+        //                    ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.nameXpath, ci.eventName));
+        //            }
+        //            if (writeLog)
+        //            {
+        //                errmsgs.Add(" ●INFO●:   " + ci.ToStringLine());
+        //            }
+        //        }
+        //    }
+        //}
+        public void Parse(List<XPathRuleItem> ruleItems)
         {
             listNode.Clear();
 
             CaseItem ci = new CaseItem();
             listNode.Add(ci);
-            ci.No = listNode.Count;
-
             ci.title = this.title;
             ci.subpath = this.subFileName;
             ci.eventText = "初期表示";
             ci.caseDesc = "画面が表示される";
+
             bool writeLog = bool.Parse(Config.GetAppSettingValue("writeLog"));
             foreach (var item in ruleItems)
             {
-                var ns = htmlDoc.DocumentNode.SelectNodes(item.nameXpath);
+                var ns = htmlDoc.DocumentNode.SelectNodes(item.xpath);
                 if (ns == null) continue;
-                foreach(var node in ns)
+                foreach (var node in ns)
                 {
                     ci = new CaseItem();
                     listNode.Add(ci);
-                    ci.No = listNode.Count;
-
                     ci.title = this.title;
                     ci.subpath = this.subFileName;
+
                     ci.refresh(item, node);
                     ci.ToCaseDesc(item, node);
-                    if(string.IsNullOrEmpty(ci.eventName))
+                    if (string.IsNullOrEmpty(ci.eventName))
                     {
-                        errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}", 
-                            ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name,item.nameXpath));
-                    }else if (!Regex.IsMatch(ci.eventName, @"\w+"))
+                        errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}",
+                            ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.xpath));
+                    }
+                    else if (!Regex.IsMatch(ci.eventName, @"\w+"))
                     {
                         errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventName={6}    eventText={1}  caseDesc={2}    nodehtml={3}",
-                            ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.nameXpath, ci.eventName));
+                            ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.xpath, ci.eventName));
                     }
                     if (writeLog)
                     {
@@ -88,7 +127,7 @@ namespace TextConv
                 }
             }
         }
-        
+
         public void Export(string resultFolder)
         {
             string caseFileName = Config.GetAppSettingValue("caseFileName");
