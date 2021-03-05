@@ -48,10 +48,15 @@ C:\tool\textconv\conver\bin\Debug\HtmlAgilityPack.dll
 C:\tool\textconv\conver\obj\Debug\conver.XPathTabPage.resources
 C:\tool\textconv\conver\bin\Debug\CaseDescMap.txt
 C:\tool\textconv\conver\bin\Debug\WordDictionary.txt
-C:\tool\textconv\conver\bin\Debug\xpathrule.txt
 C:\tool\textconv\conver\bin\Debug\xpath\1select.txt
 C:\tool\textconv\conver\bin\Debug\xpath\2calendar.txt
 C:\tool\textconv\conver\bin\Debug\xpath\4alink.txt
 C:\tool\textconv\conver\bin\Debug\xpath\6sortlink.txt
 C:\tool\textconv\conver\bin\Debug\HtmlAgilityPack.pdb
 C:\tool\textconv\conver\bin\Debug\HtmlAgilityPack.xml
+C:\tool\textconv\conver\bin\Debug\yml\1select.yml
+C:\tool\textconv\conver\bin\Debug\yml\2calender.yml
+C:\tool\textconv\conver\bin\Debug\yml\3button.yml
+C:\tool\textconv\conver\bin\Debug\yml\4alink.yml
+C:\tool\textconv\conver\bin\Debug\yml\5pagelink.yml
+C:\tool\textconv\conver\bin\Debug\yml\6sortlink.yml

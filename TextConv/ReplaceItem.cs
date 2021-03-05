@@ -759,4 +759,55 @@ namespace TextConv
         }
 
     }
+
+    public class ReplaceRuleItem
+    {
+        #region "Key Properties"
+        public string Name = string.Empty;
+        public string Desc = string.Empty;
+
+        public string pattern = string.Empty;
+        public string replacement = string.Empty;
+        public bool IgnoreCase = true;
+        public bool Multiline = true;
+        public string ExcapeText;
+        public string inputContent = string.Empty;
+
+        public string rangeFrom = string.Empty;
+        public string rangeTo = string.Empty;
+        public bool rangeSkip;
+
+        public string destFolder = string.Empty;
+        public string filefilter = string.Empty;
+        public bool fileSkip;
+
+        #endregion
+
+        public string cmdKey = string.Empty;
+        public string repCmdKey = string.Empty;
+
+        public string repfile = string.Empty;
+        public string currentfile = string.Empty;
+        public List<string> repResults = new List<string>();
+
+        private Dictionary<LineMatch, LineMatch> rangeMatches = new Dictionary<LineMatch, LineMatch>();
+        private Regex keyReg = null;
+        private Regex valReg = null;
+        private List<LineMatch> keys = new List<LineMatch>();
+        private List<LineMatch> vals = new List<LineMatch>();
+        private List<string> iffindstrs = new List<string>();
+        private List<string> ifnotfindstrs = new List<string>();
+        private bool iffindand = true;
+
+        private HashSet<string> excludeWords = new HashSet<string>();
+        private HashSet<string> matchIndexes = new HashSet<string>();
+        private bool skipMatchIndex = false;
+        private string excludefile = string.Empty;
+        private List<string> dicwords = new List<string>();
+
+        private int lineNo = 0;
+        private int matchIndex = 0;
+
+        public ReplaceRuleItem() { }
+    }
 }
