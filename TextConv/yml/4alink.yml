@@ -1,0 +1,29 @@
+﻿name: 4alink
+xpath: //*[(@type='link' or @href) and not(contains(@onclick,'setSortInfo'))]
+keypattern:	
+- attrname: action
+  pattern: ([\w\.]+)
+  replacement: $1
+- attrname: page
+  pattern: ([\w\.]+)
+  replacement: $1
+- attrname: onclick
+  pattern: .*openWindow\('([\w\.]+)'.*
+  attrname: onclick
+  pattern: ^([\w\.]+)\(.*
+  replacement: $1
+- attrname: onclick
+  pattern: ^return\s+([\w\.]+)\(.*
+  replacement: $1
+- attrname: href
+  pattern: javascript:([\w\.]+)\(.*
+  replacement: $1
+- attrname: value
+  pattern: ([\w\.]+)
+  replacement: $1
+textxpath:
+- //*[(@type='link' or @href) and not(contains(@onclick,'setSortInfo')) and contains(@{0},'{1}')]/text()
+- //*[(@type='link' or @href) and not(contains(@onclick,'setSortInfo')) and contains(@{0},'{1}')]/parent::td/preceding-sibling::td[position()=1]/text()
+- //*[(@type='link' or @href) and not(contains(@onclick,'setSortInfo')) and contains(@{0},'{1}')]/preceding-sibling::text()
+eventText: 「{0}」リンク押下
+caseDescFormat: '{eventname}の★★★画面が表示される'

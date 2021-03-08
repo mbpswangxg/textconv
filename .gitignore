@@ -36,3 +36,4 @@ pnpm-debug.log*
 *.pdb
 
 /TextConv/.vs/TextConv/DesignTimeBuild
+/TextConv/packages/YamlDotNet.9.1.4

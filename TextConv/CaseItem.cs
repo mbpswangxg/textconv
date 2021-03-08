@@ -10,7 +10,6 @@ namespace TextConv
 {
     public class CaseItem
     {
-        public int No;
         public string title;
         public string subpath;
         public string eventKey;
@@ -19,66 +18,40 @@ namespace TextConv
         public string caseDesc;
         public string condition;
 
+        private string attrname;
         private static string ptwords = @"\>([\w\s]+)";
 
-        private void RefreshKeyName(XpathItem ruleItem, HtmlNode node)
+        public void refresh(XPathRuleItem ruleItem, HtmlNode node)
         {
-            setEventKeyByAttr(ruleItem, node, "element");
-            setEventKeyByAttr(ruleItem, node, "name");
-            setEventKeyByAttr(ruleItem, node, "value");
-            setEventKeyByAttr(ruleItem, node, "onclick", @"\w+\('(\w+)'", 1);
-            setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)\(", 1);
-            setEventKeyByAttr(ruleItem, node, "href", @"\w+\('(\w+)'", 1);
-            setEventKeyByAttr(ruleItem, node, "onclick", @"(\w+)\(", 1);
+            setEventKeyByAttr(ruleItem, node);
+            setEventNameByAttr(ruleItem, node);
 
-            if (ruleItem.name.Contains("button"))
+            if (string.IsNullOrEmpty(eventName) || !Regex.IsMatch(eventName, @"\w+"))
             {
-                setEventNameByAttr(ruleItem, node, "value");
-            }
-
-            setEventNameByAttr(ruleItem, node, "id");
-            setEventNameByAttr(ruleItem, node, "name");
-            setEventNameByInnerText(ruleItem, node);
-            setEventNameByAttr(ruleItem, node, "value");
-
-        }
-        public void refresh(XpathItem ruleItem, HtmlNode node)
-        {
-            RefreshKeyName(ruleItem, node);
-
-            if (!string.IsNullOrEmpty(this.eventKey) && ruleItem.wordMap.ContainsKey(this.eventKey))
-            {
-                this.eventName = ruleItem.wordMap[this.eventKey];
-            }
-            HtmlDocument htmlDoc = node.OwnerDocument;
-            foreach (var xpath in ruleItem.textXpathSet)
-            {
-                string xpath2 = string.Format(xpath, eventKey);
-                var n2 = htmlDoc.DocumentNode.SelectNodes(xpath2);
-                if (n2 != null)
+                if (!string.IsNullOrEmpty(eventKey))
                 {
-                    HtmlNode firstNode = n2.First();
-                    string innerText = firstNode.InnerText;
-                    if (Regex.IsMatch(innerText, @"^\w+"))
+                    if (ruleItem.wordMap.ContainsKey(this.eventKey))
                     {
-                        this.eventName = WebUtility.HtmlDecode(innerText);
-                        break;
+                        this.eventName = ruleItem.wordMap[this.eventKey];
                     }
-                    RefreshKeyName(ruleItem, firstNode);
-                    if (ruleItem.name.Contains("link"))
+                    else
                     {
-                        setEventNameByAttr(ruleItem, firstNode, "alt");
+                        eventName = eventKey;
                     }
-                    
                 }
             }
-            if (Regex.IsMatch(this.eventName, ptwords))
+            else if (Regex.IsMatch(this.eventName, ptwords))
             {
                 this.eventName = UtilWxg.GetMatchGroup(this.eventName, ptwords, 1);
             }
+            
+            if (ruleItem.wordMap.ContainsKey(this.eventName))
+            {
+                this.eventName = ruleItem.wordMap[this.eventName];
+            }
         }
 
-        public void ToCaseDesc(XpathItem ruleItem, HtmlNode node)
+        public void ToCaseDesc(XPathRuleItem ruleItem, HtmlNode node)
         {
             if (ruleItem.name.Contains("sortlink"))
             {
@@ -96,7 +69,8 @@ namespace TextConv
                 }
                 return;
             }
-            else if (ruleItem.name.Contains("calender"))
+            
+            if (ruleItem.name.Contains("calender"))
             {
                 if (eventKey.EndsWith("_S"))
                 {
@@ -112,60 +86,67 @@ namespace TextConv
             {
                 eventText = string.Format(ruleItem.eventText, eventName);
             }
+            if (ruleItem.caseMap.ContainsKey(this.eventName))
+            {
+                this.eventText = ruleItem.caseMap[this.eventName];
+            }
+
+            caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
+        }
+
+        private void setEventKeyByAttr(XPathRuleItem rule, HtmlNode node)
+        {
+            if (!string.IsNullOrEmpty(eventKey)) return;
             
-            if (Regex.IsMatch(eventName,@"\>\w+"))
+            foreach (var k in rule.keypattern)
             {
-                eventName = UtilWxg.GetMatchGroup(eventName, @"\>(\w+)", 1);
-            }
-
-            if (!string.IsNullOrEmpty(eventKey) && ruleItem.caseDescMap.ContainsKey(eventKey))
-            {
-                caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescMap[eventKey], "eventname", eventName);
-            }
-            else if (ruleItem.caseDescMap.ContainsKey(eventName))
-            {
-                caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescMap[eventName], "eventname", eventName);
-            }
-            else if (!string.IsNullOrEmpty(ruleItem.caseDescFormat))
-            {
-                caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
+                if (!node.Attributes.Contains(k.attrname)) continue;
+                attrname = k.attrname;
+                string attrValue = node.Attributes[k.attrname].Value;
+                if (Regex.IsMatch(attrValue, @"^[\w\.]+$"))
+                {
+                    eventKey = attrValue;
+                }
+                else if (Regex.IsMatch(attrValue, k.pattern))
+                {
+                    eventKey = Regex.Replace(attrValue, k.pattern, k.replacement);
+                }
+                
+                if (!string.IsNullOrEmpty(eventKey)) return;
             }
         }
-
-        private void setEventNameByAttr(XpathItem ruleItem, HtmlNode node, string attrName)
+        private void setEventNameByAttr(XPathRuleItem rule, HtmlNode node)
         {
             if (!string.IsNullOrEmpty(eventName)) return;
-            if (!node.Attributes.Contains(attrName)) return;
-            eventName = node.Attributes[attrName].Value;
-        }
-        private void setEventNameByInnerText(XpathItem ruleItem, HtmlNode node)
-        {
-            if (!string.IsNullOrEmpty(eventName)) return;
-            eventName = node.InnerText;
-        }
-        private void setEventKeyByAttr(XpathItem ruleItem, HtmlNode node, string attrName)
-        {
-            if (!string.IsNullOrEmpty(eventKey)) return;
-            if (!node.Attributes.Contains(attrName)) return;
-            eventKey = node.Attributes[attrName].Value;
-        }
-        private void setEventKeyByAttr(XpathItem ruleItem, HtmlNode node, string attrName, string pattern, int groupIndex)
-        {
-            if (!string.IsNullOrEmpty(eventKey)) return;
-            if (!node.Attributes.Contains(attrName)) return;
 
-            string attrValue = node.Attributes[attrName].Value;
-            attrValue = UtilWxg.GetMatchGroup(attrValue, pattern, groupIndex);
-            if (Regex.IsMatch(attrValue, @"^\d*$")) return;
-
-            eventKey = attrValue;
+            HtmlDocument htmlDoc = node.OwnerDocument;
+            foreach (var xpath in rule.textxpath)
+            {
+                // error case 
+                if (string.IsNullOrEmpty(eventKey)) continue;
+                
+                string xpath2 = string.Format(xpath, attrname, eventKey);
+                var n2 = htmlDoc.DocumentNode.SelectNodes(xpath2);
+                if (n2 != null)
+                {
+                    HtmlNode firstNode = n2.First();
+                    string innerText = firstNode.InnerText.Trim();
+                    if (Regex.IsMatch(innerText,@"\w+"))
+                    {
+                        this.eventName = WebUtility.HtmlDecode(innerText);
+                        break;
+                    }
+                }
+            }
         }
+
         public string ToStringLine()
         {
             List<string> lstItem = new List<string>();
-            lstItem.Add(No.ToString());
             lstItem.Add(title);
             lstItem.Add(subpath);
+            //lstItem.Add(eventKey);
+            //lstItem.Add(eventName);
             lstItem.Add(eventText);
             lstItem.Add(caseDesc);
             lstItem.Add(condition);
