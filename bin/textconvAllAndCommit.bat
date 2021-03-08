@@ -22,8 +22,8 @@ call:RunAndCommit NULLIF "NULLIF変換"
 call:RunAndCommit SYSDATE "SYSDATE変換"
 call:RunAndCommit ORA_OR "OR条件変換"
 
-call:RunAndCommit UCASE_TAB "テーブル名大文字"
-call:RunAndCommit UCASE_COL "COL名大文字"
+::call:RunAndCommit UCASE_TAB "テーブル名大文字"
+::call:RunAndCommit UCASE_COL "COL名大文字"
 call:RunAndCommit DECODE "DECODE変換"
 call:RunAndCommit LEFTJOIN "LEFTJOIN変換"
 
@@ -40,6 +40,8 @@ call:RunAndCommit clearlineaddreturn "JS_clearlineメソッドにreturn false追加"
 call:RunAndCommit VWRITECHANGE "HTML_縦表示文字背景色修正"
 
 call:RunAndCommit BtnNoDisplay "HTML_非表示ボタンによる空白削除"
+
+call:RunAndCommit HTMLescapeXml "escapeXML追加"
 
 pause
 
