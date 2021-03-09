@@ -27,7 +27,15 @@ textconv -c insertscript -d %P1%
 textconv -c showtitle -d %P1%
 
 textconv -c DATENULL -d %P1%
+::コメントアウトされたIMARTタグ削除
 textconv -c delcoimart -d %P1%
-
+::メール中のURLアドレス修正
 textconv -c PORTAL -d %P1%
+
+::JS_clearlineメソッドにreturn false追加
+textconv -c clearlineaddreturn -d %P1%
+::HTML_縦表示文字背景色修正
+textconv -c VWRITECHANGE -d %P1%
+::HTML_非表示ボタンによる空白削除
+textconv -c BtnNoDisplay -d %P1%
 

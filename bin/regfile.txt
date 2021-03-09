@@ -208,3 +208,4 @@ virfile=new VirtualFile	rep=Procedure.migration.storage.virtualFile
 
 VWRITECHANGE=VWRITE\s+A_C([^\>]+\>)([^\<]+)	repname=$1<div class="VWRITE A_C">$2</div>
 BtnNoDisplay=visibility\:hidden\;\s+width:0	repname=display:none;
+clearlineaddreturn=fnc_clearLine[^{]+{[^}]+	repfile=repfiles/clearlineaddreturn.txt
