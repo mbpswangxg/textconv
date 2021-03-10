@@ -1,4 +1,0 @@
-﻿<col class="W090" />
-      <col class="W120" />
-      <col class="W320" />
-      <tr>
