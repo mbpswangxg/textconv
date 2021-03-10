@@ -75,9 +75,7 @@
             this.btnReplace = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnReplaceFile = new System.Windows.Forms.ToolStripButton();
-            this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.tbMessage = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatusMessage = new System.Windows.Forms.ToolStripStatusLabel();
@@ -132,7 +130,7 @@
             this.toolStripMenuItem2.ImageTransparentColor = System.Drawing.Color.Black;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(196, 26);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(192, 22);
             this.toolStripMenuItem2.Text = "新規作成(&N)";
             // 
             // regexTabPageCtrRToolStripMenuItem
@@ -155,14 +153,14 @@
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.openToolStripMenuItem.Text = "開く(&O)";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenFile);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(193, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(189, 6);
             // 
             // saveToolStripMenuItem
             // 
@@ -170,25 +168,25 @@
             this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.saveToolStripMenuItem.Text = "保存(&S)";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.saveAsToolStripMenuItem.Text = "名前を付けて保存(&A)";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(193, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(189, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.exitToolStripMenuItem.Text = "アプリケーションの終了(&X)";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolsStripMenuItem_Click);
             // 
@@ -374,9 +372,7 @@
             this.btnReplace,
             this.toolStripSeparator5,
             this.btnReplaceFile,
-            this.helpToolStripButton,
-            this.tbMessage,
-            this.toolStripButton1});
+            this.tbMessage});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(1047, 27);
@@ -483,17 +479,6 @@
             this.btnReplaceFile.Size = new System.Drawing.Size(98, 24);
             this.btnReplaceFile.Text = "Replace Files(F8)";
             this.btnReplaceFile.ToolTipText = "Show Replace Files Dialog";
-            this.btnReplaceFile.Visible = false;
-            // 
-            // helpToolStripButton
-            // 
-            this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
-            this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Black;
-            this.helpToolStripButton.Name = "helpToolStripButton";
-            this.helpToolStripButton.Size = new System.Drawing.Size(24, 24);
-            this.helpToolStripButton.Text = "ヘルプ";
-            this.helpToolStripButton.Visible = false;
             // 
             // tbMessage
             // 
@@ -501,14 +486,6 @@
             this.tbMessage.ForeColor = System.Drawing.SystemColors.Highlight;
             this.tbMessage.Name = "tbMessage";
             this.tbMessage.Size = new System.Drawing.Size(0, 24);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(62, 24);
-            this.toolStripButton1.Text = "XPath";
             // 
             // statusStrip
             // 
@@ -624,7 +601,6 @@
         private System.Windows.Forms.ToolStripButton newToolStripButton;
         private System.Windows.Forms.ToolStripButton openToolStripButton;
         private System.Windows.Forms.ToolStripButton saveToolStripButton;
-        private System.Windows.Forms.ToolStripButton helpToolStripButton;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
@@ -645,7 +621,6 @@
         private System.Windows.Forms.ToolStripMenuItem regexTabPageCtrRToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem XPathTabPageCtrXToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton newXPathToolButton;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
 

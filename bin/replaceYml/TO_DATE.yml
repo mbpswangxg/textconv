@@ -1,0 +1,17 @@
+﻿aftercheckpattern: TO_DATE
+rules:
+- pattern: TO_DATE\(([^,]+),\s*'YYYYMM'\s*\)
+  replacement: CONVERT(datetime, $1+'01')
+
+- pattern: TO_DATE\(([^,]+),\s*'YYYY/MM'\s*\)
+  replacement: CONVERT(datetime, $1+'/01')
+
+- pattern: TO_DATE\(([^,]+),\s*'YYYY/MM/DD'\s*\)
+  replacement: CONVERT(datetime, $1)
+
+- pattern: TO_DATE\(([^,]+),([^\)]+)\)
+  replacement: CONVERT(datetime2, $1)
+
+- pattern: TO_DATE\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)
+  replacement: CONVERT(datetime2, $1)
+

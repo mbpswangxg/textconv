@@ -44,7 +44,16 @@ namespace TextConv
             {
                 this.eventName = UtilWxg.GetMatchGroup(this.eventName, ptwords, 1);
             }
-            
+            if (string.IsNullOrEmpty(this.eventName))
+            {
+                if(node.FirstChild != null)
+                {
+                    if (node.FirstChild.Name.Contains("#text"))
+                    {
+                        this.eventName = node.FirstChild.InnerText;
+                    }
+                }
+            } 
             if (ruleItem.wordMap.ContainsKey(this.eventName))
             {
                 this.eventName = ruleItem.wordMap[this.eventName];

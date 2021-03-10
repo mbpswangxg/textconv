@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: class="BTN02"
+  replacement: class="BTN02 W045"

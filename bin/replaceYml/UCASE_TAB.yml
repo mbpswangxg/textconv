@@ -1,0 +1,12 @@
+﻿rules:
+- pattern: (?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*
+  replacegroups:
+  - groupindex: 1
+    function: UCASE
+  - groupindex: 3
+    function: UCASE
+  rangeFrom: \"[^"\n]*\bFROM\b[^"\n]*"
+  rangeTo: \"[^"\n]*\bWHERE\b[^"\n]*"
+
+filefilter: \w+epsDBAccess.js
+fileSkip: true

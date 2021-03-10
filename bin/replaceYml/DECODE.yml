@@ -1,0 +1,34 @@
+﻿aftercheckpattern: DECODE
+rules:
+- pattern: DECODE\(([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 ELSE $4 END
+  
+- pattern: DECODE\(([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 END
+  
+- pattern: DECODE\(([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 ELSE $6 END
+  
+- pattern: DECODE\(([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+),([^,"\(\)]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 WHEN $6 THEN $7 END
+
+- pattern: DECODE\(([^,"]+),([^,"]+),([^,"]+),(\s*FORMAT\([\w\.\s]+,[\w\.%/\s']+\)\s*\+[\s\w']+[\+\s]*FORMAT\([\w\.\s]+,[\w\.%/\s']+\)\s*\+[\s\w']+[\+\s]*FORMAT\([\w\.\s]+,[\w\.%/\s']+\)\s*\+[\s\w']+[\+\s]*)\)
+  replacement: CASE $1 WHEN $2 THEN $3 ELSE $4 END
+
+- pattern: DECODE\(([^,"]+),([^,"]+),\s*(FORMAT\(CONVERT\([\w\.\s]+,[\w\.%/\s'\+]+\),[\w\.%/\s'\+]+\)),\s*(FORMAT\(CONVERT\([\w\.\s]+,[\w\.%/\s'\+]+\),[\w\.%/\s'\+]+\))\)
+  replacement: CASE $1 WHEN $2 THEN $3 ELSE $4 END
+
+- pattern: DECODE\((ISNULL\([\w\.\s]+,[\s\w']+\)),([^,\(\)]+),([^,\(\)]+),([^,"]+,[^\(\)]+\([^\(\)]+\)[^,"]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 ELSE $4 END
+
+- pattern: DECODE\(([^,"]+),([^,"]+),([^,"]+),([\s\w]+\([^,"]+,[^,"]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 ELSE $4 END
+
+- pattern: DECODE\(([^,"]+),([^,"]+),([^,"]+),([\s\w]+\([^,"]+,[^\)]+\)[^\)]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 ELSE $4 END
+
+- pattern: DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 END
+
+- pattern: DECODE\(([^,"]+),([^,"]+),([^,"]+),([^,"]+),([^,"]+),([^,"]+),([^,"]+)\)
+  replacement: CASE $1 WHEN $2 THEN $3 WHEN $4 THEN $5 WHEN $6 THEN $7 END
