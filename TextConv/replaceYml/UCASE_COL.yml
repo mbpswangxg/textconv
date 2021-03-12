@@ -1,0 +1,27 @@
+﻿excludefile: repfiles/lcaseColumns.txt
+rules:
+- pattern: \w+\.(\w+)\s*(,\s*\w+\.(\w+))*
+  replacegroupindex:
+  - groupindex: 1
+    function: UCASE
+  - groupindex: 3
+    function: UCASE
+
+  rangeFrom: SELECT
+  rangeTo: FROM
+
+- pattern: \"'([\s,]*(\w+))+[\s,]*\"
+  replacegroupindex:
+  - groupindex: 1
+    function: UCASE
+  - groupindex: 2
+    function: UCASE
+  rangeFrom: SELECT
+  rangeTo: FROM
+
+- pattern: \"[\s,]*\w+\((\w+)\)[^\"]*\"
+  replacegroupindex:
+  - groupindex: 1
+    function: UCASE
+  rangeFrom: SELECT
+  rangeTo: FROM

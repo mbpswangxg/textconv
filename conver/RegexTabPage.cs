@@ -1,28 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using System.Text;
 using System.Text.RegularExpressions;
 using TextConv;
 using YamlDotNet.Serialization;
 using System.IO;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace conver
 {
     public partial class RegexTabPage : UserControl
     {
-        /// <summary>
-        /// Replace Pattern Format
-        /// </summary>
-        private const string replaceformat = @"";
-        private ReplaceItem repItem = new ReplaceItem();
-        private List<ReplaceItem> rules = new List<ReplaceItem>();
-
+        private ReplaceRuleItem ruleItem = new ReplaceRuleItem();
+        private ReplaceRule rule = new ReplaceRule();
         public RegexOptions RegexOptions
         {
             get
@@ -44,6 +37,8 @@ namespace conver
         public RegexTabPage()
         {
             InitializeComponent();
+            txtFilePath_TextChanged(txtFilePath, null);
+            rule.rules.Add(ruleItem);
         }
 
         #region
@@ -58,24 +53,8 @@ namespace conver
             using (StreamWriter writer = File.CreateText(filepath))
             {
                 UI2Data();
-                serializer.Serialize(writer, repItem);
+                serializer.Serialize(writer, ruleItem);
             }
-
-            string ruleFile= Config.GetAppSettingValue2("ruleCmdFileName", "rule_cmdstr.txt");
-            string cmdFolder = Config.GetAppSettingValue("ruleCmdFolder");
-            if (string.IsNullOrEmpty(cmdFolder))
-            {
-                cmdFolder = Application.StartupPath;
-            }
-            if (!Directory.Exists(cmdFolder))
-            {
-                Directory.CreateDirectory(cmdFolder);
-            }
-            if (!cmdFolder.EndsWith("\\"))
-            {
-                cmdFolder = cmdFolder + @"\";
-            }
-            repItem.AppendToCommandFile(cmdFolder + ruleFile);
         }
         
         /// <summary>
@@ -91,8 +70,8 @@ namespace conver
             {
                 using (StreamReader reader = File.OpenText(filepath))
                 {
-                    repItem = deserializer.Deserialize<ReplaceItem>(reader);
-                    Data2UI(repItem);
+                    ruleItem = deserializer.Deserialize<ReplaceRuleItem>(reader);
+                    Data2UI();
                 }
 
             }catch(Exception e)
@@ -103,44 +82,34 @@ namespace conver
         }
         private void UI2Data()
         {
-            repItem.Name = txtRuleName.Text;
-            if (string.IsNullOrEmpty(repItem.Name))
-            {
-                repItem.Name = "cmdkey";
-            }
-            repItem.Desc = txtRuleDesc.Text;
-
-            repItem.pattern = txtPattern.Text;
-            repItem.replacement = txtReplacement.Text;
-            repItem.inputContent = txtInput.Text;
-
-            repItem.IgnoreCase = chkIgnoreCase.Checked;
-            repItem.Multiline = chkMultiline.Checked;
-
-            repItem.rangeFrom = txtRangeFrom.Text;
-            repItem.rangeTo = txtRangeTo.Text;
-            repItem.rangeSkip = chkRange.Checked;
-
-            repItem.destFolder = txtCommand.Text;
+            ruleItem.pattern = txtPattern.Text;
+            ruleItem.replacement = txtReplacement.Text;
             
+            ruleItem.IgnoreCase = chkIgnoreCase.Checked;
+            ruleItem.Multiline = chkMultiline.Checked;
+
+            ruleItem.rangeFrom = txtRangeFrom.Text;
+            ruleItem.rangeTo = txtRangeTo.Text;
+            ruleItem.rangeSkip = chkRange.Checked;
+
+            rule.filefilter = txtFileFilter.Text;
+            rule.fileSkip = chkFileSkip.Checked;
         }
-        private void Data2UI(ReplaceItem repItem)
+        private void Data2UI()
         {
-            txtRuleName.Text = repItem.Name;
-            txtRuleDesc.Text = repItem.Desc;
+            ruleItem = rule.rules[0];
+            txtPattern.Text = ruleItem.pattern;
+            txtReplacement.Text = ruleItem.replacement;
+         
+            chkIgnoreCase.Checked = ruleItem.IgnoreCase;
+            chkMultiline.Checked = ruleItem.Multiline;
 
-            txtPattern.Text = repItem.pattern;
-            txtReplacement.Text = repItem.replacement;
-            txtInput.Text = repItem.inputContent;
+            txtRangeFrom.Text = ruleItem.rangeFrom;
+            txtRangeTo.Text = ruleItem.rangeTo;
+            chkRange.Checked = ruleItem.rangeSkip;
 
-            chkIgnoreCase.Checked = repItem.IgnoreCase;
-            chkMultiline.Checked = repItem.Multiline;
-
-            txtRangeFrom.Text = repItem.rangeFrom;
-            txtRangeTo.Text = repItem.rangeTo;
-            chkRange.Checked = repItem.rangeSkip;
-
-            txtCommand.Text = repItem.destFolder;
+            txtFileFilter.Text = rule.filefilter;
+            chkFileSkip.Checked = rule.fileSkip;
         }
 
         /// <summary>
@@ -195,12 +164,13 @@ namespace conver
 
             UI2Data();
 
-            txtReplaceResult.Text = repItem.replaceText(txtInput.Text);
+            txtReplaceResult.Text = ruleItem.replaceText(txtInput.Text);
             HighLight hl = new HighLight(txtReplaceResult);
             hl.Reset2Default();            
-            foreach (string result in repItem.repResults)
+            foreach (string result in ruleItem.Results)
             {
-                hl.Highlight(result);
+                string[] newV = Regex.Split(result, @"\t");
+                hl.Highlight(newV.Last());
             }
         }
 
@@ -211,7 +181,23 @@ namespace conver
         /// <param name="e"></param>
         public void btnReplaceFile_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("btnReplaceFile_Click");
+            if (string.IsNullOrEmpty(ruleItem.pattern)) return;
+
+            ReplaceFiles(treeFiles.Nodes);
+        }
+        private void ReplaceFiles(TreeNodeCollection nodes)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Nodes.Count > 0) 
+                {
+                    ReplaceFiles(node.Nodes);
+                    continue;
+                }
+                if (!node.Checked) continue;
+
+                rule.ReplaceFile(node.Name);
+            }
         }
 
         /// <summary>
@@ -298,16 +284,6 @@ namespace conver
         }
         #endregion
 
-        private void btnSelectFolder_Click(object sender, EventArgs e)
-        {   
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
-            if (folderDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                txtCommand.Text = folderDialog.SelectedPath;
-            }
-
-        }
-
         private void chkRange_CheckedChanged(object sender, EventArgs e)
         {
             if (chkRange.Checked)
@@ -330,6 +306,69 @@ namespace conver
 
                 txtInput.Select(index, length);
                 txtInput.ScrollToCaret();
+            }
+        }
+
+        private void txtFilePath_TextChanged(object sender, EventArgs e)
+        {
+            treeFiles.Nodes.Clear();
+            FillTree(txtFilePath.Text, treeFiles.Nodes);
+        }
+        private void FillTree(string folderPath, TreeNodeCollection nodes)
+        {
+            if (!Directory.Exists(folderPath)) return;
+
+            List<string> lstFiles = new List<string>(Directory.GetFiles(folderPath));
+            if (!string.IsNullOrEmpty(txtFileFilter.Text))
+            {
+                lstFiles = lstFiles.FindAll(f => Regex.IsMatch(f, txtFileFilter.Text));
+            }
+            // ファイル存在するフォルダだけを表示
+            if (lstFiles.Count > 0)
+            {
+                TreeNode topNode = nodes.Add(folderPath, folderPath.Replace(txtFilePath.Text, "."));
+                foreach (string file in lstFiles)
+                {
+                    topNode.Nodes.Add(file, file.Replace(txtFilePath.Text, "."));
+                }
+            }
+
+            string[] folders = Directory.GetDirectories(folderPath);
+            foreach (string sfolder in folders)
+            {
+                FillTree(sfolder, nodes);
+            }
+
+        }
+
+        private void treeFiles_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            bool ctrClick = (ModifierKeys & Keys.Control) == Keys.Control;            
+            if (ctrClick && e.Node.Nodes.Count > 0)
+            {
+                txtFilePath.Text = e.Node.Name;
+                return;
+            }
+
+            bool sftClick = (ModifierKeys & Keys.Shift) == Keys.Shift;
+            if (sftClick)
+            {
+                txtFilePath.Text = UtilWxg.ReplaceMatch(txtFilePath.Text, @"\\[^\\]+\\?$", "");
+                return;
+            }
+
+            if (File.Exists(e.Node.Name))
+            {
+                txtInput.Text = File.ReadAllText(e.Node.Name, Config.Encoding);
+                tabInput.SelectedTab = tabInput.TabPages["tabInputContent"];
+            }
+        }
+
+        private void treeFiles_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            foreach(TreeNode snode in e.Node.Nodes)
+            {
+                snode.Checked = e.Node.Checked;
             }
         }
     }

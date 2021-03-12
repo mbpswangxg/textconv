@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextConv\TextConv.csproj">
-      <Project>{0deffb29-6245-4416-9ee1-28f33c57352d}</Project>
+      <Project>{01f5f543-7236-4e45-8031-45d5f7f04eee}</Project>
       <Name>TextConv</Name>
     </ProjectReference>
   </ItemGroup>
