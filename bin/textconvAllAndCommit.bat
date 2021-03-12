@@ -43,6 +43,8 @@ call:RunAndCommit BtnNoDisplay "HTML_非表示ボタンによる空白削除"
 
 call:RunAndCommit HTMLescapeXml "escapeXML追加"
 
+call:RunAndCommit getAttribute "カスタマイズ属性取得対応"
+
 pause
 
 
