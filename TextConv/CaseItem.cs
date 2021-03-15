@@ -23,12 +23,16 @@ namespace TextConv
 
         public void refresh(XPathRuleItem ruleItem, HtmlNode node)
         {
+            Console.WriteLine("ruleItem:"+ruleItem.name);
+                    
             setEventKeyByAttr(ruleItem, node);
+            Console.WriteLine("eventKey:"+this.eventKey);
             setEventNameByAttr(ruleItem, node);
-
-            if (string.IsNullOrEmpty(eventName) || !Regex.IsMatch(eventName, @"\w+"))
+            Console.WriteLine("eventName:"+this.eventName);
+            
+            if (string.IsNullOrEmpty(this.eventName) || !Regex.IsMatch(eventName, @"\w+"))
             {
-                if (!string.IsNullOrEmpty(eventKey))
+                if (!string.IsNullOrEmpty(this.eventKey))
                 {
                     if (ruleItem.wordMap.ContainsKey(this.eventKey))
                     {
@@ -36,7 +40,7 @@ namespace TextConv
                     }
                     else
                     {
-                        eventName = eventKey;
+                        this.eventName = this.eventKey;
                     }
                 }
             }
@@ -54,7 +58,7 @@ namespace TextConv
                     }
                 }
             } 
-            if (ruleItem.wordMap.ContainsKey(this.eventName))
+            else if (ruleItem.wordMap.ContainsKey(this.eventName))
             {
                 this.eventName = ruleItem.wordMap[this.eventName];
             }
@@ -95,12 +99,13 @@ namespace TextConv
             {
                 eventText = string.Format(ruleItem.eventText, eventName);
             }
-            if (ruleItem.caseMap.ContainsKey(this.eventName))
+            if (!string.IsNullOrEmpty(this.eventName) && ruleItem.caseMap.ContainsKey(this.eventName))
             {
-                this.eventText = ruleItem.caseMap[this.eventName];
+                this.caseDesc = ruleItem.caseMap[this.eventName];
+                this.eventText = string.Format(ruleItem.eventText,this.eventName);
+            }else{
+                caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
             }
-
-            caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
         }
 
         private void setEventKeyByAttr(XPathRuleItem rule, HtmlNode node)
@@ -118,7 +123,8 @@ namespace TextConv
                 }
                 else if (Regex.IsMatch(attrValue, k.pattern))
                 {
-                    eventKey = Regex.Replace(attrValue, k.pattern, k.replacement);
+                    //eventKey = Regex.Replace(attrValue, k.pattern, k.replacement);
+                    eventKey = attrValue;
                 }
                 
                 if (!string.IsNullOrEmpty(eventKey)) return;
@@ -146,6 +152,10 @@ namespace TextConv
                         break;
                     }
                 }
+            }
+            if (string.IsNullOrEmpty(eventName))
+            {
+                this.eventName = this.eventKey;
             }
         }
 

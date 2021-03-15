@@ -7,6 +7,6 @@ set P1=C:\resin\resin-pro-4.0.64\webapps\imart\WEB-INF\jssp\src\jae\0012_consale
 set P1=C:\workspace\resin-pro-4.0.64\webapps\imart\WEB-INF\jssp\src\jae\0012_consalesplan\publish\
 
 REM TextConv.exe -c HTMLescapeXml -d %P1%
-textconv -x %P1%        
+textconv -x -d %P1%        
 
 pause
