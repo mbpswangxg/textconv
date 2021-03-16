@@ -45,7 +45,8 @@ namespace TextConv
                 {
                     LoadYmlRules(rules, ruleFolderPath, cmd, true);
                 }
-                HtmlParseFolder(srcfolder, rules);   
+                HtmlParseFolder(srcfolder, rules);
+                HtmlParseFile(srcFile, rules);
             }
 
             //==============================================================
@@ -98,6 +99,8 @@ namespace TextConv
         #region Html Parser for export
         private static void HtmlParseFolder(string folder, List<XPathRuleItem> ruleItems)
         {
+            if (!Directory.Exists(folder)) return;
+
             string ext = Config.GetAppSettingValue2("xpath.ext", ".(html?|xml)$");
             foreach (string filePath in Directory.GetFiles(folder))
             {
@@ -112,6 +115,8 @@ namespace TextConv
 
         private static void HtmlParseFile(string filePath, List<XPathRuleItem> ruleItems)
         {
+            if (!File.Exists(filePath)) return;
+
             CaseFile cf = new CaseFile(filePath);
             cf.Parse(ruleItems);
             cf.Export(resultFolder);

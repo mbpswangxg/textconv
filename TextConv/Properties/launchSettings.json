@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": " -c clearlineaddreturn -d C:\\resin\\resin-pro-4.0.64\\webapps\\imart\\WEB-INF\\jssp\\src\\jae\\0002_jaecs\\"
+      "commandLineArgs": " -x -f C:\\resin\\resin-pro-4.0.64\\webapps\\imart\\WEB-INF\\jssp\\src\\jae\\0002_jaecs\\elearning\\search.html"
     }
   }
 }

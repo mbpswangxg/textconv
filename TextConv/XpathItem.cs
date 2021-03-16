@@ -13,13 +13,19 @@ namespace TextConv
         public string pattern;
         public string replacement;
     }
+    public class PatternFormat
+    {
+        public string pattern;
+        public string textformat = string.Empty;
+        public string caseformat = string.Empty;
+    }
     public class XPathRuleItem
     {
         public string name;
         public string xpath;
         public List<XPathKeyPattern> keypattern = new List<XPathKeyPattern>();
         public List<string> textxpath = new List<string>();
-
+        public List<PatternFormat> namePatternFormats = new List<PatternFormat>();
         public string eventText;
         public string caseDescFormat;
         

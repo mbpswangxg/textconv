@@ -28,7 +28,6 @@ namespace TextConv
             setEventKeyByAttr(ruleItem, node);
             Console.WriteLine("eventKey:"+this.eventKey);
             setEventNameByAttr(ruleItem, node);
-            Console.WriteLine("eventName:"+this.eventName);
             
             if (string.IsNullOrEmpty(this.eventName) || !Regex.IsMatch(eventName, @"\w+"))
             {
@@ -62,8 +61,57 @@ namespace TextConv
             {
                 this.eventName = ruleItem.wordMap[this.eventName];
             }
+            Console.WriteLine("eventName:" + this.eventName);
         }
 
+        private string ToEventText(XPathRuleItem ruleItem)
+        {
+            foreach (var kv in ruleItem.namePatternFormats)
+            {
+                if (string.IsNullOrEmpty(kv.textformat)) continue;
+                if (Regex.IsMatch(eventName, kv.pattern, RegexOptions.IgnoreCase))
+                {
+                    string format = kv.textformat;
+                    if (Regex.IsMatch(format, @"\$\d+"))
+                    {
+                        format = Regex.Replace(eventName, kv.pattern, kv.textformat);
+                    }
+                    if (format.Contains("eventname"))
+                    {
+                        return UtilWxg.ReplaceKeyValue(kv.textformat, "eventname", eventName);
+                    }
+                    else
+                    {
+                        return format;
+                    }
+                }
+            }
+            return string.Format(ruleItem.eventText, eventName);
+        }
+        private string ToCaseDesc(XPathRuleItem ruleItem)
+        {
+            foreach(var kv in ruleItem.namePatternFormats)
+            {
+                if (string.IsNullOrEmpty(kv.caseformat)) continue;
+                if (Regex.IsMatch(eventName, kv.pattern, RegexOptions.IgnoreCase))
+                {
+                    string format = kv.caseformat;
+                    if(Regex.IsMatch(format, @"\$\d+"))
+                    {
+                        format = Regex.Replace(eventName, kv.pattern, kv.caseformat);
+                    }
+                    if (format.Contains("eventname"))
+                    {
+                        return UtilWxg.ReplaceKeyValue(kv.caseformat, "eventname", eventName);
+                    }
+                    else
+                    {
+                        return format;
+                    }
+                }
+            }
+            return UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
+        }
         public void ToCaseDesc(XPathRuleItem ruleItem, HtmlNode node)
         {
             if (ruleItem.name.Contains("sortlink"))
@@ -71,13 +119,13 @@ namespace TextConv
                 if (node.OuterHtml.Contains("ASC"))
                 {
                     eventText = string.Format(ruleItem.eventText, eventName, "△");
-                    caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
+                    caseDesc = ToCaseDesc(ruleItem);
                     caseDesc = UtilWxg.ReplaceKeyValue(caseDesc, "sorttype", "昇順");
                 }
                 else
                 {
                     eventText = string.Format(ruleItem.eventText, eventName, "▽");
-                    caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
+                    caseDesc = ToCaseDesc(ruleItem);
                     caseDesc = UtilWxg.ReplaceKeyValue(caseDesc, "sorttype", "降順");
                 }
                 return;
@@ -93,18 +141,26 @@ namespace TextConv
                 {
                     eventName = eventName + " 終了";
                 }
-                eventText = string.Format(ruleItem.eventText, eventName);
+                this.eventText = ToEventText(ruleItem);
+                this.caseDesc = ToCaseDesc(ruleItem);
+                return;
             }
-            else
+            
+            if (ruleItem.name.Contains("select")
+             || ruleItem.name.Contains("tabpage"))
             {
-                eventText = string.Format(ruleItem.eventText, eventName);
+                //初期表示：DropList
+                this.eventText = ToEventText(ruleItem);
+                this.caseDesc = ToCaseDesc(ruleItem);
+                return;
             }
+
+            this.eventText = ToEventText(ruleItem);
             if (!string.IsNullOrEmpty(this.eventName) && ruleItem.caseMap.ContainsKey(this.eventName))
             {
                 this.caseDesc = ruleItem.caseMap[this.eventName];
-                this.eventText = string.Format(ruleItem.eventText,this.eventName);
             }else{
-                caseDesc = UtilWxg.ReplaceKeyValue(ruleItem.caseDescFormat, "eventname", eventName);
+                this.caseDesc = ToCaseDesc(ruleItem);
             }
         }
 
@@ -123,8 +179,13 @@ namespace TextConv
                 }
                 else if (Regex.IsMatch(attrValue, k.pattern))
                 {
-                    //eventKey = Regex.Replace(attrValue, k.pattern, k.replacement);
-                    eventKey = attrValue;
+                    if (string.IsNullOrEmpty(k.replacement))
+                    {
+                        eventKey = attrValue;
+                    }else
+                    {
+                        eventKey = Regex.Replace(attrValue, k.pattern, k.replacement);
+                    }
                 }
                 
                 if (!string.IsNullOrEmpty(eventKey)) return;

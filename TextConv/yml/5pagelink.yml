@@ -2,16 +2,12 @@
 xpath: //imart[(@type='link' or @href) and (contains(@value,'START') or contains(@value,'END') or contains(@value,'.ALL') or contains(@value,'sPaging') or contains(@value,'sNextArrow'))]
 keypattern: 
 - attrname: onclick
-  pattern: setSortInfo\('(\w+)'\)	
-  replacement: $1
+  pattern: setSortInfo\('(\w+)'\)
 - attrname: onclick
   pattern: return\s+([^""']+)
-  replacement: $1
 - attrname: onclick
   pattern: (\w+[^""']+)
-  replacement: $1
 - attrname: href
   pattern: (\w+[^""]+)
-  replacement: $1
 eventText: '「{0}」押下'
 caseDescFormat: '{eventname}の検索結果一覧が表示される'

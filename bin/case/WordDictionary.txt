@@ -8,6 +8,6 @@ p_sPaging	ページャリンク: <
 p_oResultInfo.ALL	指定ページ
 p_oResultInfo.START	ページャリンク: <<
 p_oResultInfo.END	ページャリンク: >>
-
 p_sBtnVal	起票
 fnc_clearLine	1行クリア
+HISTORY_ID	履歴

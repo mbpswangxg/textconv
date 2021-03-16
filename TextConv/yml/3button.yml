@@ -7,3 +7,8 @@ keypattern:
 textxpath: []
 eventText: '「{0}」ボタン押下'
 caseDescFormat: '{eventname}の★★★画面が表示される'
+namePatternFormats:
+- pattern: \w+者
+  caseformat: "{eventname}のユーザ検索画面が表示される"
+  pattern: (\w+画面)へ
+  caseformat: "$1が表示される"
