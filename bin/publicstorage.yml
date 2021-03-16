@@ -1,0 +1,22 @@
+pattern: ([^\r\n]+)("d:\\\\imart\\\\storage\\\\"\s*\+\s*Module.client.get\("group"\))([^\r\n]+)
+replacement: $1new Packages.jp.co.intra_mart.system.service.client.file.StorageInformation().getPublicStorageRootPath().replace(/\//g, "\\")$3
+repfile: ''
+function: ''
+replacegroups: []
+IgnoreCase: true
+Multiline: true
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+dicwords: []
+iffindstrs: []
+ifnotfindstrs: []
+iffindand: true
+excludeWords: []
+matchIndexes: []
+skipMatchIndex: false
+RegOptions: IgnoreCase, Multiline
+HasRangeCheck: false
+Results:
+- 	var javaFile = new java.io.File("d:\\imart\\storage\\" + Module.client.get("group") + "\\0001_prodsptenv\\customerchk\\" + sDwnldFileNm);	var javaFile = new java.io.File(new Packages.jp.co.intra_mart.system.service.client.file.StorageInformation().getPublicStorageRootPath().replace(/\//g, "\\") + "\\0001_prodsptenv\\customerchk\\" + sDwnldFileNm);
+- 	var javaFile = new java.io.File("d:\\imart\\storage\\" + Module.client.get("group") + "\\0001_prodsptenv\\customerchk\\" + sDwnldFileNm);	var javaFile = new java.io.File(new Packages.jp.co.intra_mart.system.service.client.file.StorageInformation().getPublicStorageRootPath().replace(/\//g, "\\") + "\\0001_prodsptenv\\customerchk\\" + sDwnldFileNm);

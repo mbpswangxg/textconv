@@ -12,6 +12,7 @@ TextConv/obj/**
 TextConv/bin/**
 bin/UT/**
 bin/*.log
+bin/textconv.bat
 
 # local env files
 .env.local

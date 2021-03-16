@@ -1,0 +1,22 @@
+pattern: (href="#"\s+onClick="return fnc_clearLine\('\w+'\);)(")
+replacement: $1return false;$2
+repfile: ''
+function: ''
+replacegroups: []
+IgnoreCase: true
+Multiline: true
+rangeFrom: ''
+rangeTo: ''
+rangeSkip: false
+dicwords: []
+iffindstrs: []
+ifnotfindstrs: []
+iffindand: true
+excludeWords: []
+matchIndexes: []
+skipMatchIndex: false
+RegOptions: IgnoreCase, Multiline
+HasRangeCheck: false
+Results:
+- 	href="#" onClick="return fnc_clearLine('2');"	href="#" onClick="return fnc_clearLine('2');return false;"
+- 	href="#" onClick="return fnc_clearLine('3');"	href="#" onClick="return fnc_clearLine('3');return false;"

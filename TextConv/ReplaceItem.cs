@@ -25,14 +25,15 @@ namespace TextConv
 
         public List<string> dicwords = new List<string>();
 
-        public List<string> iffindstrs = new List<string>();
-        public List<string> ifnotfindstrs = new List<string>();
-        public bool iffindand = true;
+        public List<string> findInStrs = new List<string>();
+        public bool findAnd = true;
+        public bool findSkip = false;
 
         public List<string> excludeWords = new List<string>();
-        public List<int> matchIndexes = new List<int>();
-        public bool skipMatchIndex = false;
 
+        public List<string> matchFinds = new List<string>();
+        public bool matchAnd = true;
+        public bool matchSkip = false;
         #endregion
 
         #region "private attributes"
@@ -171,153 +172,46 @@ namespace TextConv
 
         #endregion
 
-        #region "must/Not Exists"
-        private bool mustExist(List<string> lines)
-        {
-            if (iffindstrs.Count > 0)
-            {
-                // and 条件の場合、TrueForAllで判定
-                if (iffindand)
-                {
+        #region "skip check"
 
-                    //一つ条件が満たさない場合、不合格として、処理終了
-                    if (iffindstrs.TrueForAll(r => lines.Exists(l => Regex.IsMatch(l, r))))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else // or 条件の場合、Existsで判定
-                {
-                    //一つ条件も満たさない場合、不合格として、処理終了
-                    if (iffindstrs.Exists(r => lines.Exists(l => Regex.IsMatch(l, r))))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-        private bool mustNotExist(List<string> lines)
+        private bool skip(string content, List<string> patterns, bool isAnd, bool isSkip)
         {
-            if (ifnotfindstrs.Count > 0)
+            // no patterns, no skip check. 
+            if (patterns.Count == 0) return false;
+
+            
+            // and 条件の場合、TrueForAllで判定
+            if (isAnd)
             {
-                // and 条件の場合、Existsで判定
-                if (iffindand)
+                //一つ条件が満たさない場合、不合格として、処理終了
+                if (patterns.TrueForAll(r => Regex.IsMatch(content, r)))
                 {
-                    //一つ条件が満たす場合、不合格として、処理終了
-                    if (ifnotfindstrs.Exists(r => lines.Exists(l => Regex.IsMatch(l, r))))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                    return isSkip;
                 }
-                else // or 条件の場合、TrueForAllで判定
+                else
                 {
-                    //全条件が満たす場合、不合格として、処理終了
-                    if (ifnotfindstrs.TrueForAll(r => lines.Exists(l => Regex.IsMatch(l, r))))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                    return !isSkip;
                 }
             }
-            else
+            else // or 条件の場合、Existsで判定
             {
-                return true;
+                //一つ条件も満たさない場合、不合格として、処理終了
+                if (patterns.Exists(r => Regex.IsMatch(content, r)))
+                {
+                    return isSkip;
+                }
+                else
+                {
+                    return !isSkip;
+                }
             }
         }
-        private bool mustExist(string content)
-        {
-            if (iffindstrs.Count > 0)
-            {
-                // and 条件の場合、TrueForAllで判定
-                if (iffindand)
-                {
-                    //一つ条件が満たさない場合、不合格として、処理終了
-                    if (iffindstrs.TrueForAll(r => Regex.IsMatch(content, r)))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else // or 条件の場合、Existsで判定
-                {
-                    //一つ条件も満たさない場合、不合格として、処理終了
-                    if (iffindstrs.Exists(r => Regex.IsMatch(content, r)))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-        private bool mustNotExist(string content)
-        {
-            if (ifnotfindstrs.Count > 0)
-            {
-                // and 条件の場合、Existsで判定
-                if (iffindand)
-                {
-                    //一つ条件が満たす場合、不合格として、処理終了
-                    if (ifnotfindstrs.Exists(r => Regex.IsMatch(content, r)))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else // or 条件の場合、TrueForAllで判定
-                {
-                    //全条件が満たす場合、不合格として、処理終了
-                    if (ifnotfindstrs.TrueForAll(r => Regex.IsMatch(content, r)))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
+
         #endregion
 
         public string replaceText(string content)
         {
-            if (!mustExist(content) || !mustNotExist(content))
+            if (skip(content, findInStrs, findAnd, findSkip))
             {
                 //見つかるべきものは見つからない場合、
                 //見つからなくべきものが見つかった場合、
@@ -343,7 +237,15 @@ namespace TextConv
             while (reg.IsMatch(content))
             {
                 matchIndex = 0;
-                content = reg.Replace(content, MatchReplacer);
+                string newContent = reg.Replace(content, MatchReplacer);
+                if (newContent.Equals(content))
+                {
+                    break;
+                }
+                else
+                {
+                    content = newContent;
+                }
                 if (maxLoop < 0) break;
                 maxLoop--;
             }
@@ -353,27 +255,9 @@ namespace TextConv
         
         private string MatchReplacer(Match m)
         {
-            if (matchIndexes.Count > 0)
-            {
-                matchIndex++;
-                if (matchIndexes.Contains(matchIndex))
-                {
-                    //SKIP対象の場合、
-                    if (skipMatchIndex)
-                    {
-                        return m.Value;
-                    }
-                }
-                else
-                {
-                    //処理対象外の場合、
-                    if (!skipMatchIndex)
-                    {
-                        return m.Value;
-                    }
-                }
-            }
-
+            matchIndex++;
+            
+            // in range check
             if (HasRangeCheck)
             {
                 //範囲チェックあるの場合
@@ -387,6 +271,12 @@ namespace TextConv
                     //範囲外のチェック対象であれば、
                     if (!rangeSkip) return m.Value;
                 }
+            }
+
+            // match skip check
+            if (skip(m.Value, matchFinds, matchAnd, matchSkip))
+            {
+                return m.Value;
             }
 
             string oldV = m.Value;
