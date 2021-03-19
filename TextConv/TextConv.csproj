@@ -26,7 +26,7 @@
     <None Update="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ADD_MONTH.yml">
+    <None Update="replaceYml\ora2mssql\ADD_MONTH.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="replaceYml\BTN02W45.yml">
@@ -35,13 +35,13 @@
     <None Update="replaceYml\BtnNoDisplay.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\CASE_TAB.yml">
+    <None Update="replaceYml\CASE_TAB.yml.bak">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="replaceYml\clearlineaddreturn.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\DECODE.yml">
+    <None Update="replaceYml\ora2mssql\DECODE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="replaceYml\getElement.yml">
@@ -50,52 +50,52 @@
     <None Update="replaceYml\HTMLescapeXml.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\INSTR.yml">
+    <None Update="replaceYml\ora2mssql\INSTR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\LEFT_JOIN.yml">
+    <None Update="replaceYml\ora2mssql\LEFT_JOIN.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\LENGTH.yml">
+    <None Update="replaceYml\ora2mssql\LENGTH.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\LPAD.yml">
+    <None Update="replaceYml\ora2mssql\LPAD.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\NULLIF.yml">
+    <None Update="replaceYml\ora2mssql\NULLIF.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\NVL.yml">
+    <None Update="replaceYml\ora2mssql\NVL.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ORA_OR.yml">
+    <None Update="replaceYml\ora2mssql\ORA_OR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="replaceYml\PublicStorage.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ROWID.yml">
+    <None Update="replaceYml\ora2mssql\ROWID.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\SUBSTR.yml">
+    <None Update="replaceYml\ora2mssql\SUBSTR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\SYSDATE.yml">
+    <None Update="replaceYml\ora2mssql\SYSDATE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\TO_CHAR.yml">
+    <None Update="replaceYml\ora2mssql\TO_CHAR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\TO_CLOB.yml">
+    <None Update="replaceYml\ora2mssql\TO_CLOB.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\TO_DATE.yml">
+    <None Update="replaceYml\ora2mssql\TO_DATE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\TO_NUMBER.yml">
+    <None Update="replaceYml\ora2mssql\TO_NUMBER.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\TO_STR.yml">
+    <None Update="replaceYml\ora2mssql\TO_STR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="replaceYml\UCASE_COL.yml">
@@ -104,7 +104,7 @@
     <None Update="replaceYml\UCASE_TAB.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\usertabcol.yml">
+    <None Update="replaceYml\ora2mssql\usertabcol.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="replaceYml\UserTransaction.yml">

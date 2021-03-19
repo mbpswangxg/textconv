@@ -6,6 +6,43 @@ using System.Text.RegularExpressions;
 
 namespace TextConv
 {
+    public class ReplaceSkipRuleItem
+    {
+        public List<string> patterns = new List<string>();
+        public bool isAnd = false;
+
+        public bool isOK(string content)
+        {
+            // no patterns, no skip check. 
+            if (patterns.Count == 0) return false;
+
+            // and 条件の場合、TrueForAllで判定
+            if (isAnd)
+            {
+                //一つ条件が満たさない場合、不合格として、処理終了
+                if (patterns.TrueForAll(r => Regex.IsMatch(content, r)))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else // or 条件の場合、Existsで判定
+            {
+                //一つ条件も満たさない場合、不合格として、処理終了
+                if (patterns.Exists(r => Regex.IsMatch(content, r)))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
     public class ReplaceRuleItem
     {
         #region "Key Properties"
@@ -30,10 +67,12 @@ namespace TextConv
         public bool findSkip = false;
 
         public List<string> excludeWords = new List<string>();
+        //public List<string> skipMatchIncludes = new List<string>();
+        //public bool skipMatchAnd = false;
+        public ReplaceSkipRuleItem skipIncludeMatch;
+        public ReplaceSkipRuleItem skipInclude;
+        public ReplaceSkipRuleItem requireInclude;
 
-        public List<string> matchFinds = new List<string>();
-        public bool matchAnd = true;
-        public bool matchSkip = false;
         #endregion
 
         #region "private attributes"
@@ -172,52 +211,24 @@ namespace TextConv
 
         #endregion
 
-        #region "skip check"
-
-        private bool skip(string content, List<string> patterns, bool isAnd, bool isSkip)
+        
+        public bool isTrue(ReplaceSkipRuleItem ri, string content)
         {
-            // no patterns, no skip check. 
-            if (patterns.Count == 0) return false;
-
-            
-            // and 条件の場合、TrueForAllで判定
-            if (isAnd)
-            {
-                //一つ条件が満たさない場合、不合格として、処理終了
-                if (patterns.TrueForAll(r => Regex.IsMatch(content, r)))
-                {
-                    return isSkip;
-                }
-                else
-                {
-                    return !isSkip;
-                }
-            }
-            else // or 条件の場合、Existsで判定
-            {
-                //一つ条件も満たさない場合、不合格として、処理終了
-                if (patterns.Exists(r => Regex.IsMatch(content, r)))
-                {
-                    return isSkip;
-                }
-                else
-                {
-                    return !isSkip;
-                }
-            }
+            if (ri == null) return false;
+            return ri.isOK(content);
         }
-
-        #endregion
 
         public string replaceText(string content)
         {
-            if (skip(content, findInStrs, findAnd, findSkip))
+            // skip include content value 
+            if (isTrue(skipInclude, content))
             {
-                //見つかるべきものは見つからない場合、
-                //見つからなくべきものが見つかった場合、
-                //いずれも不合格として、処理終了
                 return content;
             }
+            //if (isTrue(requireInclude, content))
+            //{
+            //    return content;
+            //}
 
             beforeReplace(content);
             repResults.Clear();
@@ -273,8 +284,8 @@ namespace TextConv
                 }
             }
 
-            // match skip check
-            if (skip(m.Value, matchFinds, matchAnd, matchSkip))
+            // skip include match value 
+            if(isTrue(skipIncludeMatch, m.Value))
             {
                 return m.Value;
             }

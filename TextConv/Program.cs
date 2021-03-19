@@ -41,10 +41,7 @@ namespace TextConv
             {
                 List<XPathRuleItem> rules = new List<XPathRuleItem>();
                 string ruleFolderPath = Config.GetAppSettingValue("xpath.rule.yml");
-                if (Directory.Exists(ruleFolderPath))
-                {
-                    LoadYmlRules(rules, ruleFolderPath, cmd, true);
-                }
+                LoadYmlRules(rules, ruleFolderPath, cmd);
                 HtmlParseFolder(srcfolder, rules);
                 HtmlParseFile(srcFile, rules);
             }
@@ -54,10 +51,7 @@ namespace TextConv
             {
                 List<ReplaceRule> repRules = new List<ReplaceRule>();
                 string ruleFolderPath = Config.GetAppSettingValue("replace.rule.yml");
-                if (Directory.Exists(ruleFolderPath) && !string.IsNullOrEmpty(cmd))
-                {
-                    LoadYmlRules(repRules, ruleFolderPath, cmd, false);
-                }
+                LoadYmlRules(repRules, ruleFolderPath, cmd);
 
                 ReplaceRuleItem ri = new ReplaceRuleItem();
                 ri.pattern = getValue("-p", args);
@@ -76,11 +70,8 @@ namespace TextConv
                         repRules.Add(rule);
                     }
                 }
-                foreach (ReplaceRule rule in repRules)
-                {
-                    rule.ReplaceFolder(srcfolder);
-                    rule.ReplaceFile(srcFile);
-                }
+                ReplaceFolder(srcfolder, repRules);
+                ReplaceFile(srcfolder, repRules);
             }
         }
         
@@ -89,7 +80,15 @@ namespace TextConv
             int x = args.ToList().IndexOf(cmdPattern);
             if (x > -1)
             {
-                return args[x + 1];
+                string v = args[x + 1];
+                if(Regex.IsMatch(v, @"^--?[\w\-]+$"))
+                {
+                    return "";
+                }
+                else
+                {
+                    return v;
+                }
             }
             else {
                 return "";
@@ -126,38 +125,54 @@ namespace TextConv
                 Console.WriteLine(msg);
             }
         }
-        
-        private static void LoadYmlRules<T>(List<T> items, string ruleFilePath, string cmd, bool toAll)
+
+        private static void ReplaceFolder(string folder, List<ReplaceRule> ruleItems)
         {
-            var deserializer = new Deserializer();
-            try
+            if (!Directory.Exists(folder)) return;
+            foreach (ReplaceRule rule in ruleItems)
             {
-                foreach(var filepath in Directory.GetFiles(ruleFilePath))
+                rule.ReplaceFolder(folder);
+            }
+        }
+        private static void ReplaceFile(string filePath, List<ReplaceRule> ruleItems)
+        {
+            if (!File.Exists(filePath)) return;
+            foreach (ReplaceRule rule in ruleItems)
+            {
+                rule.ReplaceFile(filePath);
+            }
+        }
+
+        private static void LoadYmlRules<T>(List<T> items, string ruleFolderPath, string cmd)
+        {
+            if (!Directory.Exists(ruleFolderPath)) return;
+            
+            var deserializer = new Deserializer();
+            foreach (var filepath in Directory.GetFiles(ruleFolderPath))
+            {
+                if (!Regex.IsMatch(filepath, ".(yml|yaml)$")) continue;
+
+                using (StreamReader reader = File.OpenText(filepath))
                 {
-                    using (StreamReader reader = File.OpenText(filepath))
+                    string name = UtilWxg.GetMatchGroup(filepath, @"\\*(\w+)\.\w+", 1);
+
+                    if (string.IsNullOrEmpty(cmd))
                     {
-                        string name = UtilWxg.GetMatchGroup(filepath, @"\\*(\w+)\.\w+", 1);
-                        
-                        if (string.IsNullOrEmpty(cmd))
-                        {
-                            if (toAll)
-                            {
-                                T item = deserializer.Deserialize<T>(reader);
-                                items.Add(item);
-                            }
-                        }
-                        else if (name.Equals(cmd))
-                        {
-                            T item = deserializer.Deserialize<T>(reader);
-                            items.Add(item);
-                        }
+                        T item = deserializer.Deserialize<T>(reader);
+                        items.Add(item);
+                    }
+                    else if (name.Equals(cmd))
+                    {
+                        T item = deserializer.Deserialize<T>(reader);
+                        items.Add(item);
                     }
                 }
             }
-            catch (Exception e)
+
+            DirectoryInfo di = new DirectoryInfo(ruleFolderPath);
+            foreach (var sdi in di.GetDirectories())
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
+                LoadYmlRules(items, sdi.FullName, cmd);
             }
         }
         #endregion

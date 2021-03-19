@@ -44,4 +44,7 @@ namePatternFormats:
 - pattern: .*fnc_openFlow\(.*
   textformat: "フローリンク押下"
   caseformat: "フロー画面が表示される"
+- pattern: .*fnc_downloadFile\(.*
+  textformat: "ファイル名リンク押下"
+  caseformat: "対応ファイルがダウンロードされる"
 caseDescFormat: '{eventname}の★★★画面が表示される'
