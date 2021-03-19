@@ -1,7 +1,7 @@
 ::cd C:\workspace\textconv\bin
 
 REM set P1=C:\resin\resin-pro-4.0.64\webapps\imart\WEB-INF\jssp\src\jae\0020_conmnfequip\equipinspect\
-set P1=C:\workspace\jae\jae\src\main\jssp\src\jae\0012_consalesplan\publish\
+set P1=C:\workspace\jae\jae\src\main\jssp\src\jae\0010_conbsnplan\pricechg\
 set gitworkpath=C:\workspace\jae
 set toolpath=C:\workspace\textconv\bin
 
