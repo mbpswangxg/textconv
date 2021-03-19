@@ -3,3 +3,5 @@ client
 fnc_\w+
 fnc_getUserCd
 getToDay
+tables,types
+name

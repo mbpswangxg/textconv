@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.30.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Users\wangx\.nuget\packages\htmlagilitypack\1.11.30\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,6 +68,12 @@
       <DependentUpon>RegexTabPage.cs</DependentUpon>
     </Compile>
     <Compile Include="TreeDataBinder.cs" />
+    <Compile Include="XPathTabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="XPathTabPage.Designer.cs">
+      <DependentUpon>XPathTabPage.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FrmMDI.resx">
       <DependentUpon>FrmMDI.cs</DependentUpon>
     </EmbeddedResource>
@@ -78,6 +88,9 @@
     </Compile>
     <EmbeddedResource Include="RegexTabPage.resx">
       <DependentUpon>RegexTabPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XPathTabPage.resx">
+      <DependentUpon>XPathTabPage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -95,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextConv\TextConv.csproj">
-      <Project>{0deffb29-6245-4416-9ee1-28f33c57352d}</Project>
+      <Project>{01f5f543-7236-4e45-8031-45d5f7f04eee}</Project>
       <Name>TextConv</Name>
     </ProjectReference>
   </ItemGroup>

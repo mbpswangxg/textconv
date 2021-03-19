@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: add_months\(([^,]+),([^,]+)\)
+  replacement: DATEADD(month,$2,$1)

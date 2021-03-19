@@ -26,26 +26,69 @@ namespace conver
         }
 
         #region User Menu
+
         private void ShowNewForm(object sender, EventArgs e)
         {
-            tabWindow.SelectedTab = NewTabPage("Regex" + childFormNumber++);
+            bool isXpath = false;
+            if(sender is ToolStripButton)
+            {
+                ToolStripButton btn1 = (ToolStripButton)sender;
+                if (btn1.Name.Contains("XPath"))
+                {
+                    isXpath = true;
+                }
+            }else if (sender is ToolStripMenuItem)
+            {
+                ToolStripMenuItem btn1 = (ToolStripMenuItem)sender;
+                if (btn1.Name.Contains("XPath"))
+                {
+                    isXpath = true;
+                }
+            }
+            if (isXpath)
+            {
+                tabWindow.SelectedTab = NewTabPage("XPath", childFormNumber++);
+            }
+            else
+            {
+                tabWindow.SelectedTab = NewTabPage("Regex", childFormNumber++);
+            }
         }
-        private TabPage NewTabPage(string pageText) 
+        private TabPage NewTabPage(string pageText, int index) 
         {
+            string pageName = pageText;
+            if (index > 0)
+            {
+                pageName = pageText + index;
+            }
             tabWindow.SuspendLayout();
-            tabWindow.TabPages.Add(pageText, pageText);
-            TabPage page = tabWindow.TabPages[pageText];
-            RegexTabPage r = new RegexTabPage();
-            r.Dock = DockStyle.Fill;
-            r.TabStop = false;
-            r.Name = "RegexTabPage";
+            tabWindow.TabPages.Add(pageName, pageName);
+            TabPage page = tabWindow.TabPages[pageName];
+            if (pageText.Contains("XPath"))
+            {
+                XPathTabPage r = new XPathTabPage();
+                r.Dock = DockStyle.Fill;
+                r.TabStop = false;
+                r.Name = "XPathTabPage";
 
-            this.KeyDown += r.FrmRegex_KeyDown;
-            this.btnMatch.Click += r.btnMatch_Click;
-            this.btnReplace.Click += r.btnReplace_Click;
-            this.btnReplaceFile.Click += r.btnReplaceFile_Click;
+                this.KeyDown += r.FrmRegex_KeyDown;
+                this.btnMatch.Click += r.btnMatch_Click;
+                page.Controls.Add(r);
+            }
+            else
+            {
+                RegexTabPage r = new RegexTabPage();
+                r.Dock = DockStyle.Fill;
+                r.TabStop = false;
+                r.Name = "RegexTabPage";
 
-            page.Controls.Add(r);
+                this.KeyDown += r.FrmRegex_KeyDown;
+                this.btnMatch.Click += r.btnMatch_Click;
+                this.btnReplace.Click += r.btnReplace_Click;
+                this.btnReplaceFile.Click += r.btnReplaceFile_Click;
+                page.Controls.Add(r);
+            }
+            
             tabWindow.ResumeLayout();
             return page;
         }
@@ -66,7 +109,16 @@ namespace conver
                 }
                 else 
                 {
-                    tabWindow.SelectedTab = NewTabPage(fi.Name);
+                    //string content = File.ReadAllText(fi.FullName);
+                    if (fi.Name.Contains("XPath"))
+                    {
+                        tabWindow.SelectedTab = NewTabPage(fi.Name, 0);
+                    }
+                    else
+                    {
+                        tabWindow.SelectedTab = NewTabPage(fi.Name, 0);
+                    }
+                    
                     tabWindow.SelectedTab.ToolTipText = fi.FullName;
                 }
 

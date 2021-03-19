@@ -1,4 +1,4 @@
-﻿#comment start with #, and no range comments.
+#comment start with #, and no range comments.
 #[0]:pattern, [1]:replacement,[2-n]:regex ignoreCase=false, default true.
 #------------------------------------------------
 #general command:
@@ -7,88 +7,101 @@
 #------------------------------------------------
 # ORACLE => SQLSERVER 対応
 #=================================================================
-INSTR=INSTR\(([^,]+),([^\)]+)\)	CHARINDEX($2,$1)	ignoreCase=true
+INSTR=INSTR\(([^,]+),([^\)]+)\)	repname=CHARINDEX($2,$1)	ignoreCase=true
+SYS=SYS.tables	rename=sys.tables
 
-TO_DATE=TO_DATE\(([^,]+),\s*'YYYYMM'\s*\)	CONVERT(datetime, $1+'01')
-TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM'\s*\)	CONVERT(datetime, $1+'/01')
-TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(datetime, $1)
-TO_DATE=TO_DATE\(([^,]+),([^\)]+)\)	CONVERT(datetime2, $1)
-TO_DATE=TO_DATE\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)	CONVERT(datetime2, $1)
+TO_DATE=TO_DATE\(([^,]+),\s*'YYYYMM'\s*\)	repname=CONVERT(datetime, $1+'01')
+TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM'\s*\)	repname=CONVERT(datetime, $1+'/01')
+TO_DATE=TO_DATE\(([^,]+),\s*'YYYY/MM/DD'\s*\)	repname=CONVERT(datetime, $1)
+TO_DATE=TO_DATE\(([^,]+),([^\)]+)\)	repname=CONVERT(datetime2, $1)
+TO_DATE=TO_DATE\((.+),\s*'YYYY/MM/DD HH24:MI:SS'\)	repname=CONVERT(datetime2, $1)
 
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'FMMM'\s*\)	FORMAT($1, '%M')
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'FMDD'\s*\)	FORMAT($1, '%d')
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY'\s*\)	FORMAT($1, 'yyyy')
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'MM'\s*\)	FORMAT($1, 'MM')
-TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'DD'\s*\)	FORMAT($1, 'dd')
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD'\s*\)	repname=CONVERT(varchar, $1, 111)
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	repname=CONVERT(varchar, $1, 120)
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	repname=FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'FMMM'\s*\)	repname=FORMAT($1, '%M')
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'FMDD'\s*\)	repname=FORMAT($1, '%d')
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'YYYY'\s*\)	repname=FORMAT($1, 'yyyy')
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'MM'\s*\)	repname=FORMAT($1, 'MM')
+TO_CHAR=TO_CHAR\(([^,\(\n]+),\s*'DD'\s*\)	repname=FORMAT($1, 'dd')
 
-TO_CHAR=TO_CHAR\(([^,\n]+),\s*'[9,]*999'\s*\)	FORMAT($1, '#,###')
+TO_CHAR=TO_CHAR\(([^,\n]+),\s*'[9,]*999'\s*\)	repname=FORMAT($1, '#,###')
 
-TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYYMM'\s*\)\s*,\s*'FMMM'\s*\)	FORMAT(CONVERT(datetime,$1+'01'), '%M')
-TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM'\s*\)\s*,\s*'YYYY/FMMM'\s*\)	FORMAT(CONVERT(datetime,$1+'/01'), 'yyyy/M')
-TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM/DD'\s*\)\s*,\s*'YYYY/FMMM/DD'\s*\)	FORMAT(CONVERT(datetime,$1), 'yyyy/M/d')
+TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYYMM'\s*\)\s*,\s*'FMMM'\s*\)	repname=FORMAT(CONVERT(datetime,$1+'01'), '%M')
+TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM'\s*\)\s*,\s*'YYYY/FMMM'\s*\)	repname=FORMAT(CONVERT(datetime,$1+'/01'), 'yyyy/M')
+TO_CHAR=TO_CHAR\(TO_DATE\(\s*([^,]+),\s*'YYYY/MM/DD'\s*\)\s*,\s*'YYYY/FMMM/DD'\s*\)	repname=FORMAT(CONVERT(datetime,$1), 'yyyy/M/d')
 
-TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'FMMM'\s*\)	FORMAT($1, '%M')
-TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM'\s*\)	FORMAT($1, 'yyyy/M')
-TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM/DD'\s*\)	FORMAT($1, 'yyyy/M/d')
-TO_CHAR=TO_CHAR\(\s*([^,\(\)]+)\)	CONVERT(varchar, $1)
-TO_CHAR=TO_CHAR\((CONVERT\([^\)]+SUBSTR\w+\([^\)]+\)[^\)]*\))\)	CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'FMMM'\s*\)	repname=FORMAT($1, '%M')
+TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM'\s*\)	repname=FORMAT($1, 'yyyy/M')
+TO_CHAR=TO_CHAR\((CONVERT\([^\(\)]+\)),\s*'YYYY/FMMM/DD'\s*\)	repname=FORMAT($1, 'yyyy/M/d')
+TO_CHAR=TO_CHAR\(\s*([^,\(\)]+)\)	repname=CONVERT(varchar, $1)
+TO_CHAR=TO_CHAR\((CONVERT\([^\)]+SUBSTR\w+\([^\)]+\)[^\)]*\))\)	repname=CONVERT(varchar, $1)
 
-TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD'\s*\)	CONVERT(varchar, $1, 111)
-TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	CONVERT(varchar, $1, 120)
-TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
-TO_CHAR=TO_CHAR\(([^,]+),'Day'\)	DATENAME(dw, $1)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD'\s*\)	repname=CONVERT(varchar, $1, 111)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD HH24:MI:SS'\s*\)	repname=CONVERT(varchar, $1, 120)
+TO_CHAR=TO_CHAR\((GETDATE\(\)[\s\-\w]*),\s*'YYYY/MM/DD\|HH24:MI:SS'\s*\)	repname=FORMAT($1, 'yyyy/MM/ddHH:mm:ss')
+TO_CHAR=TO_CHAR\(([^,]+),'Day'\)	repname=DATENAME(dw, $1)
+
+TOSTR=([\w\/]+'\s*\+\s*)(INFO_ID)(\s+AS)	repCmdKey=$1CONVERT(varchar,$2)$3
 
 #TO_NUMBER=TO_NUMBER\((SUBSTR\w*\([^\(\)]+\)[-\s\w]*)\)	CONVERT(decimal, $1)
 #TO_NUMBER=TO_NUMBER\(([\w\.]+)\)	CONVERT(decimal, $1)
 #TO_NUMBER=TO_NUMBER\(([^\)]+\)\)\))\)	CONVERT(decimal, $1)
-TO_NUMBER=TO_NUMBER\(	CONVERT(decimal,
+TO_NUMBER=TO_NUMBER\(	repCmdKey=CONVERT(decimal,
 
-ADD_MONTH=add_months\(([^,]+),([^,]+)\)	DATEADD(month,$2,$1)
+ADD_MONTH=add_months\(([^,]+),([^,]+)\)	repCmdKey=DATEADD(month,$2,$1)
 
 LPAD=LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)	repname=REPLICATE($3,$2-LEN($1))+$1
-LPAD=LPAD\(([^,]+),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
-LPAD=lpad\((substr\w*[^\)]+[^,]*),\s*(\d+),\s*([^\)]+)\)	FORMAT($1, REPLICATE($3,$2))
+LPAD=LPAD\(([^,]+),\s*(\d+),\s*([^\)]+)\)	repCmdKey=FORMAT($1, REPLICATE($3,$2))
+LPAD=lpad\((substr\w*[^\)]+[^,]*),\s*(\d+),\s*([^\)]+)\)	repCmdKey=FORMAT($1, REPLICATE($3,$2))
 
-SUBSTRING=((?:^|[^\.\w]))SUBSTR\s*\(	$1SUBSTRING(
-SUBSTRING=(SUBSTRING\([^,]+),\s*0\s*	$1,1
+SUBSTRING=((?:^|[^\.\w]))SUBSTR\s*\(	repCmdKey=$1SUBSTRING(
+SUBSTRING=(SUBSTRING\([^,]+),\s*0\s*	repCmdKey=$1,1
 
-LENGTH=((?:^|[^\.\w]))LENGTH\s*\(	$1LEN(
-NVL=((?:^|[^\.\w]))NVL\s*\(	$1ISNULL(
+LENGTH=((?:^|[^\.\w]))LENGTH\s*\(	repCmdKey=$1LEN(
+NVL=((?:^|[^\.\w]))NVL\s*\(	repCmdKey=$1ISNULL(
 
-ROWID=COUNT\([\w+\.]*ROWID\)	COUNT(*)
+ROWID=COUNT\([\w+\.]*ROWID\)	repCmdKey=COUNT(*)
 
-SYSDATE=SYSDATE	GETDATE()
+SYSDATE=(\b)SYSDATE	repCmdKey=$1GETDATE()
+
+TONUM=(FORMAT\()(activity_cd)(,)	repCmdKey=$1CONVERT(decimal,$2)$3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
+LEFTJOIN=(\(\+\))	repWarn=$1★★LEFT JOIN★★
 
 #special command.
 #@COMMAND_KEYWORD=pattern
 # textconv -c COMMAND_KEYWORD
 #-------------------------------------------
-ORA_OR=\|\|	+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
+ORA_OR=\|\|	repCmdKey=+	rangefrom=\s*(if|while)\s*\(	rangeto=\)[^\)\{]*\{	rangeSkip=true
 
-UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false
+CASE_TAB=\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	rangeFrom=FROM	rangeTo=WHERE	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
+CASE_TAB=(?:FROM|UPDATE|DELETE(?:\s+FROM)*|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	CASE_GROUP=1,3	dicwordfile=repfiles/tablename.txt	fileSkip=true	filefilter=\w+epsDBAccess.js
+UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js	excludefile=repfiles/extable.txt
+LCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	LCASE_GROUP=1,3	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+
 UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false
 LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
 
-UCASE_COL=\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt
-UCASE_COL="'([\s,]*(\w+))+[\s,]*"	UCASE_GROUP=1,2	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
-UCASE_COL="[\s,]*\w+\((\w+)\)[^"]*"	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
-UCASE_COL=\s*\w+\((\w+)\)\s*	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM
-UCASE_COL="[\s,]*(\w+)\s*(,\s*(\w+))*,*"	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=INSERT[\w\s]+\(	rangeTo=\)
-UCASE_COL="\s*SET\s+(\w+)\s*=	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*WHERE\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*'"	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=2	ignoreCase=false
-UCASE_COL="\s*AND\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=1,2	ignoreCase=false
-UCASE_COL="\s*ORDER BY\s+(\w+)\s*"	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)	UCASE_GROUP=1	ignoreCase=false
-UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false
-UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false
-UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false
+UCASE_COL="\s*\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="'([\s,]*(\w+))+[\s,]*"	UCASE_GROUP=1,2	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	excludefile=repfiles/lcaseColumns.txt	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="[\s,]*\w+\((\w+)\)[^"]*"	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*\w+\((\w+)\)\s*	UCASE_GROUP=1	ignoreCase=false	rangeFrom=SELECT	rangeTo=FROM	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="[\s,]*(\w+)\s*(,\s*(\w+))*,*"	UCASE_GROUP=1,3	ignoreCase=false	rangeFrom=INSERT[\w\s]+\(	rangeTo=\)	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*SET\s+(\w+)\s*=	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*WHERE\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*'"	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*WHERE\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=2	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*AND\s+(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*AND\s+\w+\.(\w+)\s*[!=\<\>]+\s*\w+\.(\w+)\s*"	UCASE_GROUP=1,2	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*ORDER BY\s+(\w+)\s*"	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)	UCASE_GROUP=1	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*ORDER BY\s+\w+\.(\w+)\s*(,\s*\w+\.(\w+))*	UCASE_GROUP=1,3	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL="\s*SELECT\s+(\w*[a-z]+\w*)\s*(,\s*(\w*[a-z]+\w*))*\s+FROM	UCASE_GROUP=1,3	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+UCASE_COL=INSERT\s+INTO\s+\w+\s*\(\s*(\w*[a-z]+\w*)(,\s*(\w*[a-z]+\w*))*\)	UCASE_GROUP=1,3	ignoreCase=false	fileSkip=true	filefilter=\w+epsDBAccess.js|fnc_wkFile\w+.js
+
+NULLIF=(\s+)(\w\.\w+)\s+IS\s+NOT\s+NULL	repCmdKey=$1NULLIF($2, '') IS NOT NULL	IgnoreCase=True	Multiline=True
+NULLIF=(\s+)(\w+)\s+IS\s+NOT\s+NULL	repCmdKey=$1NULLIF($2, '') IS NOT NULL	IgnoreCase=True	Multiline=True
 
 DECODE=DECODE\(([^,\(\)]+),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
 DECODE=DECODE\((ISNULL\([\w\.\s]+,[\s\w]+\)),([^,\(\)]+)(,([^,\(\)]+))+\)	DECODE_GROUP=SPECIAL_CASE
@@ -108,8 +121,8 @@ DECODE=DECODE\((SIGN\(COUNT\(\*\)\)),(['\s\w]+),(['\s\w]+),(['\s\w]+),(['\s\w]+)
 TO_CLOB=TO_CLOB\('\W+(\w+)\W+'\)	CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
 TO_CLOB=TO_CLOB\('\W+(\w+)\s*\+\s*(\w+)\W+'\)	CAST('" + $1 + $2 + "' AS NVARCHAR(" + ($1.length + $2.length) + "))
 
-WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
-UserTransaction=new UserTransaction\(\)	Transaction
+#WHEN_NULL=WHEN null THEN	WHEN IS NULL THEN
+UserTransaction=new UserTransaction\(\)	repCmdKey=Transaction
 
 usertabcol=select [\w,\s]+from user_tab_columns where table_name='(\w+)'	repfile=repfiles/selectUserTabCol.sql
 usertabcol=column_name[^"]+"	null=c.name as col_name , ty.name as data_type , c.precision as length_val "	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
@@ -117,7 +130,8 @@ usertabcol=data_scale as length_decimal	null=c.max_length as length_decimal	rang
 usertabcol=FROM user_tab_columns"	null=from sys.tables t inner join sys.columns c on t.object_id = c.object_id inner join sys.types ty on ty.user_type_id = c.user_type_id "
 usertabcol=WHERE table_name = '(\w+)'"	null=where t.name = '$1'"	rangefrom="SELECT"	rangeTo=oDBAcs.selectSql\(sSQL\);	rangeskip=false
 insertscript=(\s*)(\<script src="csjs\/im_window.js"\>)	null=$1<script src="jae/migration/util.js"></script>$1$2	iffindstr=document.getElementById	ifnotfindstr=src="jae\/migration\/util.js"
-insertscript=document.getElementById	getElement	iffindstr=src="jae\/migration\/util.js"
+insertscript=document.getElementById	repCmdKey=getElement	iffindstr=src="jae\/migration\/util.js"
+getEleChange=document.getElementById	repCmdKey=getElement
 
 showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
 showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
@@ -138,12 +152,14 @@ imDesignCss=\<imart\s+type="imDesignCss"\/\>\s*$
 #==============================================
 repfile2=(\<table\>?[^\>]*\>\s*)(\<col width="75" \/\>\s*\<col class="W045" \/\>\s*\<col\s*\/>)	repfile=repfiles/html1-td.txt	multiline=true	filefilter=draft\w*.html
 repfile1=<td[^\<\>]+>\s*(\w+)\<font[^\<\>]+\>\*\<\/font\>\s*<\/td\>\s*<td[^\<\>]+>\s*<input[^\<\>]+onClick="([^"]+)">\s*<\/td\>	repfile=repfiles/html1.txt	multiline=true
+BTN02W45=class="BTN02" 	repCmdKey=class="BTN02 W045" 	IgnoreCase=True	Multiline=True
 
 nowrap1=(\<td class="output"\s*)(\>セキュリティ\<font)	null=$1 style="white-space: nowrap;"$2
 font1=(font-family: '[^'"]+')"	$1;"
 ouput1=(\<td[^\<\>]+class="output)\s+VWRITE"\>(承認者コメント参照)	null=$1"><div style="display: inline-block;" class="VWRITE">$2</div>
-td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>	repfile=repfiles/html1-td2.txt	multiline=true	filefilter=draft\w*.html
-HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL)\b|p_sPaging|p_sNextArrow))	$1 escapeXml="false" $2
+td2=\<col\s+class="W080"\s+\/\>\s*\<col\s+class="W120"\s*\/\>\s*\<col\s+class="W320"\s*\/\>(\s+\<tr\>)	repfile=repfiles/html1-td2.txt	rangefrom=\<table rangeto=フロー参照
+
+HTMLescapeXml=(\<IMART\s+type\=\"string\")\s+(value=(p_sDispInfo|\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL|RESULT)\b|p_sPaging|p_sNextArrow))	repnanme=$1 escapeXml="false" $2
 CIMART=<!--[^(IMART)-]+IMART[^-]+-->	
 
 btnAlignR=\<td(\>\<IMART type="submit" action="action(Save|Preview|ChkInput|Draft)")	null=<td style="text-align: right;"$1	multiline=true	filefilter=draft\w*.html
@@ -173,83 +189,24 @@ incfile=(var S_REDIRECT_INDEX[^;]+;)(\s*)	repfile=repfiles/jsFormFileUpload1.txt
 incfile=(S_PAGE_THIS[^;]+S_PGNM;)(\s*)	repfile=repfiles/jsFormFileUpload1.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp	filefilter=\b(act|view)\w*.js
 incfile=(S_PAGE_FILEINFO[^;]+fileinfo";)(\s*)	repfile=repfiles/jsFormFileUpload1.txt	iffindstr=var p_clProposal  = include	ifnotfindstr=var S_PATH_UPLOAD   = p_sGrp	filefilter=\b(act|view)\w*.js
 
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案内容入力</title>	filefilter=\bdraft1.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案内容入力</title>	filefilter=\bdraft1_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案内容入力</title>	filefilter=\bdraft1_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案内容入力</title>	filefilter=\bdraft1_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案内容入力</title>	filefilter=\bdraft1_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案内容入力</title>	filefilter=\bdraft1_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案内容入力</title>	filefilter=\bdraft1_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案内容入力</title>	filefilter=\bdraft1_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案元承認</title>	filefilter=\bapprvsub.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案元承認</title>	filefilter=\bapprvsub_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案元承認</title>	filefilter=\bapprvsub_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案元承認</title>	filefilter=\bapprvsub_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案元承認</title>	filefilter=\bapprvsub_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案元承認</title>	filefilter=\bapprvsub_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案元承認</title>	filefilter=\bapprvsub_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案元承認</title>	filefilter=\bapprvsub_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般経理起案内容入力</title>	filefilter=\bact_draft.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備経理起案内容入力</title>	filefilter=\bact_draft_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発経理起案内容入力</title>	filefilter=\bact_draft_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具経理起案内容入力</title>	filefilter=\bact_draft_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設経理起案内容入力</title>	filefilter=\bact_draft_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）経理起案内容入力</title>	filefilter=\bact_draft_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造経理起案内容入力</title>	filefilter=\bact_draft_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却経理起案内容入力</title>	filefilter=\bact_draft_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般経理起案内容承認</title>	filefilter=\bact_apprv.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備経理起案内容承認</title>	filefilter=\bact_apprv_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発経理起案内容承認</title>	filefilter=\bact_apprv_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具経理起案内容承認</title>	filefilter=\bact_apprv_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設経理起案内容承認</title>	filefilter=\bact_apprv_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）経理起案内容承認</title>	filefilter=\bact_apprv_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造経理起案内容承認</title>	filefilter=\bact_apprv_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却経理起案内容承認</title>	filefilter=\bact_apprv_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般経理起案元承認</title>	filefilter=\bact_apprvsub.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備経理起案元承認</title>	filefilter=\bact_apprvsub_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発経理起案元承認</title>	filefilter=\bact_apprvsub_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具経理起案元承認</title>	filefilter=\bact_apprvsub_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設経理起案元承認</title>	filefilter=\bact_apprvsub_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）経理起案元承認</title>	filefilter=\bact_apprvsub_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造経理起案元承認</title>	filefilter=\bact_apprvsub_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却経理起案元承認</title>	filefilter=\bact_apprvsub_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般汎用起案内容入力</title>	filefilter=\bgen_draft.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備汎用起案内容入力</title>	filefilter=\bgen_draft_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発汎用起案内容入力</title>	filefilter=\bgen_draft_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具汎用起案内容入力</title>	filefilter=\bgen_draft_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設汎用起案内容入力</title>	filefilter=\bgen_draft_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）汎用起案内容入力</title>	filefilter=\bgen_draft_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造汎用起案内容入力</title>	filefilter=\bgen_draft_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却汎用起案内容入力</title>	filefilter=\bgen_draft_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般汎用起案内容承認</title>	filefilter=\bgen_apprvsub.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備汎用起案内容承認</title>	filefilter=\bgen_apprvsub_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発汎用起案内容承認</title>	filefilter=\bgen_apprvsub_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具汎用起案内容承認</title>	filefilter=\bgen_apprvsub_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設汎用起案内容承認</title>	filefilter=\bgen_apprvsub_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）汎用起案内容承認</title>	filefilter=\bgen_apprvsub_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造汎用起案内容承認</title>	filefilter=\bgen_apprvsub_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却汎用起案内容承認</title>	filefilter=\bgen_apprvsub_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案内容合議/決裁承認</title>	filefilter=\bapprv.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案内容合議/決裁承認</title>	filefilter=\bapprv_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案内容合議/決裁承認</title>	filefilter=\bapprv_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案内容合議/決裁承認</title>	filefilter=\bapprv_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案内容合議/決裁承認</title>	filefilter=\bapprv_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案内容合議/決裁承認</title>	filefilter=\bapprv_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案内容合議/決裁承認</title>	filefilter=\bapprv_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案内容合議/決裁承認</title>	filefilter=\bapprv_adel.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1一般起案内容表示</title>	filefilter=\bview.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：設備起案内容表示</title>	filefilter=\bview_ceqp.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：開発起案内容表示</title>	filefilter=\bview_cdev.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1コネクタ：金型・治工具起案内容表示</title>	filefilter=\bview_cmold.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の新設起案内容表示</title>	filefilter=\bview_anew.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の修理（修繕）起案内容表示</title>	filefilter=\bview_arep.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の増設／改造起案内容表示</title>	filefilter=\bview_aupd.html
-htmltitle=\<title\>(.+;)([^;]+)\<\/title\>	rephtmltitle=<title>$1航機：設備の廃棄/売却起案内容表示</title>	filefilter=\bview_adel.html
-
 #==============================================
 #JS  
 #==============================================
-PORTAL=\/imart\/.+"\.portal\\n"	\/imart\/login\\n"
-#decodeURI=decodeURI	htmlDecode
-delcomment=\<\!--\s*\<IMART.+\s*.+\s*\<\/IMART\>\s*--\>(\s)	repname=$1	rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+PORTAL=\/imart\/.+"\.portal\\n"	repname=/imart/login\n"
+decodeURI=decodeURI	htmlDecode
+delcomment=\<\!--[^\r\n]*\<\/*IMART[^\r\n]*\s*[^\r\n]*--\>	repname=		rangeSkip=False	rangeFrom=\<\!--	rangeTo=--\>
+#delcomment=(\<\!--)((?:.*|IMART)[\r\n]*)	repCmdKey=$1	IgnoreCase=True	Multiline=True	rangeSkip=False	rangeFrom=\<\!--	rangeTo=IMART[\>\s]*--\>
+
+#delcoimart=(\<\!)--|--(\>)	repname=★
+delcoimart=\<\!--	repname=<!★
+delcoimart=--\>	repname=★>
+delcoimart=<!★[^★]+\<\/?IMART[\s\S]*?★>	repname=	IgnoreCase=True	Multiline=True	rangeSkip=True	rangeFrom=\<script	rangeTo=\<\/script\>
+delcoimart=★	repname=--
+fnc_clearLine=(fnc_clearLine\(i_sTarget\)\{\n)(([^\n]+=\s*"";\n)+)(\s+\})	repCmdKey=$1$2      return false;\n$4	IgnoreCase=True	Multiline=True
+virfile=new VirtualFile	rep=Procedure.migration.storage.virtualFile
 #webhost=Web.host\(\)	Procedure.getHost()
+
+VWRITECHANGE=VWRITE\s+A_C([^\>]+\>)([^\<]+)	repname=$1<div class="VWRITE A_C">$2</div>
+BtnNoDisplay=visibility\:hidden\;\s+width:0	repname=display:none;
+clearlineaddreturn=fnc_clearLine[^{]+{[^}]+	repfile=repfiles/clearlineaddreturn.txt
+getAttribute=i_oThis\.([^\.\s\);]+)	repname=i_oThis.getAttribute("$1")

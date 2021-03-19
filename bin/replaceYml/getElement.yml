@@ -1,0 +1,9 @@
+﻿rules:
+- pattern: (\s*)(\<script src="csjs\/im_window.js"\>)
+  replacement: $1<script src="jae/migration/util.js"></script>$1$2
+  iffindstr: document.getElementById
+  ifnotfindstr: src=".+\/migration\/util.js"
+
+- pattern: document.getElementById
+  replacement: getElement
+  iffindstr: src=".+\/migration\/util.js"

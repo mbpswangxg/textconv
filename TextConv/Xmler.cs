@@ -24,24 +24,5 @@ namespace TextConv
                 return string.Empty;
             }
         }
-
-        public static string GetAppSettingValue(string key)
-        {
-            return GetAppSettingValue(key, string.Empty);
-        }
-        public static string GetAppSettingValue(string key, string defaultvalue)
-        {
-            string value = string.Empty;
-            if (AppDomain.CurrentDomain.FriendlyName != null)
-            {
-                value = ConfigurationManager.AppSettings.Get(key);
-            }
-
-            if (string.IsNullOrEmpty(value))
-            {
-                value = defaultvalue;
-            }
-            return value;
-        }
     }
 }

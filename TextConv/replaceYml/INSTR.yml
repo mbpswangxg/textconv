@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: INSTR\(([^,]+),([^\)]+)\)
+  replacement: CHARINDEX($2,$1)

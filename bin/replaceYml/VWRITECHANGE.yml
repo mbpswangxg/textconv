@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: VWRITE\s+A_C([^\>]+\>)([^\<]+)
+  replacement: $1<div class="VWRITE A_C">$2</div>
