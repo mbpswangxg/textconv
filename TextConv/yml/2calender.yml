@@ -6,5 +6,6 @@ keypattern:
 textxpath:
 - //*[@type='floatingCalendar' and @{0}="{1}"]/ancestor::node()/preceding-sibling::td[1]/text()
 - //*[@type='floatingCalendar' and @{0}="{1}"]/ancestor::node()/preceding-sibling::td[1]/child::node()/text()
+- //*[@type='floatingCalendar' ]/ancestor::node()/td/text()[1]
 eventText: 「{0}」のカレンダー押下
 caseDescFormat: '「{eventname}」のカレンダーのポップアップが表示される'

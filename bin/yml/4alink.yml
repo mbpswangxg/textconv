@@ -6,7 +6,7 @@ keypattern:
 - attrname: page
   pattern: ([\w\.]+)
 - attrname: onclick
-  pattern: .*openWindow\('([\w\.]+)'.*
+  pattern: openWindow\(('[\w\.]+',\s*)*'[\w\.]+'\)
   attrname: onclick
   pattern: ^([\w\.]+)\(.*
 - attrname: onclick
@@ -22,6 +22,7 @@ textxpath:
 - //*[(@type='link' or @href) and not (contains(@onclick,'clickTab')) and not(contains(@onclick,'setSortInfo')) and contains(@{0},"{1}")]/img[1]/@alt
 - //*[(@type='link' or @href) and not (contains(@onclick,'clickTab')) and not(contains(@onclick,'setSortInfo')) and contains(@{0},"{1}")]/parent::td/preceding-sibling::td[position()=1]/text()
 - //*[(@type='link' or @href) and not (contains(@onclick,'clickTab')) and not(contains(@onclick,'setSortInfo')) and contains(@{0},"{1}")]/preceding-sibling::text()
+- //*[(@type='link' or @href) and not (contains(@onclick,'clickTab')) and not(contains(@onclick,'setSortInfo')) and contains(@{0},"{1}")]/parent::td/preceding-sibling::td[position()=2]/text()
 eventText: 「{0}」リンク押下
 namePatternFormats:
 - pattern: \w+者

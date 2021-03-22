@@ -4,6 +4,7 @@ keypattern:
 - attrname: name
   pattern: (\w+)
 textxpath:
+- //*[(@type='select' or @type='c_selectdb') and (@{0}="{1}")]/preceding-sibling::text()
 - //*[(@type='select' or @type='c_selectdb') and (@{0}="{1}")]/parent::td[1]/preceding-sibling::td/text()
 - //*[(@type='select' or @type='c_selectdb') and (@{0}="{1}")]/ancestor::node()/preceding-sibling::td[1]/text()
 - //*[(@type='select' or @type='c_selectdb') and (@{0}="{1}")]/ancestor::node()/preceding-sibling::td[1]/child::node()/text()

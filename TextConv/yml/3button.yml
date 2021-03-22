@@ -12,3 +12,9 @@ namePatternFormats:
   caseformat: "{eventname}のユーザ検索画面が表示される"
   pattern: (\w+画面)へ
   caseformat: "$1が表示される"
+  pattern: (ユーザ検索)
+  caseformat: "$1画面が表示される"
+  pattern: (ファイル)追加
+  caseformat: "$1選択画面が表示される"
+  pattern: ACT_DEL_FILE
+  caseformat: 選択ファイルが削除される

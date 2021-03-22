@@ -61,6 +61,11 @@ namespace TextConv
             {
                 this.eventName = ruleItem.wordMap[this.eventName];
             }
+            if(Regex.IsMatch(this.eventName, @"\n|\r"))
+            {
+                this.eventName = Regex.Replace(this.eventName, @"\n|\r", "");
+            }
+            this.eventName = this.eventName.Trim();
             Console.WriteLine("eventName:" + this.eventName);
         }
 
