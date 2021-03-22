@@ -67,9 +67,7 @@ namespace TextConv
         public bool findSkip = false;
 
         public List<string> excludeWords = new List<string>();
-        //public List<string> skipMatchIncludes = new List<string>();
-        //public bool skipMatchAnd = false;
-        public ReplaceSkipRuleItem skipIncludeMatch;
+        public ReplaceSkipRuleItem excludeMatch;
         public ReplaceSkipRuleItem skipInclude;
         public ReplaceSkipRuleItem requireInclude;
 
@@ -285,7 +283,7 @@ namespace TextConv
             }
 
             // skip include match value 
-            if(isTrue(skipIncludeMatch, m.Value))
+            if(isTrue(excludeMatch, m.Value))
             {
                 return m.Value;
             }

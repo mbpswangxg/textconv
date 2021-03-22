@@ -3,7 +3,6 @@ xpath: //*[(@type='button' or @type='submit') and not(contains(@style, 'hidden')
 keypattern:	
 - attrname: value
   pattern: '["\s]*([^"]+)["\s]*'
-  replacement: $1
 textxpath: []
 eventText: '「{0}」ボタン押下'
 caseDescFormat: '{eventname}の★★★画面が表示される'
