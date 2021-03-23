@@ -11,7 +11,7 @@ namespace TextConv
         public List<string> patterns = new List<string>();
         public bool isAnd = false;
 
-        public bool isOK(string content)
+        public bool isTrue(string content)
         {
             // no patterns, no skip check. 
             if (patterns.Count == 0) return false;
@@ -67,9 +67,9 @@ namespace TextConv
         public bool findSkip = false;
 
         public List<string> excludeWords = new List<string>();
-        public ReplaceSkipRuleItem excludeMatch;
-        public ReplaceSkipRuleItem skipInclude;
-        public ReplaceSkipRuleItem requireInclude;
+        public ReplaceSkipRuleItem skipMatch;
+        public ReplaceSkipRuleItem skipInput;
+        public ReplaceSkipRuleItem mustInput;
 
         #endregion
 
@@ -102,7 +102,7 @@ namespace TextConv
                 return regOptions;
             }
         }
-        public bool HasRangeCheck
+        private bool HasRangeCheck
         {
             get
             {
@@ -209,24 +209,26 @@ namespace TextConv
 
         #endregion
 
-        
-        public bool isTrue(ReplaceSkipRuleItem ri, string content)
-        {
-            if (ri == null) return false;
-            return ri.isOK(content);
-        }
-
         public string replaceText(string content)
         {
-            // skip include content value 
-            if (isTrue(skipInclude, content))
+            // skip include content value
+            if (skipInput != null)
             {
-                return content;
+                // skip if match the pattern
+                if (skipInput.isTrue(content))
+                {
+                    return content;
+                }
             }
-            //if (isTrue(requireInclude, content))
-            //{
-            //    return content;
-            //}
+            // must required include content value
+            if (mustInput != null)
+            {
+                // skip if not match the pattern.
+                if (!mustInput.isTrue(content))
+                {
+                    return content;
+                }
+            }
 
             beforeReplace(content);
             repResults.Clear();
@@ -282,11 +284,15 @@ namespace TextConv
                 }
             }
 
-            // skip include match value 
-            if(isTrue(excludeMatch, m.Value))
+            // skip include match value
+            if (skipMatch != null) 
             {
-                return m.Value;
+                if (skipMatch.isTrue(m.Value))
+                {
+                    return m.Value;
+                }
             }
+
 
             string oldV = m.Value;
             string newV = m.Value;

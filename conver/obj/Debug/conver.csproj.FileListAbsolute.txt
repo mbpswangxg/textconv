@@ -35,7 +35,6 @@ C:\tool\textconv\conver\bin\Debug\repfiles\html1.txt
 C:\tool\textconv\conver\bin\Debug\repfiles\html2table.txt
 C:\tool\textconv\conver\bin\Debug\repfiles\tablename.txt
 C:\tool\textconv\conver\bin\Debug\replaceYml\BTN02W45.yml
-C:\tool\textconv\conver\bin\Debug\replaceYml\CASE_TAB.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\getElement.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\HTMLescapeXml.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\UCASE_COL.yml
@@ -86,3 +85,4 @@ C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_DATE.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_NUMBER.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_STR.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\usertabcol.yml
+C:\tool\textconv\conver\bin\Debug\replaceYml\CASE_TAB.yml.bak

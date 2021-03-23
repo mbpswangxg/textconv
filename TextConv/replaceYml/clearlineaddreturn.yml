@@ -1,8 +1,9 @@
 ﻿rules:
 - pattern: (fnc_clearLine[^{]+{[^}]+)(})
   replacement: $1  return false;\n    $2
-  excludeMatch: # skip when return false existed like: fnc_clearLine { .+ \n, return false;} 
+  skipMatch: 
     patterns:
     - return false
-    isAnd: false #  pattern1 or pattern2 or ...
+    #  pattern1 or pattern2 or ...
+    isAnd: false 
   

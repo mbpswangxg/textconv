@@ -7,7 +7,7 @@ keypattern:
   pattern: ([\w\.]+)
 - attrname: onclick
   pattern: openWindow\(('[\w\.]+',\s*)*'[\w\.]+'\)
-  attrname: onclick
+- attrname: onclick
   pattern: ^([\w\.]+)\(.*
 - attrname: onclick
   pattern: ^return\s+(fnc_clickTab\(\d\))

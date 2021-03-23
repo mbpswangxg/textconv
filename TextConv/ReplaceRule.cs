@@ -8,7 +8,7 @@ namespace TextConv
 {
     public class ReplaceRule
     {
-        public string name;
+        public string name = string.Empty;
         public List<ReplaceRuleItem> rules = new List<ReplaceRuleItem>();
 
         public string filefilter = string.Empty;

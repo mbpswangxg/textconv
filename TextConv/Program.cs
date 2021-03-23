@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using YamlDotNet.Serialization;
+using System.Reflection;
 
 namespace TextConv
 {
@@ -52,7 +53,7 @@ namespace TextConv
                 List<ReplaceRule> repRules = new List<ReplaceRule>();
                 string ruleFolderPath = Config.GetAppSettingValue("replace.rule.yml");
                 LoadYmlRules(repRules, ruleFolderPath, cmd);
-
+                
                 ReplaceRuleItem ri = new ReplaceRuleItem();
                 ri.pattern = getValue("-p", args);
                 ri.replacement = getValue("-r", args);
@@ -156,15 +157,13 @@ namespace TextConv
                 {
                     string name = UtilWxg.GetMatchGroup(filepath, @"\\*(\w+)\.\w+", 1);
 
-                    if (string.IsNullOrEmpty(cmd))
+                    if (string.IsNullOrEmpty(cmd) || name.Equals(cmd))
                     {
                         T item = deserializer.Deserialize<T>(reader);
                         items.Add(item);
-                    }
-                    else if (name.Equals(cmd))
-                    {
-                        T item = deserializer.Deserialize<T>(reader);
-                        items.Add(item);
+
+                        FieldInfo fi = item.GetType().GetField("name");
+                        fi.SetValue(item, name);
                     }
                 }
             }
@@ -175,6 +174,7 @@ namespace TextConv
                 LoadYmlRules(items, sdi.FullName, cmd);
             }
         }
+
         #endregion
 
     }

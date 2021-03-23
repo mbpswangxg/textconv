@@ -1,15 +1,20 @@
 ﻿rules:
 - pattern: (\s*)(\<script src="csjs\/im_window.js"\>)
-  skipInclude: # skip replacement pattern: if include in utils.
+  replacement: $1<script src="jae/migration/util.js"></script>$1$2
+  # skip replacement pattern: if include in utils.
+  skipInput: 
     patterns:
     - src=".+\/migration\/util.js"
-    isAnd: true   # true: all patterns matched; false: any pattern matched. 
-  requireInclude: # skip replacement pattern: if include in utils.
+    # true: all patterns matched; false: any pattern matched.
+    isAnd: true  
+
+  # skip replacement pattern: if include in utils.  
+  mustInput:
     patterns:
     - document.getElementById
     - document.getElementByName
     isAnd: false   # true: all patterns matched; false: any pattern matched. 
-  replacement: $1<script src="jae/migration/util.js"></script>$1$2
+
   
 - pattern: document.getElementById
   replacement: getElement
