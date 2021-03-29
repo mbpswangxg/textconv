@@ -3,8 +3,6 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using YamlDotNet.Serialization;
-using System.Reflection;
 
 namespace TextConv
 {
@@ -22,7 +20,9 @@ namespace TextConv
                 return;
             }
             string cmd = getValue("-c", args);
-
+            WebRunner wr = new WebRunner();
+            wr.Run(cmd);
+            
             string srcfolder = getValue("-d", args);
             if (string.IsNullOrEmpty(srcfolder))
             {
@@ -42,17 +42,17 @@ namespace TextConv
             {
                 List<XPathRuleItem> rules = new List<XPathRuleItem>();
                 string ruleFolderPath = Config.GetAppSettingValue("xpath.rule.yml");
-                LoadYmlRules(rules, ruleFolderPath, cmd);
+                YmlLoader.Load(rules, ruleFolderPath);
                 HtmlParseFolder(srcfolder, rules);
                 HtmlParseFile(srcFile, rules);
             }
-
+            
             //==============================================================
             if (args.Contains("-c") || args.Contains("-p"))
             {
                 List<ReplaceRule> repRules = new List<ReplaceRule>();
                 string ruleFolderPath = Config.GetAppSettingValue("replace.rule.yml");
-                LoadYmlRules(repRules, ruleFolderPath, cmd);
+                YmlLoader.Load(repRules, ruleFolderPath, cmd);
                 
                 ReplaceRuleItem ri = new ReplaceRuleItem();
                 ri.pattern = getValue("-p", args);
@@ -144,38 +144,9 @@ namespace TextConv
             }
         }
 
-        private static void LoadYmlRules<T>(List<T> items, string ruleFolderPath, string cmd)
-        {
-            if (!Directory.Exists(ruleFolderPath)) return;
-            
-            var deserializer = new Deserializer();
-            foreach (var filepath in Directory.GetFiles(ruleFolderPath))
-            {
-                if (!Regex.IsMatch(filepath, ".(yml|yaml)$")) continue;
-
-                using (StreamReader reader = File.OpenText(filepath))
-                {
-                    string name = UtilWxg.GetMatchGroup(filepath, @"\\*(\w+)\.\w+", 1);
-
-                    if (string.IsNullOrEmpty(cmd) || name.Equals(cmd))
-                    {
-                        T item = deserializer.Deserialize<T>(reader);
-                        items.Add(item);
-
-                        FieldInfo fi = item.GetType().GetField("name");
-                        fi.SetValue(item, name);
-                    }
-                }
-            }
-
-            DirectoryInfo di = new DirectoryInfo(ruleFolderPath);
-            foreach (var sdi in di.GetDirectories())
-            {
-                LoadYmlRules(items, sdi.FullName, cmd);
-            }
-        }
-
         #endregion
+
+        
 
     }
 }
