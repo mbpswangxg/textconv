@@ -20,8 +20,6 @@ namespace TextConv
                 return;
             }
             string cmd = getValue("-c", args);
-            WebRunner wr = new WebRunner();
-            wr.Run(cmd);
             
             string srcfolder = getValue("-d", args);
             if (string.IsNullOrEmpty(srcfolder))
@@ -36,7 +34,19 @@ namespace TextConv
                 Console.WriteLine("App.config setting srcfolder is required.");
                 return;
             }
-
+            //==============================================================
+            if (args.Contains("-web"))
+            {
+                WebRunner wr = new WebRunner();
+                if (!string.IsNullOrEmpty(srcFile))
+                {
+                    wr.Run(srcFile);
+                }
+                else if (!string.IsNullOrEmpty(srcfolder))
+                {
+                    wr.RunBatch(srcfolder);
+                }
+            }
             //==============================================================
             if (args.Contains("-x")) 
             {

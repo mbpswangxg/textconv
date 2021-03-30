@@ -1,0 +1,266 @@
+﻿## 間隔時間: 1秒
+interval: 1000
+shotcmd_before: []
+shotcmd_after: [open, click]
+actions: 
+  - command: open
+    target: http://localhost:8080/imart/system/login
+    value: 
+
+  - command: open
+    target: http://localhost:8080/imart/login
+    value: 
+
+  - command: resize
+    target: window
+    value: 1200x800
+
+  - command: type
+    target: id=im_user
+    value: wangxg
+
+  - command: click
+    target: css=.imui-btn-login
+    value: 
+
+  - command: wait
+    target: 
+    value: 5000
+
+  ##起票画面 
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_entry
+    value: 
+
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  - command: switchTo
+    target: frame
+    value: 0
+
+  - command: click
+    target: XPath=//*[@name="category"]
+    value: 
+
+  - command: click
+    target: XPath=//option[. = '1800_JAE-US']
+    value: 
+
+  - command: click
+    target: name=search
+    value: 
+
+  ##BPWFlow===
+  - command: click
+    target: XPathFormat=//*[contains(text(),'{0}')]/parent::tr/td[1]/a
+    value: 1800_Customer Check List
+
+  #＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  - command: switchTo
+    target: frame
+    value: 1
+
+  - command: type
+    target: name=process_name
+    value: value-text:name=process_name
+
+  - command: type
+    target: name=draft_comment
+    value: value-text:name=draft_comment
+
+  - command: type
+    target: name=mail_subject
+    value: value-text:name=mail_subject
+
+  - command: type
+    target: name=mail_body
+    value: value-text:name=mail_body
+
+  - command: save
+    target: WindowHandles
+    value: WindowHandles
+
+  - command: click
+    target: linktext=検索
+    value: 
+
+  - command: waitForWindow
+    target: win8675
+    value: 2000
+
+  - command: save
+    target: CurrentWindowHandle
+    value: root
+
+  - command: switchTo
+    target: window
+    value: win8675
+
+  #＃ユーザ検索画面
+  - command: click
+    target: linktext=検索
+    value: 
+
+  - command: click
+    target: css=table:nth-child(9) strong > a:nth-child(2) > img
+    value: 
+
+  - command: click
+    target: css=tr:nth-child(7) > .list_data_bg > input
+    value: 
+
+  - command: click
+    target: css=tr:nth-child(8) > .list_data_bg > input
+    value: 
+
+  - command: click
+    target: css=tr:nth-child(9) > .list_data_bg > input
+    value: 
+
+  - command: click
+    target: name=regist
+    value: 
+
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  - command: Close
+    target: 
+    value: 
+
+  #メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  - command: switchTo
+    target: frame
+    value: 0
+
+  - command: switchTo
+    target: frame
+    value: 0
+
+  - command: type
+    target: 5hxabn4nwg913e9
+    value: TEST0000002
+
+  - command: click
+    target: css=a:nth-child(7) > img
+    value: 
+
+  - command: click
+    target: css=tr:nth-child(3) > .floating_calendar_date_list_td:nth-child(2) font
+    value: 
+
+  - command: type
+    target: id=5hxabn4nwg913e9
+    value: TEST0000002
+
+  - command: click
+    target: Xpath=//option[. = 'U001 SAMPLE']
+    value: 
+
+  - command: click
+    target: Xpath=//option[. = 'US01 OR']
+    value: 
+
+  - command: type
+    target: id=5hxabn4rqyc7ue9
+    value: TEST0000002
+
+  - command: type
+    target: id=5i0h21z4ah0dte9
+    value: JAPAN
+
+  - command: type
+    target: id=5i0h21z5tazrhe9
+    value: AOCHI
+
+  - command: type
+    target: id=5i0h21z7kkrjue9
+    value: APPLICATION01
+
+  - command: type
+    target: id=5hx8v9xrwua33e9
+    value: PN00000001
+
+  - command: type
+    target: id=qty1
+    value: 100
+
+  - command: type
+    target: id=cost1
+    value: 101
+
+  - command: type
+    target: id=qty2
+    value: 102
+
+  - command: type
+    target: id=cost2
+    value: 103
+
+  - command: type
+    target: id=qty3
+    value: 104
+
+  - command: type
+    target: id=cost3
+    value: 105
+
+  - command: type
+    target: id=qty4
+    value: 106
+
+  - command: type
+    target: id=cost4
+    value: 107
+
+  - command: type
+    target: id=qty5
+    value: 108
+
+  - command: type
+    target: id=cost5
+    value: 109
+
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  - command: switchTo
+    target: frame
+    value: 0
+
+  - command: click
+    target: linktext=登録
+    value: 
+
+  - command: sendkeys
+    target: window
+    value: "{enter}"
+
+  - command: SwitchTo
+    target: DefaultContent
+    value: 
+
+  - command: click
+    target: css=tr:nth-child(2) img
+    value: 
+
+  - command: sendkeys
+    target: window
+    value: "{enter}"
+
+  - command: sendkeys
+    target: window
+    value: "{enter}"
+

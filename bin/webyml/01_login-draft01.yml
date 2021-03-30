@@ -1,0 +1,58 @@
+﻿## 間隔時間: 1秒
+interval: 1000
+shotcmd_before: []
+shotcmd_after: [open, click]
+actions: 
+  - command: open
+    target: http://localhost:8080/imart/system/login
+    value: 
+
+  - command: open
+    target: http://localhost:8080/imart/login
+    value: 
+
+  - command: resize
+    target: window
+    value: 1200x800
+
+  - command: sendkeys
+    target: id=im_user
+    value: wangxg
+
+  - command: click
+    target: css=.imui-btn-login
+    value: 
+
+  - command: wait
+    target: 
+    value: 5000
+
+  ##起票画面 
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_entry
+    value: 
+
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  - command: switchTo
+    target: frame
+    value: 0
+
+  - command: click
+    target: XPath=//*[@name="category"]
+    value: 
+
+  - command: click
+    target: XPath=//option[. = '1800_JAE-US']
+    value: 
+
+  - command: click
+    target: name=search
+    value: 
+
+  - command: click
+    target: XPathFormat=//*[contains(text(),'{0}')]/parent::tr/td[1]/a
+    value: 1800_Customer Check List
+

@@ -1,0 +1,398 @@
+﻿## 間隔時間: 1秒
+interval: 1000
+shotcmd_before: []
+shotcmd_after: [open, click]
+actions: 
+  #step:1
+  - command: open
+    target: http://localhost:8080/imart/system/login
+    value: 
+
+  #step:2
+  - command: open
+    target: http://localhost:8080/imart/login
+    value: 
+
+  #step:3
+  - command: resize
+    target: window
+    value: 1200x800
+
+  #step:4
+  - command: click
+    target: id=im_user
+    
+  #step:4
+  - command: sendkeys
+    value: "{home}+{end}{del}"
+    
+  #step:4
+  - command: type
+    target: id=im_user
+    value: wangxg
+
+  #step:5
+  - command: click
+    target: css=.imui-btn-login
+    value: 
+
+  #step:6
+  - command: wait
+    target: 
+    value: 5000
+
+  #step:7#起票画面 
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_entry
+    value: 
+
+  #step:8
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:9
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:10
+  - command: click
+    target: XPath=//*[@name="category"]
+    value: 
+
+  #step:11
+  - command: click
+    target: XPath=//option[. = '1800_JAE-US']
+    value: 
+
+  #step:12
+  - command: click
+    target: name=search
+    value: 
+
+  #step:13#BPWFlow===
+  - command: click
+    target: XPathFormat=//*[contains(text(),'{0}')]/parent::tr/td[1]/a
+    value: 1800_Adv_Pur_Req
+
+  #step:14＃BPW申請－共通
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:15
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:16
+  - command: type
+    target: name=process_name
+    value: value-text:name=process_name
+
+  #step:17
+  - command: type
+    target: name=draft_comment
+    value: value-text:name=draft_comment
+
+  #step:18
+  - command: type
+    target: name=mail_subject
+    value: value-text:name=mail_subject
+
+  #step:19
+  - command: type
+    target: name=mail_body
+    value: value-text:name=mail_body
+
+  #step:20
+  - command: save
+    target: WindowHandles
+    value: WindowHandles
+
+  #step:21＃添付ファイル登録
+  - command: click
+    target: linktext=添付ファイル登録
+    value: 
+
+  #step:22
+  - command: waitForWindow
+    target: win4433
+    value: 2000
+
+  #step:23
+  - command: SwitchTo
+    target: window
+    value: win4433
+
+  #step:24
+  - command: click
+    target: name=content
+    value: 
+
+  #step:25
+  - command: type
+    target: name=content
+    value: C:\\tool\\textconv\\bin\\WebDriver.xml
+
+  #step:26
+  - command: click
+    target: name=regist
+    value: 
+
+  #step:27
+  - command: click
+    target: name=content
+    value: 
+
+  #step:28
+  - command: type
+    target: name=content
+    value: C:\\tool\\textconv\\bin\\regfile.txt
+
+  #step:29
+  - command: type
+    target: name=changeName
+    value: TEST000002
+
+  #step:30
+  - command: click
+    target: name=regist
+    value: 
+
+  #step:31
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:32メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:33
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:34
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:35＃ユーザ検索画面
+  - command: click
+    target: linktext=検索
+    value: 
+
+  #step:36
+  - command: waitForWindow
+    target: win8675
+    value: 2000
+
+  #step:37
+  - command: save
+    target: CurrentWindowHandle
+    value: root
+
+  #step:38
+  - command: switchTo
+    target: window
+    value: win8675
+
+  #step:39
+  - command: click
+    target: linktext=検索
+    value: 
+
+  #step:40
+  - command: click
+    target: css=table:nth-child(9) strong > a:nth-child(2) > img
+    value: 
+
+  #step:41
+  - command: click
+    target: css=tr:nth-child(7) > .list_data_bg > input
+    value: 
+
+  #step:42
+  - command: click
+    target: css=tr:nth-child(8) > .list_data_bg > input
+    value: 
+
+  #step:43
+  - command: click
+    target: css=tr:nth-child(9) > .list_data_bg > input
+    value: 
+
+  #step:44
+  - command: click
+    target: name=regist
+    value: 
+
+  #step:45
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:46メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:47
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:48
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:49
+  - command: type
+    target: id=5hxabn4nwg913e9
+    value: TEST0000002
+
+  #step:50
+  - command: click
+    target: css=a:nth-child(7) > img
+    value: 
+
+  #step:51
+  - command: click
+    target: css=tr:nth-child(3) > .floating_calendar_date_list_td:nth-child(2) font
+    value: 
+
+  #step:52
+  - command: type
+    target: id=5hxabn4nwg913e9
+    value: TEST0000002
+
+  #step:53
+  - command: click
+    target: Xpath=//option[. = 'U001 SAMPLE']
+    value: 
+
+  #step:54
+  - command: click
+    target: Xpath=//option[. = 'US01 OR']
+    value: 
+
+  #step:55
+  - command: type
+    target: id=5hxabn4rqyc7ue9
+    value: TEST0000002
+
+  #step:56
+  - command: type
+    target: id=5i0h21z4ah0dte9
+    value: JAPAN
+
+  #step:57
+  - command: type
+    target: id=5i0h21z5tazrhe9
+    value: AOCHI
+
+  #step:58
+  - command: type
+    target: id=5i0h21z7kkrjue9
+    value: APPLICATION01
+
+  #step:59
+  - command: type
+    target: id=5hx8v9xrwua33e9
+    value: PN00000001
+
+  #step:60
+  - command: type
+    target: id=qty1
+    value: 100
+
+  #step:61
+  - command: type
+    target: id=cost1
+    value: 101
+
+  #step:62
+  - command: type
+    target: id=qty2
+    value: 102
+
+  #step:63
+  - command: type
+    target: id=cost2
+    value: 103
+
+  #step:64
+  - command: type
+    target: id=qty3
+    value: 104
+
+  #step:65
+  - command: type
+    target: id=cost3
+    value: 105
+
+  #step:66
+  - command: type
+    target: id=qty4
+    value: 106
+
+  #step:67
+  - command: type
+    target: id=cost4
+    value: 107
+
+  #step:68
+  - command: type
+    target: id=qty5
+    value: 108
+
+  #step:69
+  - command: type
+    target: id=cost5
+    value: 109
+
+  #step:70
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  #step:71
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:72
+  - command: click
+    target: linktext=登録
+    value: 
+
+  #step:73
+  - command: sendkeys
+    target: window
+    value: "{enter}"
+
+  #step:74
+  - command: SwitchTo
+    target: DefaultContent
+    value: 
+
+  #step:75
+  - command: click
+    target: css=tr:nth-child(2) img
+    value: 
+
+  #step:76
+  - command: sendkeys
+    target: window
+    value: "{enter}"
+
+  #step:77
+  - command: sendkeys
+    target: window
+    value: "{enter}"
+

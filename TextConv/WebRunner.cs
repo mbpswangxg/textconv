@@ -18,43 +18,63 @@ namespace TextConv
         public WebRunner()
         {
             string browerName = Config.GetAppSettingValue("web.browser");
-            if (browerName.Equals("IE"))
+            if (browerName.Equals("IE", StringComparison.OrdinalIgnoreCase))
             {
                 driver = new InternetExplorerDriver();
             }
-            else if (browerName.Equals("Chrome"))
+            else if (browerName.Equals("Chrome", StringComparison.OrdinalIgnoreCase))
             {
                 driver = new ChromeDriver();
             }
             js = (IJavaScriptExecutor)driver;
         }
 
-        public void Run(string cmd)
+        public void Run(string ymlFilePath)
         {
             List<XWebAction> rules = new List<XWebAction>();
-            string ymlPath = Config.GetAppSettingValue("web.rule.yml");
-            YmlLoader.Load(rules, ymlPath, cmd);
+            YmlLoader.LoadFromFile(rules, ymlFilePath);
             rules.ForEach(item => doAction(item));
         }
-        
+        public void RunBatch(string ymlDirPath)
+        {
+            List<XWebAction> rules = new List<XWebAction>();
+            YmlLoader.Load(rules, ymlDirPath);
+            rules.ForEach(item => doAction(item));
+        }
+
         private void doAction(XWebAction webAction)
         {
             webAction.driver = this.driver;
-
-            int index = 0;
-            foreach (XActionItem item in webAction.actions)
+            XActionItem action = null;
+            try
             {
-                if (item.beforeShot)
+                int index = 0;
+                foreach (XActionItem item in webAction.actions)
                 {
-                    SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+                    action = item;
+                    index++;
+                    if (item.beforeShot)
+                    {
+                        SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+                    }
+                    webAction.doAction(item);
+                    Console.WriteLine("step{0}: {1}", index, item.ToString());
+
+                    if (item.afterShot)
+                    {
+                        SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+                    }
                 }
-                bool isOK = webAction.doAction(item);
-                if (item.afterShot && isOK)
-                {
-                    SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
-                }
-                index++;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if(action != null)
+                {
+                    Console.WriteLine(action.details());
+                }
+            }
+
         }
 
         public void Dispose()

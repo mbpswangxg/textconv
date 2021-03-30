@@ -19,41 +19,63 @@ namespace TextConv
 
         public static void Load<T>(List<T> items, string ymlDirectoryPath, string filename)
         {
-            if (!Directory.Exists(ymlDirectoryPath)) return;
+            if (string.IsNullOrEmpty(ymlDirectoryPath))
+            {
+                ymlDirectoryPath = Config.GetAppSettingValue("web.rule.yml");
+            }
+
+            if (string.IsNullOrEmpty(ymlDirectoryPath)) return;
+            if (!Directory.Exists(ymlDirectoryPath))
+            {
+                Console.WriteLine("Can't found file: {0}", ymlDirectoryPath);
+                return;
+            }
 
             var deserializer = new Deserializer();
             foreach (var filepath in Directory.GetFiles(ymlDirectoryPath))
             {
                 if (!Regex.IsMatch(filepath, ".(yml|yaml)$")) continue;
 
-                using (StreamReader reader = File.OpenText(filepath))
-                {
-                    string name = UtilWxg.GetMatchGroup(filepath, @"\\*(\w+)\.\w+", 1);
-
-                    if (string.IsNullOrEmpty(filename) || name.Equals(filename))
-                    {
-                        T item = deserializer.Deserialize<T>(reader);
-                        items.Add(item);
-
-                        Type typeX = item.GetType();
-                        FieldInfo fi = typeX.GetField("name");
-                        if (fi != null) 
-                        {
-                            fi.SetValue(item, name);
-                        }
-                        MethodInfo mi = typeX.GetMethod("Init");
-                        if(mi != null)
-                        {
-                            mi.Invoke(item, null);
-                        }
-                    }
-                }
+                LoadFromFile(items, filepath);
             }
 
             DirectoryInfo di = new DirectoryInfo(ymlDirectoryPath);
             foreach (var sdi in di.GetDirectories())
             {
                 Load(items, sdi.FullName, filename);
+            }
+        }
+
+        public static void LoadFromFile<T>(List<T> items, string ymlFilePath)
+        {
+            if (string.IsNullOrEmpty(ymlFilePath)) return;
+            if (!File.Exists(ymlFilePath)) 
+            {
+                Console.WriteLine("Can't found file: {0}", ymlFilePath);
+                return;
+            }
+
+            var deserializer = new Deserializer();
+
+            using (StreamReader reader = File.OpenText(ymlFilePath))
+            {
+                string name = UtilWxg.GetMatchGroup(ymlFilePath, @"\\*(\w+)\.\w+", 1);
+
+                T item = deserializer.Deserialize<T>(reader);
+                items.Add(item);
+
+                Type typeX = item.GetType();
+                FieldInfo fi = typeX.GetField("name");
+                if (fi != null)
+                {
+                    fi.SetValue(item, name);
+                }
+
+                MethodInfo mi = typeX.GetMethod("Init");
+                if (mi != null)
+                {
+                    mi.Invoke(item, null);
+                }
             }
         }
     }

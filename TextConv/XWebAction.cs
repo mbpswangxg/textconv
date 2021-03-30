@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
@@ -31,7 +32,7 @@ namespace TextConv
             {
                 if (string.IsNullOrEmpty(value)) return Size.Empty;
 
-                Match m = Regex.Match(value, @"^([\d\s]+),([\d\s]+)$");
+                Match m = Regex.Match(value, @"^([\d\s]+)[,x:]([\d\s]+)$");
                 if (m.Success)
                 {
                     int width = int.Parse(m.Groups[1].Value);
@@ -123,6 +124,10 @@ namespace TextConv
                 return false;
             }
         }
+        public override string ToString()
+        {
+            return string.Format("command={0} | target={1} | value={2}", command, target, value);
+        }
         #region private methods
         private StringPair getPair(string input)
         {
@@ -180,20 +185,10 @@ namespace TextConv
             }
         }
 
-        public bool doAction(XActionItem action)
+        public void doAction(XActionItem action)
         {
-            try
-            {
-                windowAction(action);
-                wait();
-                return true;
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(action.details());
-                return false;
-            }
+            windowAction(action);
+            wait();
         }
         private bool windowAction(XActionItem action)
         {
@@ -221,7 +216,11 @@ namespace TextConv
                         driver.SwitchTo().Frame(action.value);
                     }
                 }
-                return true;
+                else if (action.IsTarget("DefaultContent"))
+                {
+                    driver.SwitchTo().DefaultContent();
+                }
+                    return true;
             }
 
             // resize, wait or others
@@ -261,9 +260,28 @@ namespace TextConv
             {
                 if (action.IsTarget("WindowHandles"))
                 {
-                    vars["WindowHandles"] = driver.WindowHandles;
+                    vars[action.value] = driver.WindowHandles;
+                }else if (action.IsTarget("CurrentWindowHandle"))
+                {
+                    vars[action.value] = driver.CurrentWindowHandle;
                 }
                 return true;
+            }
+            // save WindowHandles
+            if (action.IsCmd("close"))
+            {
+                driver.Close();
+                return true;
+            }
+            // save WindowHandles
+            if (action.IsCmd("sendkeys"))
+            {
+                if(string.IsNullOrEmpty(action.target) 
+                || Regex.IsMatch(action.target, "window"))
+                {
+                    SendKeys.SendWait(action.value);
+                    return true;
+                }
             }
             // save WindowHandles
             if (action.IsCmd("waitForWindow"))
@@ -304,7 +322,7 @@ namespace TextConv
 
             if (element == null)
             {
-                Console.Write("Can't found element. action details:\n{0}", action.details());
+                //Console.Write("Can't found element. action details:\n{0}", action.details());
                 return false;
             }
             
@@ -313,7 +331,7 @@ namespace TextConv
                 element.Click();
                 return true;
             }
-            if (action.IsCmd("sendkeys"))
+            if (action.IsCmd("sendkeys") || action.IsCmd("type"))
             {
                 element.SendKeys(action.value);
                 return true;
@@ -334,6 +352,10 @@ namespace TextConv
             if (action.IsTargetKey("name"))
             {
                 element = driver.FindElement(By.Name(action.targetPair.value));
+            }
+            if (action.IsTargetKey("linktext"))
+            {
+                element = driver.FindElement(By.LinkText(action.targetPair.value));
             }
             if (action.IsTargetKey("XPath"))
             {
