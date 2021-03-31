@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -61,7 +62,18 @@ namespace TextConv
         public static Dictionary<string, HtmlNodeCollection> GetNodes(string htmlpath, string findString)
         {
             var htmlDoc = new HtmlDocument();
-            htmlDoc.Load(htmlpath, Config.Encoding);
+            if(Regex.IsMatch(htmlpath, @"^[a-zA-Z]:\\"))
+            {
+                htmlDoc.Load(htmlpath, Config.Encoding);
+            }else if (Regex.IsMatch(htmlpath, @"^http[s]?:"))
+            {
+                HtmlWeb web = new HtmlWeb();
+                htmlDoc = web.Load(htmlpath);
+            }
+            else
+            {
+                htmlDoc.LoadHtml(htmlpath);
+            }
 
             string[] finds = Regex.Split(findString, @";|\n");
             Dictionary<string, HtmlNodeCollection> lstNode = new Dictionary<string, HtmlNodeCollection>();
@@ -75,6 +87,22 @@ namespace TextConv
             }
 
             return lstNode;
+        }
+        public static string GetHtml(string Url)
+        {
+            if (!Regex.IsMatch(Url, @"^http[s]?:")) return string.Format("url header should be http[s]. inputUrl:{0}", Url);
+
+            using (WebClient client = new WebClient())
+            {
+                client.Encoding = Config.Encoding;
+                try
+                {
+                    return client.DownloadString(Url);
+                }catch(Exception ex)
+                {
+                    return ex.Message;
+                }
+            }
         }
         public static string GetAttText(string htmlpath, string findString)
         {
