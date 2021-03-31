@@ -108,13 +108,13 @@ namespace conver
         }
         public void btnMatch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(lblFilePath.Text)) return;
-
+            if (string.IsNullOrEmpty(txtFileContent.Text)) return;
+            
             try
             {
                 hlFileContent.Reset2Default();
 
-                Dictionary<string, HtmlNodeCollection> kvNodes = HtmlParser.GetNodes(lblFilePath.Text, txtFilter.Text);
+                Dictionary<string, HtmlNodeCollection> kvNodes = HtmlParser.GetNodes(txtFileContent.Text, txtFilter.Text);
                 treeResult.Nodes.Clear();
                 foreach (KeyValuePair<string,HtmlNodeCollection> kv in kvNodes)
                 {
@@ -159,11 +159,7 @@ namespace conver
                 listHistory.Items.Add(line);
             }
         }
-        private void SaveHistory()
-        {
-            string content = string.Join("\n", rules);
-            File.WriteAllText(HtmlParser.HistoryFile, content);
-        }
+
         private void listHistory_DoubleClick(object sender, EventArgs e)
         {
             if (listHistory.SelectedIndex > -1)
@@ -175,6 +171,11 @@ namespace conver
         private void txtFilePath_TextChanged(object sender, EventArgs e)
         {
             LoadFileTree();
+            if (Regex.IsMatch(txtFilePath.Text, @"^http[s]?:"))
+            {
+                lblFilePath.Text = txtFilePath.Text;
+                txtFileContent.Text = HtmlParser.GetHtml(txtFilePath.Text);
+            }
         }
         private void LoadFileTree()
         {
@@ -183,6 +184,8 @@ namespace conver
         }
         private void FillTree(string folderPath, TreeNodeCollection nodes)
         {
+            if (Regex.IsMatch(folderPath, @"^http[s]?:")) return;
+
             if (!Directory.Exists(folderPath)) return;
             
             List<string> lstFiles = new List<string>(Directory.GetFiles(folderPath));

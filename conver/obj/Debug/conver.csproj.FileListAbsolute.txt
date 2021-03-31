@@ -86,3 +86,6 @@ C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_NUMBER.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_STR.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\usertabcol.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\CASE_TAB.yml.bak
+C:\tool\textconv\conver\bin\Debug\webyml\test01.yml
+C:\tool\textconv\conver\bin\Debug\WebDriver.dll
+C:\tool\textconv\conver\bin\Debug\WebDriver.xml

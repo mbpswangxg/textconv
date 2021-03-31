@@ -288,12 +288,12 @@ namespace conver
             this.treeResult.TabIndex = 0;
             this.treeResult.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeResult_AfterSelect);
             // 
-            // RegexTabPage
+            // XPathTabPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
-            this.Name = "RegexTabPage";
+            this.Name = "XPathTabPage";
             this.Size = new System.Drawing.Size(1087, 711);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
