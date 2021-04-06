@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": " -web -f  \"C:\\tool\\textconv\\bin\\webyml\\1800_Customer.yml\""
+      "commandLineArgs": " -c DATENULL -d C:\\tmp\\wangx\\_projects\\jae\\develop\\jae\\jae\\src\\main\\jssp\\src\\jae\\0000_common\\proposal\\"
     }
   }
 }

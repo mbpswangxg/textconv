@@ -3,9 +3,6 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TextConv
@@ -14,7 +11,7 @@ namespace TextConv
     {
         private IWebDriver driver;
         private IJavaScriptExecutor js;
-
+        public int ErrorCount = 0;
         public WebRunner()
         {
             string browerName = Config.GetAppSettingValue("web.browser");
@@ -27,6 +24,7 @@ namespace TextConv
                 driver = new ChromeDriver();
             }
             js = (IJavaScriptExecutor)driver;
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
         public void Run(string ymlFilePath)
@@ -49,20 +47,37 @@ namespace TextConv
             try
             {
                 int index = 0;
-                foreach (XActionItem item in webAction.actions)
+                for(int i =0; i< webAction.actions.Count; i++)
                 {
-                    action = item;
-                    index++;
-                    if (item.beforeShot)
+                    index = i + 1;
+                    action = webAction.actions[i];
+                    if (action.beforeShot && webAction.shotfromstep < index)
                     {
                         SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
                     }
-                    webAction.doAction(item);
-                    Console.WriteLine("step{0}: {1}", index, item.ToString());
-
-                    if (item.afterShot)
+                    
+                    Console.WriteLine("step{0:D3}: {1}", index, action.ToString());
+                    if (!webAction.doAction(action))
+                    {
+                        Console.WriteLine("★★★異常発生した為、処理中止...★★★");
+                        break;
+                    }
+                    if (action.IsForceShot)
                     {
                         SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+                    }
+                    else if (!action.IsSkipShot) 
+                    {
+                        if (action.afterShot && webAction.shotfromstep <= index && !webAction.shotskip.Contains(index))
+                        {
+                            SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+                        }
+                    }
+
+                    if(!string.IsNullOrEmpty(action.nextStep) && action.jump)
+                    {
+                        //default goto stepindex. ifind=true or ifnot=false or ifvar=true
+                        i = webAction.actions.FindIndex(ac => ac.command.Equals("label") && ac.target.Equals(action.nextStep)) - 1;
                     }
                 }
             }
@@ -71,7 +86,7 @@ namespace TextConv
                 Console.WriteLine(ex.Message);
                 if(action != null)
                 {
-                    Console.WriteLine(action.details());
+                    Console.WriteLine(action.ToString());
                 }
             }
 

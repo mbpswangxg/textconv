@@ -7,15 +7,18 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.IE;
 
 namespace TextConv
 {
     public class StringPair
     {
         public string key;
+        public string mark;
         public string value;
+        public override string ToString()
+        {
+            return string.Format("key:{0}, mark:{1}, value:{2}", key, mark, value);
+        }
     }
 
     public class XActionItem
@@ -25,8 +28,10 @@ namespace TextConv
         public string command;
         public string target;
         public string value;
-        public bool screenshot;
+        public string shotflag;
 
+        public bool screenshot;
+        public bool jump = true;
         public Size size {
             get
             {
@@ -73,13 +78,24 @@ namespace TextConv
         {
             get { return IsPair(value); }
         }
-
+        public string nextStep
+        {
+            get {
+                string gotoValue = UtilWxg.GetMatchGroup(target, @"goto[:\s]+(\w+)",1);
+                if (string.IsNullOrEmpty(gotoValue) && IsCmd("goto"))
+                {
+                    gotoValue = target;
+                }
+                return gotoValue;
+            }
+        }
         public bool IsCmd(string name)
         {
             return command.Equals(name, StringComparison.OrdinalIgnoreCase);
         }
         public bool IsTarget(string name)
         {
+            if (string.IsNullOrEmpty(target)) return false;
             return target.Equals(name, StringComparison.OrdinalIgnoreCase);
         }
         public bool IsTargetKey(string name)
@@ -92,15 +108,27 @@ namespace TextConv
             if (!IsValuePair) return false;
             return valuePair.key.Equals(name, StringComparison.OrdinalIgnoreCase);
         }
-
-        public string details()
+        public bool IsForceShot
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("\tcommand:").AppendLine(command);
-            sb.Append("\ttarget:").AppendLine(target);
-            sb.Append("\tvalue:").AppendLine(value);
-            return sb.ToString();
+            get {
+                if (string.IsNullOrEmpty(shotflag)) return false;
+                return shotflag.Equals("1");
+            }
         }
+        public bool IsSkipShot
+        {
+            get { 
+                if (string.IsNullOrEmpty(shotflag)) return false;
+                return shotflag.Equals("-1");
+            }
+        }
+
+
+        public override string ToString()
+        {
+            return string.Format("command={0} | target={1} | value={2}", command, target, value);
+        }
+
         public bool beforeShot
         {
             get
@@ -121,22 +149,45 @@ namespace TextConv
                 {
                     return true;
                 }
+                if (IsCmd("switchTo"))
+                {
+                    string cmd = "switch" + target;
+                    if (parent.shotcmd_after.Contains(cmd))
+                    {
+                        return true;
+                    }
+                }
                 return false;
             }
         }
-        public override string ToString()
+        public bool IsTargetValid(IDictionary<string, object> vals)
         {
-            return string.Format("command={0} | target={1} | value={2}", command, target, value);
+            if (!IsTargetPair) return false;
+            if (string.IsNullOrEmpty(targetPair.mark)) return false;
+            if (!vals.ContainsKey(targetPair.key)) return false;
+
+            Console.WriteLine("◆val[{0}]={1}, targetPair={2}", targetPair.key, vals[targetPair.key], targetPair.ToString());
+
+            if (Regex.IsMatch(targetPair.mark, @"^=$"))
+            {
+                if (vals[targetPair.key].Equals(targetPair.value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         #region private methods
         private StringPair getPair(string input)
         {
             if (IsPair(input))
             {
-                Match m = Regex.Match(input, @"^(\w+)=(.+)$");
+                Match m = Regex.Match(input, @"^(\w+)([!=\<\>])([^;]+)");
                 StringPair pair = new StringPair();
                 pair.key = m.Groups[1].Value;
-                pair.value = m.Groups[2].Value;
+                pair.mark = m.Groups[2].Value;
+                pair.value = m.Groups[3].Value;
                 return pair;
             }
             return null;
@@ -152,11 +203,16 @@ namespace TextConv
     {
         public string name;
         public int interval;
+        public int shotfromstep;
         public List<XActionItem> actions = new List<XActionItem>();
         public List<string> shotcmd_before = new List<string>();
         public List<string> shotcmd_after = new List<string>();
-
+        public List<int> shotskip = new List<int>();
+        
+        public int nextStepIndex { get; private set; }
+        
         public IDictionary<string, object> vars { get; private set; }
+
         public IWebDriver driver;
         public XWebAction()
         {
@@ -185,11 +241,33 @@ namespace TextConv
             }
         }
 
-        public void doAction(XActionItem action)
+        public bool doAction(XActionItem action)
         {
-            windowAction(action);
-            wait();
+            int retryIndex = 0;
+            int maxRetry = int.Parse(Config.GetAppSettingValue2("web.error.retry", "3"));
+
+            while (retryIndex < maxRetry)
+            {
+                try
+                {
+                    windowAction(action);
+                    wait();
+                    return true;
+                }
+                catch (WebDriverException ex)
+                {
+                    retryIndex++;
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+            return false;
         }
+
         private bool windowAction(XActionItem action)
         {
             // open url
@@ -200,13 +278,19 @@ namespace TextConv
             }
 
             // switch to dest window or frame
+            if (action.IsTarget("switchwindow"))
+            {
+                driver.SwitchTo().Window(vars[action.value].ToString());
+                return true;
+            }
+
             if (action.IsCmd("switchTo"))
             {
                 if (action.IsTarget("window"))
                 {
                     driver.SwitchTo().Window(vars[action.value].ToString());
                 }
-                else if (action.IsTarget("Frame"))
+                if (action.IsTarget("Frame"))
                 {
                     if (action.index != -1)
                     {
@@ -220,7 +304,7 @@ namespace TextConv
                 {
                     driver.SwitchTo().DefaultContent();
                 }
-                    return true;
+                return true;
             }
 
             // resize, wait or others
@@ -241,6 +325,7 @@ namespace TextConv
                     driver.Manage().Window.Size = action.size;
                 }
                 return true;
+
             }
             // wait interval ms.
             if (action.IsCmd("wait"))
@@ -292,6 +377,23 @@ namespace TextConv
                 }
                 return true;
             }
+            if (action.IsCmd("var"))
+            {
+                vars[action.target] = action.value;
+                return true;
+            }
+            if (action.IsCmd("add"))
+            {
+                vars[action.target] = int.Parse(vars[action.target].ToString()) + int.Parse( action.value);
+                return true;
+            }
+
+            if (action.IsCmd("ifvar"))
+            {
+                // if not equals, skip goto.
+                action.jump =action.IsTargetValid(vars);
+                return true;
+            }
             return false;
         }
         private string waitForWindow(int timeout)
@@ -318,25 +420,136 @@ namespace TextConv
         
         private bool elementAction(XActionItem action)
         {
-            IWebElement element = FindElement(action);
+            IWebElement element = TryFindElement(action);
+
+            // if not found, goto
+            if (action.IsCmd("ifnot"))
+            {
+                action.jump = (element == null);
+                return true;
+            }
+            // if not found, goto
+            if (action.IsCmd("ifind"))
+            {
+                action.jump = (element != null);
+                return true;
+            }
 
             if (element == null)
             {
-                //Console.Write("Can't found element. action details:\n{0}", action.details());
                 return false;
             }
-            
+
             if (action.IsCmd("click"))
             {
                 element.Click();
                 return true;
             }
+            if (action.IsCmd("popup"))
+            {
+                //POPUP画面起動前
+                vars["WindowHandles"] = driver.WindowHandles;
+                element.Click();
+                wait();
+
+                int waitTime = 2000;
+                if (!string.IsNullOrEmpty(action.value))
+                {
+                    waitTime = int.Parse(action.value);
+                }
+                string windowId = string.Format("window{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                //POPUP画面起動後
+                vars[windowId] = waitForWindow(waitTime);
+                //POPUP画面へ切替前、本画面を一時退避
+                vars["root"] = driver.CurrentWindowHandle;
+                //POPUP画面へ切替
+                driver.SwitchTo().Window(vars[windowId].ToString());
+                return true;
+            }
+
             if (action.IsCmd("sendkeys") || action.IsCmd("type"))
             {
                 element.SendKeys(action.value);
                 return true;
+            }else if (action.IsCmd("overwrite"))
+            {
+                element.Clear();
+                element.SendKeys(action.value);
+                return true;
             }
             return false;
+        }
+        
+        private IWebElement TryFindElement(XActionItem action)
+        {
+            IWebElement element = null;
+            int frameIndex = 0;
+            IWebElement brotherFrame = null;
+            IReadOnlyCollection<IWebElement> frameset = null;
+
+            int retry = 0;
+
+            // if not found in current page, check frame.
+            while (retry < 2)
+            {
+                try
+                {
+                    element = FindElement(action);
+                    return element;
+                }
+                catch(WebDriverException ex)
+                {
+                    bool isKeepAlive = true;
+                    if(ex.InnerException != null)
+                    {
+                        System.Net.WebException wex = ex.InnerException as System.Net.WebException;
+                        if(wex.Status == System.Net.WebExceptionStatus.KeepAliveFailure)
+                        {
+                            isKeepAlive = false;
+                            retry++;
+                        }
+                    }
+                    if (isKeepAlive)
+                    {
+                        if (brotherFrame == null)
+                        {
+                            frameIndex = 0;
+                            frameset = driver.FindElements(By.XPath("//frame"));
+                            if (frameset.Count > 0)
+                            {
+                                driver.SwitchTo().Frame(frameIndex);
+                                brotherFrame = frameset.ToArray()[frameIndex];
+                                frameIndex++;
+                            }
+                            else
+                            {
+                                if (!action.IsCmd("ifnot") &&  !action.IsCmd("ifind"))
+                                {
+                                    Console.WriteLine("★Error on {0}\n{1}", action.ToString(), ex.Message);
+                                }
+                                else
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+                        else if (frameset.Count > frameIndex)
+                        {
+                            driver.SwitchTo().ParentFrame();
+                            driver.SwitchTo().Frame(frameIndex);
+                            brotherFrame = frameset.ToArray()[frameIndex];
+                            frameIndex++;
+                        }
+                        else
+                        {
+                            brotherFrame = null;
+                        }
+                        retry++;
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return null;
         }
         private IWebElement FindElement(XActionItem action)
         {

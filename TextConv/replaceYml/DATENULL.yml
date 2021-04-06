@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: (\w+.EXISTING(:?|_LICENSE)_DT\s+=\s+)(\w+aoSP\["\w+"\])
+  replacement: "$1isBlank($3) ? null : $3"

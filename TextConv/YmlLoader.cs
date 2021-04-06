@@ -34,8 +34,9 @@ namespace TextConv
             var deserializer = new Deserializer();
             foreach (var filepath in Directory.GetFiles(ymlDirectoryPath))
             {
-                if (!Regex.IsMatch(filepath, ".(yml|yaml)$")) continue;
-
+                string pattern = string.Format("{0}.(yml|yaml)$", filename);
+                if (!Regex.IsMatch(filepath, pattern)) continue;
+                
                 LoadFromFile(items, filepath);
             }
 

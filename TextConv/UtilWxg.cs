@@ -45,7 +45,8 @@ namespace TextConv
 
         public static string GetMatchGroup(string input, string pattern, int groupIndex) 
         {
-            Match m = Regex.Match(input, pattern);
+            if (string.IsNullOrEmpty(input)) return string.Empty;
+            Match m = Regex.Match(input, pattern, RegexOptions.IgnoreCase);
             if (m.Success) 
             {
                 if (groupIndex < m.Groups.Count) 
