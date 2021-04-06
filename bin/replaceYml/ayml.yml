@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: shotcmd_before:\s*\[\]\r?\n(shotcmd)_after
+  replacement: $1

@@ -1,5 +1,5 @@
-﻿## 間隔時間: 1.5秒
-interval: 1500
+﻿## 間隔時間: 0.5秒
+interval: 500
 shotcmd: [open, popup, click,switchwindow]
 shotfromstep: 16
 shotskip: []
@@ -96,332 +96,332 @@ actions:
 
   #step:16
   - command: label
-    target: existFlow
+    target: draft0001
     value: 
     shotflag: 
 
   #step:17
-  - command: ifind
-    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a;goto:draft02
-    value: 1800_Entertainment(Sales & Mktg Mgmt)
-    shotflag: 
+  - command: click
+    target: XPath=//img[contains(@src,"next")]
+    value: 
+    shotflag: -1
 
   #step:18
   - command: click
     target: XPath=//img[contains(@src,"next")]
     value: 
-    shotflag: 
+    shotflag: -1
 
   #step:19
+  - command: click
+    target: XPath=//img[contains(@src,"next")]
+    value: 
+    shotflag: -1
+
+  #step:20
+  - command: label
+    target: existFlow
+    value: 
+    shotflag: 
+
+  #step:21
+  - command: ifind
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a;goto:draft02
+    value: 1800_Pur Req(HR)
+    shotflag: 
+
+  #step:22
+  - command: click
+    target: XPath=//img[contains(@src,"next")]
+    value: 
+    shotflag: -1
+
+  #step:23
   - command: goto
     target: existFlow
     value: 
     shotflag: 
 
-  #step:20
+  #step:24
   - command: label
     target: draft02
     value: 
     shotflag: 
 
-  #step:21#特定WFへ
+  #step:25#特定WFへ
   - command: click
     target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a
-    value: 1800_Entertainment(Sales & Mktg Mgmt)
-    shotflag: 
+    value: 1800_Pur Req(HR)
+    shotflag: -1
 
-  #step:22
+  #step:26
   - command: wait
     target: 
     value: 1000
     shotflag: 
 
-  #step:23＃BPW申請－共通
+  #step:27＃BPW申請－共通
   - command: switchTo
     target: DefaultContent
     value: 
     shotflag: 1
 
-  #step:24上部のBPWフロー詳細
+  #step:28上部のBPWフロー詳細
   - command: switchTo
     target: frame
     value: 0
-    shotflag: 
-
-  #step:25
-  - command: switchTo
-    target: frame
-    value: 0
-    shotflag: 
-
-  #step:26
-  - command: overwrite
-    target: id=5hxa4abl67jb6e9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:27
-  - command: overwrite
-    target: id=5hxa4abnxrrdhe9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:28
-  - command: overwrite
-    target: id=5hxa4abpv9xgbe9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
     shotflag: 
 
   #step:29
-  - command: overwrite
-    target: id=5hxa4abp2lsefe9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+  - command: switchTo
+    target: frame
+    value: 0
     shotflag: 
 
   #step:30
-  - command: overwrite
-    target: id=5hxa4abrilci7e9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+  - command: click
+    target: css=a:nth-child(7) > img
+    value: 
     shotflag: 
 
   #step:31
-  - command: overwrite
-    target: id=5hx8wnpmmrka5e9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+  - command: click
+    target: css=a b
+    value: 
     shotflag: 
 
   #step:32
   - command: overwrite
-    target: id=5hx8wnpr1eieme9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+    target: id=5hxa7zflfnwwxe9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
     shotflag: 
 
   #step:33
   - command: overwrite
-    target: id=5hx8wnt10p5upe9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+    target: id=5hxa7zflkfcxte9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
     shotflag: 
 
   #step:34
   - command: overwrite
-    target: id=5hx8wnpxlgthne9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+    target: id=5hxa7zfmka4yae9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
     shotflag: 
 
   #step:35
   - command: overwrite
-    target: id=5hx8wnt4h48xve9
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+    target: id=5hxa7zfmo2uyre9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
     shotflag: 
 
-  #step:36登録・更新の切替
+  #step:36
+  - command: overwrite
+    target: id=5hxa7zfyg0kege9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:37
+  - command: overwrite
+    target: id=5hxa7zfzhhjexe9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:38
+  - command: overwrite
+    target: id=5hxa7zfzn0rfwe9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:39
+  - command: overwrite
+    target: id=5hxa7zfzrwjhae9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:40
+  - command: overwrite
+    target: id=5hxa7z3e2mrybe9
+    value: 1800_PurReq
+    shotflag: 
+
+  #step:41
+  - command: overwrite
+    target: id=5hxa7z34emiure9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:42
+  - command: overwrite
+    target: id=5hxa7z36jq45pe9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:43
+  - command: overwrite
+    target: id=5hxa7z36s3r8be9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:44
+  - command: overwrite
+    target: id=5hxa7z3b83scwe9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:45
+  - command: overwrite
+    target: id=5hxa7z3o8014je9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 
+
+  #step:46
+  - command: overwrite
+    target: id=5hxa7zfzvoenwe9
+    value: 1800_Pur Req-HR--2021-04-06-154301-TEST00000000000
+    shotflag: 1
+
+  #step:47
+  - command: overwrite
+    target: id=price10
+    value: 100
+    shotflag: 
+
+  #step:48
+  - command: overwrite
+    target: id=qty10
+    value: 101
+    shotflag: 
+
+  #step:49
+  - command: overwrite
+    target: id=price1
+    value: 102
+    shotflag: 
+
+  #step:50
+  - command: overwrite
+    target: id=qty1
+    value: 103
+    shotflag: 
+
+  #step:51
+  - command: overwrite
+    target: id=price9
+    value: 104
+    shotflag: 
+
+  #step:52
+  - command: overwrite
+    target: id=qty9
+    value: 105
+    shotflag: 
+
+  #step:53
+  - command: overwrite
+    target: id=price8
+    value: 106
+    shotflag: 
+
+  #step:54
+  - command: overwrite
+    target: id=qty8
+    value: 107
+    shotflag: 
+
+  #step:55
+  - command: overwrite
+    target: id=price7
+    value: 108
+    shotflag: 
+
+  #step:56
+  - command: overwrite
+    target: id=qty7
+    value: 109
+    shotflag: 
+
+  #step:57
+  - command: overwrite
+    target: id=price6
+    value: 110
+    shotflag: 
+
+  #step:58
+  - command: overwrite
+    target: id=qty6
+    value: 111
+    shotflag: 
+
+  #step:59
+  - command: overwrite
+    target: id=price5
+    value: 112
+    shotflag: 
+
+  #step:60
+  - command: overwrite
+    target: id=qty5
+    value: 113
+    shotflag: 
+
+  #step:61
+  - command: overwrite
+    target: id=price4
+    value: 114
+    shotflag: 
+
+  #step:62
+  - command: overwrite
+    target: id=qty4
+    value: 115
+    shotflag: 
+
+  #step:63
+  - command: overwrite
+    target: id=price3
+    value: 116
+    shotflag: 
+
+  #step:64
+  - command: overwrite
+    target: id=qty3
+    value: 117
+    shotflag: 
+
+  #step:65
+  - command: overwrite
+    target: id=price2
+    value: 118
+    shotflag: 
+
+  #step:66
+  - command: overwrite
+    target: id=qty2
+    value: 119
+    shotflag: 1
+
+  #step:67登録・更新の切替
   - command: click
     target: Xpath=//a[contains(@onclick, "submitAction")]
     value: 
     shotflag: 
 
-  #step:37＃BPW申請－共通
+  #step:68＃BPW申請－共通
   - command: switchTo
     target: DefaultContent
     value: 
-    shotflag: 
-
-  #step:38
-  - command: switchTo
-    target: frame
-    value: 0
-    shotflag: 
-
-  #step:39下部の共通入力Frame
-  - command: switchTo
-    target: frame
-    value: 1
-    shotflag: 
-
-  #step:40
-  - command: wait
-    target: 
-    value: 1000
-    shotflag: 
-
-  #step:41案件名称
-  - command: type
-    target: name=process_name
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:42
-  - command: type
-    target: name=draft_comment
-    value: name=draft_comment:1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:43
-  - command: type
-    target: name=mail_subject
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:44
-  - command: type
-    target: name=mail_body
-    value: name=mail_body:1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:45＃mailto:ユーザ検索画面
-  - command: popup
-    target: linktext=検索
-    value: 1000
-    shotflag: true
-
-  #step:46
-  - command: wait
-    target: 
-    value: 1000
-    shotflag: 
-
-  #step:47
-  - command: click
-    target: linktext=検索
-    value: 
-    shotflag: -1
-
-  #step:48
-  - command: click
-    target: css=table:nth-child(9) strong > a:nth-child(2) > img
-    value: 
-    shotflag: -1
-
-  #step:49
-  - command: click
-    target: css=tr:nth-child(7) > .list_data_bg > input
-    value: 
-    shotflag: -1
-
-  #step:50
-  - command: click
-    target: css=tr:nth-child(8) > .list_data_bg > input
-    value: 
-    shotflag: -1
-
-  #step:51
-  - command: click
-    target: css=tr:nth-child(9) > .list_data_bg > input
-    value: 
-    shotflag: -1
-
-  #step:52決定
-  - command: click
-    target: name=regist
-    value: 
-    shotflag: 
-
-  #step:53
-  - command: click
-    target: linktext=閉じる
-    value: 
-    shotflag: 
-
-  #step:54メイン画面へ戻る
-  - command: switchTo
-    target: window
-    value: root
-    shotflag: 
-
-  #step:55＃BPW申請－共通
-  - command: switchTo
-    target: DefaultContent
-    value: 
-    shotflag: 
-
-  #step:56
-  - command: switchTo
-    target: frame
-    value: 0
-    shotflag: 
-
-  #step:57下部の共通入力Frame
-  - command: switchTo
-    target: frame
-    value: 1
-    shotflag: 
-
-  #step:58＃添付ファイル登録画面
-  - command: popup
-    target: linktext=添付ファイル登録
-    value: 1000
-    shotflag: 
-
-  #step:59
-  - command: wait
-    target: 
-    value: 1000
-    shotflag: 
-
-  #step:60
-  - command: sendkeys
-    target: name=content
-    value: C:\tool\textconv\bin\WebDriver.xml
-    shotflag: 
-
-  #step:61
-  - command: click
-    target: name=regist
-    value: 
-    shotflag: 
-
-  #step:62
-  - command: sendkeys
-    target: name=content
-    value: C:\tool\textconv\bin\WebDriver.xml
-    shotflag: 
-
-  #step:63
-  - command: overwrite
-    target: name=changeName
-    value: atachfile00002
-    shotflag: 
-
-  #step:64
-  - command: click
-    target: name=regist
-    value: 
-    shotflag: 
-
-  #step:65
-  - command: click
-    target: linktext=閉じる
-    value: 
-    shotflag: 
-
-  #step:66メイン画面へ戻る
-  - command: switchTo
-    target: window
-    value: root
-    shotflag: 
-
-  #step:67
-  - command: switchTo
-    target: frame
-    value: 0
-    shotflag: 
-
-  #step:68下部の共通入力Frame
-  - command: switchTo
-    target: frame
-    value: 1
     shotflag: 
 
   #step:69
-  - command: click
-    target: name=save
-    value: 
+  - command: switchTo
+    target: frame
+    value: 0
     shotflag: 
 
-  #step:70
+  #step:70下部の共通入力Frame
   - command: switchTo
-    target: alert
-    value: 
+    target: frame
+    value: 1
     shotflag: 
 
   #step:71
@@ -430,205 +430,205 @@ actions:
     value: 1000
     shotflag: 
 
-  #step:72
-  - command: sendkeys
-    target: 
-    value: "{enter}"
+  #step:72案件名称
+  - command: type
+    target: name=process_name
+    value: 1800_Pur Req-HR--2021-04-06-154301
     shotflag: 
 
-  #step:73メイン画面へ戻る
+  #step:73
+  - command: type
+    target: name=draft_comment
+    value: name=draft_comment:1800_Pur Req-HR--2021-04-06-154301
+    shotflag: 
+
+  #step:74
+  - command: type
+    target: name=mail_subject
+    value: 1800_Pur Req-HR--2021-04-06-154301
+    shotflag: 
+
+  #step:75
+  - command: type
+    target: name=mail_body
+    value: name=mail_body:1800_Pur Req-HR--2021-04-06-154301
+    shotflag: 
+
+  #step:76＃mailto:ユーザ検索画面
+  - command: popup
+    target: linktext=検索
+    value: 1000
+    shotflag: 
+
+  #step:77
+  - command: wait
+    target: 
+    value: 1000
+    shotflag: 
+
+  #step:78
+  - command: click
+    target: linktext=検索
+    value: 
+    shotflag: -1
+
+  #step:79
+  - command: click
+    target: css=table:nth-child(9) strong > a:nth-child(2) > img
+    value: 
+    shotflag: -1
+
+  #step:80
+  - command: click
+    target: css=tr:nth-child(7) > .list_data_bg > input
+    value: 
+    shotflag: -1
+
+  #step:81
+  - command: click
+    target: css=tr:nth-child(8) > .list_data_bg > input
+    value: 
+    shotflag: -1
+
+  #step:82
+  - command: click
+    target: css=tr:nth-child(9) > .list_data_bg > input
+    value: 
+    shotflag: -1
+
+  #step:83決定
+  - command: click
+    target: name=regist
+    value: 
+    shotflag: 
+
+  #step:84
+  - command: click
+    target: linktext=閉じる
+    value: 
+    shotflag: -1
+
+  #step:85メイン画面へ戻る
   - command: switchTo
     target: window
     value: root
     shotflag: 
 
-  #step:74
+  #step:86＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+    shotflag: 
+
+  #step:87
   - command: switchTo
     target: frame
-    value: IM_MAIN
+    value: 0
     shotflag: 
 
-  #step:75ルート変数チェック
-  - command: ifvar
-    target: routeX=1;goto:route1
-    value: 
-    shotflag: 
-
-  #step:76
-  - command: wait
-    target: 
+  #step:88下部の共通入力Frame
+  - command: switchTo
+    target: frame
     value: 1
     shotflag: 
 
-  #step:77ルート変数チェック
-  - command: ifvar
-    target: routeX=2;goto:route2
-    value: 
-    shotflag: 
-
-  #step:78
-  - command: wait
-    target: 
-    value: 1
-    shotflag: 
-
-  #step:79
-  - command: label
-    target: route1
-    value: 
-    shotflag: 
-
-  #step:801回目承認の場合
-  - command: ifnot
-    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]; goto approve
-    value: 
-    shotflag: 
-
-  #step:811回目承認の場合
-  - command: var
-    target: routeX
-    value: 2
-    shotflag: 
-
-  #step:82ルーt１を選択
-  - command: click
-    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]
-    value: 
-    shotflag: 
-
-  #step:83ルーt１を選択
-  - command: jump
-    target: goto:approve
-    value: 
-    shotflag: 
-
-  #step:84
-  - command: label
-    target: route2
-    value: 
-    shotflag: 
-
-  #step:851回目承認の場合
-  - command: ifnot
-    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]; goto approve
-    value: 
-    shotflag: 
-
-  #step:862回目承認の場合
-  - command: var
-    target: routeX
-    value: 3
-    shotflag: 
-
-  #step:87ルーt２を選択
-  - command: click
-    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000002'")]
-    value: 
-    shotflag: 
-
-  #step:88ルーt１を選択
-  - command: jump
-    target: goto:approve
-    value: 
-    shotflag: 
-
-  #step:89
-  - command: label
-    target: approve
-    value: 
+  #step:89＃添付ファイル登録画面
+  - command: popup
+    target: linktext=添付ファイル登録
+    value: 1000
     shotflag: 
 
   #step:90
   - command: wait
     target: 
-    value: 1
+    value: 1000
     shotflag: 
 
   #step:91
+  - command: sendkeys
+    target: name=content
+    value: C:\tool\textconv\bin\WebDriver.xml
+    shotflag: 
+
+  #step:92
+  - command: click
+    target: name=regist
+    value: 
+    shotflag: 
+
+  #step:93
+  - command: sendkeys
+    target: name=content
+    value: C:\tool\textconv\bin\WebDriver.xml
+    shotflag: 
+
+  #step:94
+  - command: overwrite
+    target: name=changeName
+    value: atachfile00002
+    shotflag: 
+
+  #step:95
+  - command: click
+    target: name=regist
+    value: 
+    shotflag: 
+
+  #step:96
+  - command: click
+    target: linktext=閉じる
+    value: 
+    shotflag: 
+
+  #step:97メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+    shotflag: 
+
+  #step:98
+  - command: switchTo
+    target: frame
+    value: 0
+    shotflag: 
+
+  #step:99下部の共通入力Frame
+  - command: switchTo
+    target: frame
+    value: 1
+    shotflag: 
+
+  #step:100
+  - command: click
+    target: name=save
+    value: 
+    shotflag: 
+
+  #step:101
   - command: switchTo
     target: alert
     value: 
     shotflag: 
 
-  #step:92
+  #step:102
+  - command: wait
+    target: 
+    value: 1000
+    shotflag: 
+
+  #step:103
   - command: sendkeys
     target: 
     value: "{enter}"
     shotflag: 
 
-  #step:93
-  - command: sendkeys
-    target: 
-    value: "{enter}"
-    shotflag: 
-
-  #step:94
-  - command: wait
-    target: 
-    value: 1
-    shotflag: 
-
-  #step:95起票済案件一覧（本人用）
-  - command: open
-    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_assued
-    value: 
-    shotflag: 
-
-  #step:96
-  - command: wait
-    target: 
-    value: 1
-    shotflag: 
-
-  #step:97
-  - command: label
-    target: im_bpw_not_comp
-    value: 
-    shotflag: 
-
-  #step:98未処理案件一覧（本人用）
-  - command: open
-    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_not_comp
-    value: 
-    shotflag: 
-
-  #step:99
-  - command: wait
-    target: 
-    value: 1
-    shotflag: 
-
-  #step:100
+  #step:104メイン画面へ戻る
   - command: switchTo
-    target: frame
-    value: IM_MAIN
+    target: window
+    value: root
     shotflag: 
 
-  #step:101frame0:検索、frame1:detail
-  - command: switchTo
-    target: frame
-    value: 1
-    shotflag: 
-
-  #step:102未処理案件一覧（本人用）へ戻る
-  - command: ifnot
-    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a; goto:complete
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:103#特定WFへ
-  - command: click
-    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
-    shotflag: 
-
-  #step:104
-  - command: wait
-    target: 
-    value: 1
-    shotflag: 
-
-  #step:105＃BPW申請－共通
+  #step:105
   - command: switchTo
     target: DefaultContent
     value: 
@@ -640,157 +640,337 @@ actions:
     value: 0
     shotflag: 
 
-  #step:107
-  - command: switchTo
-    target: frame
-    value: 1
+  #step:1071回目承認の場合
+  - command: ifind
+    target: xpath=//*[contains(text(),"起票(本人用)")]; goto:im_bpw_assued
+    value: 
     shotflag: 
 
-  #step:108
-  - command: type
-    target: name=receive_comment
-    value: name=receive_comment:1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1:OK
+  #step:108Route選択
+  - command: ifind
+    target: xpath=//*[contains(text(),"ルート選択")]; goto:routeselect
+    value: 
     shotflag: 
 
   #step:109
-  - command: click
-    target: name=save
+  - command: label
+    target: routeselect
     value: 
     shotflag: 
 
   #step:110
+  - command: var
+    target: hasroute
+    value: 1
+    shotflag: 
+
+  #step:111ルート選択
+  - command: ifvar
+    target: routeX=1;goto:route1
+    value: 
+    shotflag: 
+
+  #step:112ルート選択
+  - command: ifvar
+    target: routeX=2;goto:route2
+    value: 
+    shotflag: 
+
+  #step:113Route選択
+  - command: label
+    target: route1
+    value: 
+    shotflag: 
+
+  #step:114ルーt１を選択
+  - command: click
+    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]
+    value: 
+    shotflag: 
+
+  #step:115ルーt１を選択
+  - command: goto
+    target: goto:approve
+    value: 
+    shotflag: 
+
+  #step:116
+  - command: label
+    target: route2
+    value: 
+    shotflag: 
+
+  #step:117ルーt２を選択
+  - command: click
+    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000002'")]
+    value: 
+    shotflag: 
+
+  #step:118ルーt１を選択
+  - command: goto
+    target: goto:approve
+    value: 
+    shotflag: 
+
+  #step:119
+  - command: label
+    target: approve
+    value: 
+    shotflag: 
+
+  #step:120
   - command: switchTo
     target: alert
     value: 
     shotflag: 
 
-  #step:111
+  #step:121
   - command: sendkeys
     target: 
     value: "{enter}"
     shotflag: 
 
-  #step:112ルーt１を選択
-  - command: jump
+  #step:122
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+    shotflag: 
+
+  #step:123
+  - command: label
+    target: im_bpw_assued
+    value: 
+    shotflag: 
+
+  #step:124起票済案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_assued
+    value: 
+    shotflag: 
+
+  #step:125
+  - command: label
+    target: im_bpw_not_comp
+    value: 
+    shotflag: 
+
+  #step:126未処理案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_not_comp
+    value: 
+    shotflag: 
+
+  #step:127
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+    shotflag: 
+
+  #step:128frame0:検索、frame1:detail
+  - command: switchTo
+    target: frame
+    value: 1
+    shotflag: 
+
+  #step:129未処理案件一覧（本人用）へ戻る
+  - command: ifnot
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a; goto:im_bpw_consented
+    value: 1800_Pur Req-HR--2021-04-06-154301
+    shotflag: 
+
+  #step:130#特定WFへ
+  - command: click
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a
+    value: 1800_Pur Req-HR--2021-04-06-154301
+    shotflag: 
+
+  #step:131
+  - command: switchTo
+    target: DefaultContent
+    value: 
+    shotflag: 
+
+  #step:132
+  - command: switchTo
+    target: frame
+    value: 0
+    shotflag: 
+
+  #step:133
+  - command: switchTo
+    target: frame
+    value: 1
+    shotflag: 
+
+  #step:134
+  - command: type
+    target: name=receive_comment
+    value: name=receive_comment:1800_Pur Req-HR--2021-04-06-154301:OK
+    shotflag: 
+
+  #step:135承認
+  - command: click
+    target: name=save
+    value: 
+    shotflag: 
+
+  #step:136
+  - command: switchTo
+    target: alert
+    value: 
+    shotflag: 
+
+  #step:137
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+    shotflag: 
+
+  #step:138メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+    shotflag: 
+
+  #step:139
+  - command: switchTo
+    target: DefaultContent
+    value: 
+    shotflag: 
+
+  #step:140
+  - command: switchTo
+    target: frame
+    value: 0
+    shotflag: 
+
+  #step:141Route選択
+  - command: ifind
+    target: xpath=//*[contains(text(),"ルート選択")]; goto:routeselect
+    value: 
+    shotflag: 
+
+  #step:142ルーt１を選択
+  - command: goto
     target: goto:im_bpw_not_comp
     value: 
     shotflag: 
 
-  #step:113
+  #step:143
   - command: label
-    target: complete
+    target: im_bpw_consented
     value: 
     shotflag: 
 
-  #step:114メイン画面へ戻る
-  - command: switchTo
-    target: window
-    value: root
-    shotflag: 
-
-  #step:115処理済案件一覧（本人用）
+  #step:144処理済案件一覧（本人用）
   - command: open
     target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_consented
     value: 
     shotflag: 
 
-  #step:116
+  #step:145
   - command: switchTo
     target: frame
     value: IM_MAIN
     shotflag: 
 
-  #step:117frame0:検索、frame1:detail
+  #step:146frame0:検索、frame1:detail
   - command: switchTo
     target: frame
     value: 1
     shotflag: 
 
-  #step:118詳細画面
+  #step:147詳細画面
   - command: popup
     target: XPathFormat=//td[contains(text(),"{0}")]/parent::tr/td/a/img[contains(@src, "arrival")]
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+    value: 1800_Pur Req-HR--2021-04-06-154301
     shotflag: 
 
-  #step:119
+  #step:148
   - command: wait
     target: 
     value: 1000
     shotflag: 
 
-  #step:120
+  #step:149
   - command: click
     target: linktext=閉じる
     value: 
     shotflag: 
 
-  #step:121メイン画面へ戻る
+  #step:150メイン画面へ戻る
   - command: switchTo
     target: window
     value: root
     shotflag: 
 
-  #step:122処理済案件一覧（本人用）
+  #step:151処理済案件一覧（本人用）
   - command: open
     target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_consented
     value: 
     shotflag: 
 
-  #step:123
+  #step:152
   - command: switchTo
     target: frame
     value: IM_MAIN
     shotflag: 
 
-  #step:124frame0:検索、frame1:detail
+  #step:153frame0:検索、frame1:detail
   - command: switchTo
     target: frame
     value: 1
     shotflag: 
 
-  #step:125フロー
+  #step:154フロー
   - command: popup
     target: XPathFormat=//td[contains(text(),"{0}")]/parent::tr/td/a/img[contains(@src, "flow")]
-    value: 1800_Entertainment-Sales & Mktg Mgmt--2021-04-05-1
+    value: 1800_Pur Req-HR--2021-04-06-154301
     shotflag: 
 
-  #step:126
+  #step:155
   - command: wait
     target: 
     value: 1000
     shotflag: 
 
-  #step:127
+  #step:156
   - command: click
     target: linktext=閉じる
     value: 
     shotflag: 
 
-  #step:128メイン画面へ戻る
+  #step:157メイン画面へ戻る
   - command: switchTo
     target: window
     value: root
     shotflag: 
 
-  #step:129参照案件一覧
+  #step:158参照案件一覧
   - command: open
     target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_reference
     value: 
     shotflag: 
 
-  #step:130route2で再起票
+  #step:159
+  - command: var
+    target: routeX
+    value: 2
+    shotflag: 
+
+  #step:160route2で再起票
   - command: ifvar
     target: routeX=2;goto:draft01
     value: 
     shotflag: 
 
-  #step:131ログアウト
+  #step:161ログアウト
   - command: open
     target: http://localhost:8080/imart/logout
     value: 
     shotflag: 
 
-  #step:132
+  #step:162
   - command: close
     target: 
     value: 

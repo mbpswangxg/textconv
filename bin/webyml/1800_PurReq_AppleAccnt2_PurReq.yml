@@ -1,7 +1,6 @@
 ﻿## 間隔時間: 0.5秒
 interval: 500
-shotcmd_before: []
-shotcmd_after: [open, popup, click,switchwindow]
+shotcmd: [open, popup, click,switchwindow]
 shotfromstep: 16
 shotskip: []
 actions:

@@ -39,7 +39,20 @@ namespace TextConv
             YmlLoader.Load(rules, ymlDirPath);
             rules.ForEach(item => doAction(item));
         }
-
+        private void screeshot(XWebAction webAction, XActionItem action, int index)
+        {
+            if (action.IsSkipShot) return;
+            if (action.IsForceShot)
+            {
+                SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+                return;
+            }
+            
+            if (action.isShotCmd && webAction.shotfromstep <= index)
+            {
+                SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
+            }
+        }
         private void doAction(XWebAction webAction)
         {
             webAction.driver = this.driver;
@@ -51,30 +64,19 @@ namespace TextConv
                 {
                     index = i + 1;
                     action = webAction.actions[i];
-                    if (action.beforeShot && webAction.shotfromstep < index)
-                    {
-                        SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
-                    }
                     
+                    if (index == 147)
+                    {
+                        Console.WriteLine("================");
+                    }
                     Console.WriteLine("step{0:D3}: {1}", index, action.ToString());
                     if (!webAction.doAction(action))
                     {
                         Console.WriteLine("★★★異常発生した為、処理中止...★★★");
                         break;
                     }
-                    if (action.IsForceShot)
-                    {
-                        SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
-                    }
-                    else if (!action.IsSkipShot) 
-                    {
-                        if (action.afterShot && webAction.shotfromstep <= index && !webAction.shotskip.Contains(index))
-                        {
-                            SendKeys.SendWait("%{PRTSC}"); //ctr:^, alt:%
-                        }
-                    }
-
-                    if(!string.IsNullOrEmpty(action.nextStep) && action.jump)
+                    screeshot(webAction, action, index);
+                    if (!string.IsNullOrEmpty(action.nextStep) && action.jump)
                     {
                         //default goto stepindex. ifind=true or ifnot=false or ifvar=true
                         i = webAction.actions.FindIndex(ac => ac.command.Equals("label") && ac.target.Equals(action.nextStep)) - 1;

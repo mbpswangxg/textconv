@@ -1,7 +1,6 @@
 ﻿## 間隔時間: 1.5秒
 interval: 1500
-shotcmd_before: []
-shotcmd_after: [open, click]
+shotcmd: [open, click]
 actions: 
   #step:1tenant取得の為
   - command: open

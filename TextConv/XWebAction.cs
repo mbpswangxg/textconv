@@ -128,31 +128,62 @@ namespace TextConv
         {
             return string.Format("command={0} | target={1} | value={2}", command, target, value);
         }
-
-        public bool beforeShot
+        public void Init(IDictionary<string, object> vars)
         {
-            get
+            if (string.IsNullOrEmpty(target)) return;
+            string[] lines = Regex.Split(target, @";\s*");
+            Match m; 
+            foreach(var line in lines)
             {
-                if (parent.shotcmd_before.Contains(command))
+                //Add substract
+                m = Regex.Match(line, @"(\w+)([\+\-\*\/])(\d+)");
+                if (m.Success)
                 {
-                    return true;
+                    string cmd = m.Groups[1].Value;
+                    string sign = m.Groups[2].Value;
+                    string val2 = m.Groups[3].Value;
+                    decimal var1 = 0;
+                    if (vars.ContainsKey(cmd))
+                    {
+                        var1 = decimal.Parse(vars[cmd].ToString());
+                    }
+                    else
+                    {
+                        vars.Add(cmd, var1);
+                    }
+                    
+                    if (sign.Equals("+"))
+                    {
+                        var1 = var1 + decimal.Parse(val2);
+                    }
+                    else if (sign.Equals("-"))
+                    {
+                        var1 = var1 - decimal.Parse(val2);
+                    }
+                    else if (sign.Equals("*"))
+                    {
+                        var1 = var1 * decimal.Parse(val2);
+                    }
+                    else if (sign.Equals("/"))
+                    {
+                        var1 = var1 / decimal.Parse(val2);
+                    }
+                    vars[cmd] = var1;
                 }
-                return false;
             }
-            
         }
-        public bool afterShot 
+        public bool isShotCmd 
         {
             get
             {
-                if (parent.shotcmd_after.Contains(command))
+                if (parent.shotcmd.Contains(command))
                 {
                     return true;
                 }
                 if (IsCmd("switchTo"))
                 {
                     string cmd = "switch" + target;
-                    if (parent.shotcmd_after.Contains(cmd))
+                    if (parent.shotcmd.Contains(cmd))
                     {
                         return true;
                     }
@@ -205,9 +236,7 @@ namespace TextConv
         public int interval;
         public int shotfromstep;
         public List<XActionItem> actions = new List<XActionItem>();
-        public List<string> shotcmd_before = new List<string>();
-        public List<string> shotcmd_after = new List<string>();
-        public List<int> shotskip = new List<int>();
+        public List<string> shotcmd = new List<string>();
         
         public int nextStepIndex { get; private set; }
         
@@ -223,6 +252,7 @@ namespace TextConv
             foreach (XActionItem item in actions)
             {
                 item.parent = this;
+                item.Init(this.vars);
             }
         }
         public void wait()
@@ -452,14 +482,9 @@ namespace TextConv
                 element.Click();
                 wait();
 
-                int waitTime = 2000;
-                if (!string.IsNullOrEmpty(action.value))
-                {
-                    waitTime = int.Parse(action.value);
-                }
                 string windowId = string.Format("window{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
                 //POPUP画面起動後
-                vars[windowId] = waitForWindow(waitTime);
+                vars[windowId] = waitForWindow(2000);
                 //POPUP画面へ切替前、本画面を一時退避
                 vars["root"] = driver.CurrentWindowHandle;
                 //POPUP画面へ切替
