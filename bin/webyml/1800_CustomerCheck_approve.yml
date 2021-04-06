@@ -1,0 +1,100 @@
+﻿## 間隔時間: 1.5秒
+interval: 1500
+shotcmd_before: []
+shotcmd_after: [open, click]
+actions: 
+  #step:1tenant取得の為
+  - command: open
+    target: http://localhost:8080/imart/system/login
+    value: 
+
+  #step:2login画面
+  - command: open
+    target: http://localhost:8080/imart/login
+    value: 
+
+  #step:3
+  - command: resize
+    target: window
+    value: 1000x900
+
+  #step:4focus im_user input
+  - command: click
+    target: id=im_user
+    value: 
+
+  #step:5delete all
+  - command: sendkeys
+    target: 
+    value: "{home}+{end}{del}"
+
+  #step:6ID入力
+  - command: type
+    target: id=im_user
+    value: wangxg
+
+  #step:7
+  - command: click
+    target: css=.imui-btn-login
+    value: 
+
+  #step:8
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:9未処理案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_not_comp
+    value: 
+
+  #step:10
+  - command: wait
+    target: 
+    value: 3000
+
+  #step:11
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:12未処理案件一覧（本人用）
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:13#特定WFへ
+  - command: click
+    target: XPathFormat=//*[contains(text(),'{0}')]/parent::tr/td[1]/a
+    value: 1800_Customer Check-2021-03-31-180730
+
+  #step:14
+  - command: wait
+    target: 
+    value: 2000
+
+  #step:15＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  #step:16
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:17
+  - command: click
+    target: name=save
+    value: 
+
+  #step:18
+  - command: switchTo
+    target: alert
+    value: 
+
+  #step:19
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+

@@ -16,7 +16,7 @@ actions:
   #step:3
   - command: resize
     target: window
-    value: 1000x800
+    value: 1200x800
 
   #step:4focus im_user input
   - command: click
@@ -81,7 +81,7 @@ actions:
   #step:16#BPWFlow===
   - command: click
     target: XPathFormat=//*[contains(text(),'{0}')]/parent::tr/td[1]/a
-    value: 1800_Customer Check List
+    value: 1800_Adv_Pur_Req1
 
   #step:17
   - command: wait
@@ -96,27 +96,27 @@ actions:
   #step:19
   - command: switchTo
     target: frame
-    value: 0
+    value: 1
 
   #step:20
   - command: type
     target: name=process_name
-    value: name=process_name:1800_Adv_Pur_Req
+    value: name=process_name:1800_Adv_Pur_Req1
 
   #step:21
   - command: type
     target: name=draft_comment
-    value: name=draft_comment:1800_Adv_Pur_Req
+    value: name=draft_comment:1800_Adv_Pur_Req1
 
   #step:22
   - command: type
     target: name=mail_subject
-    value: name=mail_subject:1800_Adv_Pur_Req
+    value: name=mail_subject:1800_Adv_Pur_Req1
 
   #step:23
   - command: type
     target: name=mail_body
-    value: name=mail_body:1800_Adv_Pur_Req
+    value: name=mail_body:1800_Adv_Pur_Req1
 
   #step:24
   - command: wait
@@ -188,82 +188,82 @@ actions:
     target: linktext=添付ファイル登録
     value: 
 
-  #step:39
-  - command: type
+  #step:38
+  - command: sendkeys
     target: name=content
     value: C:\tool\textconv\bin\WebDriver.xml
 
-  #step:40
+  #step:39
   - command: click
     target: name=regist
     value: 
 
-  #step:42
+  #step:40
   - command: type
     target: name=content
     value: C:\tool\textconv\bin\WebDriver.xml
 
-  #step:43
+  #step:41
   - command: type
     target: name=changeName
     value: atachfile00002
 
-  #step:44
+  #step:42
   - command: click
     target: name=regist
     value: 
 
-  #step:45
+  #step:43
   - command: click
     target: linktext=閉じる
     value: 
 
-  #step:46メイン画面へ戻る
+  #step:44メイン画面へ戻る
   - command: switchTo
     target: window
     value: root
 
-  #step:47
+  #step:45
   - command: switchTo
     target: frame
     value: 0
 
-  #step:48上部のBPWフローFrame
+  #step:46上部のBPWフローFrame
   - command: switchTo
     target: frame
     value: 0
 
-  #step:49登録・更新の切替
+  #step:47登録・更新の切替
   - command: click
     target: Xpath=//a[contains(@onclick, "submitAction")]
     value: 
 
-  #step:50
+  #step:48
   - command: wait
     target: 
     value: 1000
 
-  #step:51同じ親Frame
+  #step:49同じ親Frame
   - command: switchTo
     target: DefaultContent
     value: 
 
-  #step:52下部の共通入力Frame
+  #step:50下部の共通入力Frame
   - command: switchTo
     target: frame
     value: 1
 
-  #step:53
+  #step:51
   - command: click
     target: name=save
     value: 
 
-  #step:54
+  #step:52
   - command: switchTo
     target: alert
     value: 
 
-  #step:55
+  #step:53
   - command: sendkeys
     target: 
     value: "{enter}"

@@ -1,5 +1,5 @@
 ﻿## 間隔時間: 1秒
-interval: 1000
+interval: 2000
 shotcmd_before: []
 shotcmd_after: [open, click]
 actions: 

@@ -1,0 +1,677 @@
+﻿## 間隔時間: 1.5秒
+interval: 1500
+shotcmd_before: []
+shotcmd_after: [open, popup, click,switchwindow]
+shotfromstep: 16
+shotskip: [42,43,44,45,46]
+actions:
+  #step:1
+  - command: var
+    target: routeX
+    value: 1
+
+  #step:2tenant取得の為
+  - command: open
+    target: http://localhost:8080/imart/system/login
+    value: 
+
+  #step:3login画面
+  - command: open
+    target: http://localhost:8080/imart/login
+    value: 
+
+  #step:4
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:5
+  - command: resize
+    target: window
+    value: 1000x900
+
+  #step:6ID入力
+  - command: overwrite
+    target: id=im_user
+    value: wangxg
+
+  #step:7
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:8
+  - command: click
+    target: css=.imui-btn-login
+    value: 
+
+  #step:9
+  - command: label
+    target: draft01
+    value: 
+
+  #step:10#起票画面 
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_entry
+    value: 
+
+  #step:11
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:12
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:13DropDown選択
+  - command: click
+    target: XPath=//*[@name="category"]
+    value: 
+
+  #step:14Opion選定
+  - command: click
+    target: XPathFormat=//option[. = '{0}']
+    value: 1800_JAE-US
+
+  #step:15検索
+  - command: click
+    target: name=search
+    value: 
+
+  #step:16#特定WFへ
+  - command: click
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a
+    value: 1800_Entertainment(Aero Eng)
+
+  #step:17
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:18＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  #step:19上部のBPWフロー詳細
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:20
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:21
+  - command: overwrite
+    target: id=5hxa4abl67jb6e9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:22
+  - command: overwrite
+    target: id=5hxa4abnxrrdhe9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:23
+  - command: overwrite
+    target: id=5hxa4abpv9xgbe9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:24
+  - command: overwrite
+    target: id=5hxa4abp2lsefe9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:25
+  - command: overwrite
+    target: id=5hxa4abrilci7e9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:26
+  - command: overwrite
+    target: id=5hx8wnpmmrka5e9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:27
+  - command: overwrite
+    target: id=5hx8wnpr1eieme9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:28
+  - command: overwrite
+    target: id=5hx8wnt10p5upe9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:29
+  - command: overwrite
+    target: id=5hx8wnpxlgthne9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:30
+  - command: overwrite
+    target: id=5hx8wnt4h48xve9
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:31登録・更新の切替
+  - command: click
+    target: Xpath=//a[contains(@onclick, "submitAction")]
+    value: 
+
+  #step:32＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  #step:33
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:34下部の共通入力Frame
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:35
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:36案件名称
+  - command: type
+    target: name=process_name
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:37
+  - command: type
+    target: name=draft_comment
+    value: name=draft_comment:1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:38
+  - command: type
+    target: name=mail_subject
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:39
+  - command: type
+    target: name=mail_body
+    value: name=mail_body:1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:40＃mailto:ユーザ検索画面
+  - command: popup
+    target: linktext=検索
+    value: 2000
+
+  #step:41
+  - command: wait
+    target: 
+    value: 2000
+
+  #step:42
+  - command: click
+    target: linktext=検索
+    value: 
+
+  #step:43
+  - command: click
+    target: css=table:nth-child(9) strong > a:nth-child(2) > img
+    value: 
+
+  #step:44
+  - command: click
+    target: css=tr:nth-child(7) > .list_data_bg > input
+    value: 
+
+  #step:45
+  - command: click
+    target: css=tr:nth-child(8) > .list_data_bg > input
+    value: 
+
+  #step:46
+  - command: click
+    target: css=tr:nth-child(9) > .list_data_bg > input
+    value: 
+
+  #step:47決定
+  - command: click
+    target: name=regist
+    value: 
+
+  #step:48
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:49メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:50＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  #step:51
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:52下部の共通入力Frame
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:53＃添付ファイル登録画面
+  - command: popup
+    target: linktext=添付ファイル登録
+    value: 2000
+
+  #step:54
+  - command: wait
+    target: 
+    value: 2000
+
+  #step:55
+  - command: sendkeys
+    target: name=content
+    value: C:\tool\textconv\bin\WebDriver.xml
+
+  #step:56
+  - command: click
+    target: name=regist
+    value: 
+
+  #step:57
+  - command: sendkeys
+    target: name=content
+    value: C:\tool\textconv\bin\WebDriver.xml
+
+  #step:58
+  - command: overwrite
+    target: name=changeName
+    value: atachfile00002
+
+  #step:59
+  - command: click
+    target: name=regist
+    value: 
+
+  #step:60
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:61メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:62
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:63下部の共通入力Frame
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:64
+  - command: click
+    target: name=save
+    value: 
+
+  #step:65
+  - command: switchTo
+    target: alert
+    value: 
+
+  #step:66
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:67
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+
+  #step:68メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:69
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:70ルート変数チェック
+  - command: ifvar
+    target: routeX=1;goto:route1
+    value: 
+
+  #step:71
+  - command: wait
+    target: 
+    value: 1
+
+  #step:72ルート変数チェック
+  - command: ifvar
+    target: routeX=2;goto:route2
+    value: 
+
+  #step:73
+  - command: wait
+    target: 
+    value: 1
+
+  #step:74
+  - command: label
+    target: route1
+    value: 
+
+  #step:751回目承認の場合
+  - command: ifnot
+    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]; goto approve
+    value: 
+
+  #step:761回目承認の場合
+  - command: var
+    target: routeX
+    value: 2
+
+  #step:77ルーt１を選択
+  - command: click
+    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]
+    value: 
+
+  #step:78ルーt１を選択
+  - command: jump
+    target: goto:approve
+    value: 
+
+  #step:79
+  - command: label
+    target: route2
+    value: 
+
+  #step:801回目承認の場合
+  - command: ifnot
+    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000001'")]; goto approve
+    value: 
+
+  #step:812回目承認の場合
+  - command: var
+    target: routeX
+    value: 3
+
+  #step:82ルーt２を選択
+  - command: click
+    target: xpath=//img[contains(@onclick, "callNewEntry('00000000000000000002'")]
+    value: 
+
+  #step:83ルーt１を選択
+  - command: jump
+    target: goto:approve
+    value: 
+
+  #step:84
+  - command: label
+    target: approve
+    value: 
+
+  #step:85
+  - command: wait
+    target: 
+    value: 1
+
+  #step:86
+  - command: switchTo
+    target: alert
+    value: 
+
+  #step:87
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+
+  #step:88
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+
+  #step:89
+  - command: wait
+    target: 
+    value: 1
+
+  #step:90起票済案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_assued
+    value: 
+
+  #step:91
+  - command: wait
+    target: 
+    value: 1
+
+  #step:92
+  - command: label
+    target: im_bpw_not_comp
+    value: 
+
+  #step:93未処理案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_not_comp
+    value: 
+
+  #step:94
+  - command: wait
+    target: 
+    value: 1
+
+  #step:95
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:96frame0:検索、frame1:detail
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:97未処理案件一覧（本人用）へ戻る
+  - command: ifnot
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a; goto:complete
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:98#特定WFへ
+  - command: click
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[1]/a
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:99
+  - command: wait
+    target: 
+    value: 1
+
+  #step:100＃BPW申請－共通
+  - command: switchTo
+    target: DefaultContent
+    value: 
+
+  #step:101
+  - command: switchTo
+    target: frame
+    value: 0
+
+  #step:102
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:103
+  - command: type
+    target: name=receive_comment
+    value: name=receive_comment:1800_Entertainment-Aero Eng--2021-04-05-131042:OK
+
+  #step:104
+  - command: click
+    target: name=save
+    value: 
+
+  #step:105
+  - command: switchTo
+    target: alert
+    value: 
+
+  #step:106
+  - command: sendkeys
+    target: 
+    value: "{enter}"
+
+  #step:107ルーt１を選択
+  - command: jump
+    target: goto:im_bpw_not_comp
+    value: 
+
+  #step:108
+  - command: label
+    target: complete
+    value: 
+
+  #step:109メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:110処理済案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_consented
+    value: 
+
+  #step:111
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:112frame0:検索、frame1:detail
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:113#特定WFへ
+  - command: popup
+    target: XPathFormat=//*[contains(text(),"{0}")]/parent::tr/td[4]/a
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:114
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:115
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:116メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:117処理済案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_consented
+    value: 
+
+  #step:118
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:119frame0:検索、frame1:detail
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:120フロー詳細
+  - command: popup
+    target: XPathFormat=//td[contains(text(),"{0}")]/parent::tr//td[4]//a/img[contains(@src, "arrival")]
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:121
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:122
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:123メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:124処理済案件一覧（本人用）
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_consented
+    value: 
+
+  #step:125
+  - command: switchTo
+    target: frame
+    value: IM_MAIN
+
+  #step:126frame0:検索、frame1:detail
+  - command: switchTo
+    target: frame
+    value: 1
+
+  #step:127フロー
+  - command: popup
+    target: XPathFormat=//td[contains(text(),"{0}")]/parent::tr//td[4]//a/img[contains(@src, "flow")]
+    value: 1800_Entertainment-Aero Eng--2021-04-05-131042
+
+  #step:128
+  - command: wait
+    target: 
+    value: 1000
+
+  #step:129
+  - command: click
+    target: linktext=閉じる
+    value: 
+
+  #step:130メイン画面へ戻る
+  - command: switchTo
+    target: window
+    value: root
+
+  #step:131参照案件一覧
+  - command: open
+    target: http://localhost:8080/imart/menu/common/iframe_sender?menuId=im_bpw_reference
+    value: 
+
+  #step:132route2で再起票
+  - command: ifvar
+    target: routeX=2;goto:draft01
+    value: 
+
+  #step:133ログアウト
+  - command: open
+    target: http://localhost:8080/imart/logout
+    value: 
+
+  #step:134
+  - command: close
+    target: 
+    value: 
+
