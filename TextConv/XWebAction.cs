@@ -31,7 +31,8 @@ namespace TextConv
         public string shotflag;
 
         public bool screenshot;
-        public bool jump = true;
+        public bool isTrue = true;
+        public List<XActionItem> subActions = new List<XActionItem>();
         public Size size {
             get
             {
@@ -128,47 +129,37 @@ namespace TextConv
         {
             return string.Format("command={0} | target={1} | value={2}", command, target, value);
         }
-        public void Init(IDictionary<string, object> vars)
+        public void Init()
         {
             if (string.IsNullOrEmpty(target)) return;
             string[] lines = Regex.Split(target, @";\s*");
             Match m; 
-            foreach(var line in lines)
+            for(int i =1; i<lines.Length; i++)
             {
-                //Add substract
-                m = Regex.Match(line, @"(\w+)([\+\-\*\/])(\d+)");
+                m = Regex.Match(lines[i], @"(\w+)\|([^\|]+)\|([^\|]+)");
                 if (m.Success)
                 {
-                    string cmd = m.Groups[1].Value;
-                    string sign = m.Groups[2].Value;
-                    string val2 = m.Groups[3].Value;
-                    decimal var1 = 0;
-                    if (vars.ContainsKey(cmd))
-                    {
-                        var1 = decimal.Parse(vars[cmd].ToString());
-                    }
-                    else
-                    {
-                        vars.Add(cmd, var1);
-                    }
-                    
-                    if (sign.Equals("+"))
-                    {
-                        var1 = var1 + decimal.Parse(val2);
-                    }
-                    else if (sign.Equals("-"))
-                    {
-                        var1 = var1 - decimal.Parse(val2);
-                    }
-                    else if (sign.Equals("*"))
-                    {
-                        var1 = var1 * decimal.Parse(val2);
-                    }
-                    else if (sign.Equals("/"))
-                    {
-                        var1 = var1 / decimal.Parse(val2);
-                    }
-                    vars[cmd] = var1;
+                    XActionItem sItem = new XActionItem();
+                    sItem.command = m.Groups[1].Value;
+                    sItem.target = m.Groups[2].Value;
+                    sItem.value = m.Groups[3].Value;
+                    this.subActions.Add(sItem);
+                    sItem.isTrue = this.isTrue;
+                    sItem.shotflag = this.shotflag;
+                    sItem.parent = this.parent;
+                    continue;
+                }
+                m = Regex.Match(lines[i], @"(\w+)\|([^\|]+)");
+                if (m.Success)
+                {
+                    XActionItem sItem = new XActionItem();
+                    sItem.command = m.Groups[1].Value;
+                    sItem.target = m.Groups[2].Value;
+                    this.subActions.Add(sItem);
+                    sItem.isTrue = this.isTrue;
+                    sItem.shotflag = this.shotflag;
+                    sItem.parent = this.parent;
+                    continue;
                 }
             }
         }
@@ -195,6 +186,7 @@ namespace TextConv
         {
             if (!IsTargetPair) return false;
             if (string.IsNullOrEmpty(targetPair.mark)) return false;
+            if (string.IsNullOrEmpty(targetPair.value)) return false;
             if (!vals.ContainsKey(targetPair.key)) return false;
 
             Console.WriteLine("◆val[{0}]={1}, targetPair={2}", targetPair.key, vals[targetPair.key], targetPair.ToString());
@@ -202,6 +194,23 @@ namespace TextConv
             if (Regex.IsMatch(targetPair.mark, @"^=$"))
             {
                 if (vals[targetPair.key].Equals(targetPair.value))
+                {
+                    return true;
+                }
+                if (vals[targetPair.key].ToString().Equals(targetPair.value))
+                {
+                    return true;
+                }
+            }
+            else if (Regex.IsMatch(targetPair.mark, @"^[\<\>]$"))
+            {
+                decimal v1 = decimal.Parse(vals[targetPair.key].ToString());
+                decimal v2 = decimal.Parse(targetPair.value);
+                if (targetPair.mark.Equals("<") &&  v1 < v2)
+                {
+                    return true;
+                }
+                else if (targetPair.mark.Equals(">") && v1 > v2)
                 {
                     return true;
                 }
@@ -252,7 +261,7 @@ namespace TextConv
             foreach (XActionItem item in actions)
             {
                 item.parent = this;
-                item.Init(this.vars);
+                item.Init();
             }
         }
         public void wait()
@@ -275,7 +284,7 @@ namespace TextConv
         {
             int retryIndex = 0;
             int maxRetry = int.Parse(Config.GetAppSettingValue2("web.error.retry", "3"));
-
+            
             while (retryIndex < maxRetry)
             {
                 try
@@ -412,19 +421,57 @@ namespace TextConv
                 vars[action.target] = action.value;
                 return true;
             }
-            if (action.IsCmd("add"))
+            if (action.IsCmd("math"))
             {
-                vars[action.target] = int.Parse(vars[action.target].ToString()) + int.Parse( action.value);
+                mathAction(action);
                 return true;
             }
 
             if (action.IsCmd("ifvar"))
             {
                 // if not equals, skip goto.
-                action.jump =action.IsTargetValid(vars);
+                action.isTrue =action.IsTargetValid(vars);
                 return true;
             }
             return false;
+        }
+        private void mathAction(XActionItem action)
+        {
+            //Add substract
+            Match m = Regex.Match(action.target, @"(\w+)([\+\-\*\/])(\d+)");
+            if (m.Success)
+            {
+                string cmd = m.Groups[1].Value;
+                string sign = m.Groups[2].Value;
+                string val2 = m.Groups[3].Value;
+                decimal var1 = 0;
+                if (vars.ContainsKey(cmd))
+                {
+                    var1 = decimal.Parse(vars[cmd].ToString());
+                }
+                else
+                {
+                    vars.Add(cmd, var1);
+                }
+
+                if (sign.Equals("+"))
+                {
+                    var1 = var1 + decimal.Parse(val2);
+                }
+                else if (sign.Equals("-"))
+                {
+                    var1 = var1 - decimal.Parse(val2);
+                }
+                else if (sign.Equals("*"))
+                {
+                    var1 = var1 * decimal.Parse(val2);
+                }
+                else if (sign.Equals("/"))
+                {
+                    var1 = var1 / decimal.Parse(val2);
+                }
+                vars[cmd] = var1;
+            }
         }
         private string waitForWindow(int timeout)
         {
@@ -455,13 +502,13 @@ namespace TextConv
             // if not found, goto
             if (action.IsCmd("ifnot"))
             {
-                action.jump = (element == null);
+                action.isTrue = (element == null);
                 return true;
             }
             // if not found, goto
             if (action.IsCmd("ifind"))
             {
-                action.jump = (element != null);
+                action.isTrue = (element != null);
                 return true;
             }
 

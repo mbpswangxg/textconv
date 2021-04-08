@@ -64,11 +64,10 @@ namespace TextConv
                 {
                     index = i + 1;
                     action = webAction.actions[i];
-                    
-                    if (index == 147)
-                    {
-                        Console.WriteLine("================");
-                    }
+                    //if(index == 126)
+                    //{
+                    //    Console.WriteLine("-------");
+                    //}
                     Console.WriteLine("step{0:D3}: {1}", index, action.ToString());
                     if (!webAction.doAction(action))
                     {
@@ -76,10 +75,23 @@ namespace TextConv
                         break;
                     }
                     screeshot(webAction, action, index);
-                    if (!string.IsNullOrEmpty(action.nextStep) && action.jump)
+                    if (action.isTrue)
                     {
-                        //default goto stepindex. ifind=true or ifnot=false or ifvar=true
-                        i = webAction.actions.FindIndex(ac => ac.command.Equals("label") && ac.target.Equals(action.nextStep)) - 1;
+                        // do sub action.
+                        foreach (var sac in action.subActions)
+                        {
+                            if (!webAction.doAction(sac))
+                            {
+                                Console.WriteLine("★Error in subAction:{0}", sac);
+                                break;
+                            }
+                            screeshot(webAction, sac, index);
+                        }
+                        // goto next step.
+                        if (!string.IsNullOrEmpty(action.nextStep))
+                        {
+                            i = webAction.actions.FindIndex(ac => ac.command.Equals("label") && ac.target.Equals(action.nextStep)) - 1;
+                        }
                     }
                 }
             }
@@ -91,7 +103,6 @@ namespace TextConv
                     Console.WriteLine(action.ToString());
                 }
             }
-
         }
 
         public void Dispose()
