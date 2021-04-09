@@ -1,3 +1,0 @@
-﻿rules:
-- pattern: ([\w\/]+'\s*\+\s*)(INFO_ID)(\s+AS)
-  replacement: $1CONVERT(varchar,$2)$3

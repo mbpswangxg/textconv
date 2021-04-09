@@ -1,6 +1,0 @@
-﻿rules:
-- pattern: \|\|
-  replacement: +
-  rangeFrom: \s*(if|while)\s*\(	
-  rangeTo: \)[^\)\{]*\{	
-  rangeSkip: true

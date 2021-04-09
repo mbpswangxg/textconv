@@ -1,6 +1,0 @@
-﻿rules:
-- pattern: (\s+)(\w+)\s+IS\s+NOT\s+NULL
-  replacement: $1NULLIF($2, '') IS NOT NULL
-
-- pattern: (\s+)(\w\.\w+)\s+IS\s+NOT\s+NULL
-  replacement: $1NULLIF($2, '') IS NOT NULL

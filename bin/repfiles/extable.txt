@@ -1,7 +1,0 @@
-tables,types,class
-var,oWhere,sys
-t_attach_file
-t_wkf_attach_file_rel
-t_wkf_param
-w_attach_file
-w_wkf_attach_file_rel

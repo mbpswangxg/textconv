@@ -1,3 +1,0 @@
-﻿rules:
-- pattern: ((?:^|[^\.\w]))NVL\s*\(
-  replacement: $1ISNULL(

@@ -1,3 +1,0 @@
-﻿rules:
-- pattern: COUNT\([\w+\.]*ROWID\)
-  replacement: COUNT(*)

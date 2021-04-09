@@ -1,9 +1,0 @@
-﻿rules:
-- pattern: LPAD\((\w+),\s*(\d+),\s*([^\)]+)\)
-  replacement: REPLICATE($3,$2-LEN($1))+$1
-
-- pattern: LPAD\(([^,]+),\s*(\d+),\s*([^\)]+)\)
-  replacement: FORMAT($1, REPLICATE($3,$2))
-
-- pattern: lpad\((substr\w*[^\)]+[^,]*),\s*(\d+),\s*([^\)]+)\)
-  replacement: FORMAT($1, REPLICATE($3,$2))

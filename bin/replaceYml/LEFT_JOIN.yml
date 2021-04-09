@@ -1,3 +1,0 @@
-﻿rules:
-- pattern: (\(\+\))
-  replacement: $1★★LEFT JOIN★★

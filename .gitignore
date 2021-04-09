@@ -5,7 +5,7 @@ node_modules
 
 obj/**
 bak/**
-conver/obj/**
+conver/obj/*.*
 conver/bin/**
 
 TextConv/obj/**

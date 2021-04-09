@@ -1,3 +1,0 @@
-﻿rules:
-- pattern: ((?:^|[^\.\w]))LENGTH\s*\(
-  replacement: $1LEN(
