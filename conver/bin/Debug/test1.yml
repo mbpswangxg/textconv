@@ -1,66 +1,27 @@
-Name: cmdkey
-Desc: description of rule.
-pattern: (var S_PAGE_THIS[^;]+;\s*)
-replacement: >
-  $1var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
-IgnoreCase: true
-Multiline: true
-ExcapeText: 
-inputContent: >-
-  var S_PATH_UPLOAD   = p_sGrp + "/0000_common/proposal/res/pop_upload";  //ファイルアップロード
-
-  var S_REDIRECT_INDEX  = p_sGrp + "/0000_common/proposal/result";
-
-
-  var S_PAGE_FILEINFO   = p_sGrp + "/0000_common/proposal/fileinfo";
-
-  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
-
-
-  aaatest
-rangeFrom: ''
-rangeTo: ''
-rangeSkip: false
-destFolder: ''
-filefilter: test.txt
-fileSkip: true
-cmdKey: cmdkey
-repCmdKey: ''
-repfile: ''
-currentfile: ''
-repResults:
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page="jae/0000_common/proposal/inc/inc_act_file"></IMART>
-- <IMART type="include" page=S_PATH_KEIRIFILE></IMART>
-- <IMART type="include" page=S_PATH_KEIRIFILE></IMART>
-- <IMART type="include" page=S_PATH_KEIRIFILE></IMART>
-- >-
-  ファイルアップロード
-
-  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";var S_REDIRECT_INDEX
-- >-
-  ファイルアップロード
-
-  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";var S_REDIRECT_INDEX
-- >-
-  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
-
-
-  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";$2
-- >-
-  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
-
-
-  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
-
-  $2
-- >
-  var S_PAGE_THIS     = p_sGrp + "/0000_common/proposal/" + S_PGNM;
-
-
-  var S_PATH_KEIRIFILE  = p_sGrp + "/0000_common/proposal/inc/inc_act_file";
+name: ''
+rules:
+- pattern: new Date
+  replacement: new DateTime
+  repfile: ''
+  function: ''
+  nestLoopCount: 0
+  replacegroups: []
+  IgnoreCase: true
+  Multiline: true
+  rangeFrom: ''
+  rangeTo: ''
+  rangeSkip: false
+  dicwords: []
+  findInStrs: []
+  findAnd: true
+  findSkip: false
+  excludeWords: []
+  skipMatch: 
+  skipInput: 
+  mustInput: 
+  parent: 
+  RegOptions: IgnoreCase, Multiline
+filefilter: html|js
+fileSkip: false
+commentMode: false
+aftercheckpattern: ''

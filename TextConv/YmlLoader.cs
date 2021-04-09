@@ -37,7 +37,11 @@ namespace TextConv
                 string pattern = string.Format("{0}.(yml|yaml)$", filename);
                 if (!Regex.IsMatch(filepath, pattern)) continue;
                 
-                LoadFromFile(items, filepath);
+                T item = LoadFromFile<T>(filepath);
+                if(item != null)
+                {
+                    items.Add(item);
+                }
             }
 
             DirectoryInfo di = new DirectoryInfo(ymlDirectoryPath);
@@ -47,23 +51,23 @@ namespace TextConv
             }
         }
 
-        public static void LoadFromFile<T>(List<T> items, string ymlFilePath)
+        public static T LoadFromFile<T>(string ymlFilePath)
         {
-            if (string.IsNullOrEmpty(ymlFilePath)) return;
+            if (string.IsNullOrEmpty(ymlFilePath)) return default(T);
             if (!File.Exists(ymlFilePath)) 
             {
                 Console.WriteLine("Can't found file: {0}", ymlFilePath);
-                return;
+                return default(T);
             }
 
             var deserializer = new Deserializer();
-
+            T item;
             using (StreamReader reader = File.OpenText(ymlFilePath))
             {
                 string name = UtilWxg.GetMatchGroup(ymlFilePath, @"\\*(\w+)\.\w+", 1);
 
-                T item = deserializer.Deserialize<T>(reader);
-                items.Add(item);
+                item = deserializer.Deserialize<T>(reader);
+                //items.Add(item);
 
                 Type typeX = item.GetType();
                 FieldInfo fi = typeX.GetField("name");
@@ -78,6 +82,7 @@ namespace TextConv
                     mi.Invoke(item, null);
                 }
             }
+            return item;
         }
     }
 }

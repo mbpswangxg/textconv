@@ -30,8 +30,11 @@ namespace TextConv
         public void Run(string ymlFilePath)
         {
             List<XWebAction> rules = new List<XWebAction>();
-            YmlLoader.LoadFromFile(rules, ymlFilePath);
-            rules.ForEach(item => doAction(item));
+            XWebAction rule = YmlLoader.LoadFromFile<XWebAction>(ymlFilePath);
+            if(rule != null)
+            {
+                doAction(rule);
+            }
         }
         public void RunBatch(string ymlDirPath)
         {

@@ -16,6 +16,8 @@ namespace conver
     {
         private ReplaceRuleItem ruleItem = new ReplaceRuleItem();
         private ReplaceRule rule = new ReplaceRule();
+        private bool replaced = false;
+        private string replaceRuleText = string.Empty;
         public RegexOptions RegexOptions
         {
             get
@@ -49,11 +51,10 @@ namespace conver
         /// <param name="e"></param>
         public void SaveRules(string filepath)
         {
-            var serializer = new Serializer();
             using (StreamWriter writer = File.CreateText(filepath))
             {
                 UI2Data();
-                serializer.Serialize(writer, ruleItem);
+                writer.Write(txtReplaceRule.Text);
             }
         }
         
@@ -64,21 +65,30 @@ namespace conver
         /// <param name="e"></param>
         public void LoadRules(string filepath)
         {
+            rule = YmlLoader.LoadFromFile<ReplaceRule>(filepath);
+            Data2UI();
+            txtReplaceRule.Text = File.ReadAllText(filepath);
+            replaceRuleText = txtReplaceRule.Text;
+        }
+        private void LoadRuleFromInput()
+        {
+            if (string.IsNullOrEmpty(txtReplaceRule.Text)) return;
+            if (txtReplaceRule.Text.Equals(this.replaceRuleText)) return;
+
+            this.replaceRuleText = txtReplaceRule.Text;
             var deserializer = new Deserializer();
 
             try
             {
-                using (StreamReader reader = File.OpenText(filepath))
-                {
-                    ruleItem = deserializer.Deserialize<ReplaceRuleItem>(reader);
-                    Data2UI();
-                }
-
-            }catch(Exception e)
+                rule = deserializer.Deserialize<ReplaceRule>(txtReplaceRule.Text);
+                rule.Init();
+            }
+            catch (Exception e)
             {
-                MessageBox.Show(e.Message+ "\n"+ e.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Message + "\n" + e.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
            
+            Data2UI();
         }
         private void UI2Data()
         {
@@ -148,6 +158,7 @@ namespace conver
             }
 
             tabResult.SelectedTab = tpMatch;
+            replaced = false;
         }
 
         /// <summary>
@@ -162,16 +173,17 @@ namespace conver
             //Match first
             btnMatch_Click(sender, e);
 
-            UI2Data();
+            LoadRuleFromInput();
 
             txtReplaceResult.Text = ruleItem.replaceText(txtInput.Text);
             HighLight hl = new HighLight(txtReplaceResult);
             hl.Reset2Default();            
-            foreach (string result in ruleItem.Results)
+            foreach (string result in ruleItem.Results())
             {
                 string[] newV = Regex.Split(result, @"\t");
                 hl.Highlight(newV.Last());
             }
+            replaced = true;
         }
 
         /// <summary>
@@ -181,22 +193,40 @@ namespace conver
         /// <param name="e"></param>
         public void btnReplaceFile_Click(object sender, EventArgs e)
         {
+            txtReplaceLog.Clear();
             if (string.IsNullOrEmpty(ruleItem.pattern)) return;
 
-            ReplaceFiles(treeFiles.Nodes);
+            int x = ReplaceFiles(treeFiles.Nodes);
+            // if no checked files, replace the default selectedNode. 
+            if(x == 0 && treeFiles.SelectedNode != null)
+            {
+                rule.ReplaceFile(treeFiles.SelectedNode.Name);
+                AppendReplaceLog(treeFiles.SelectedNode);
+            }
+            
         }
-        private void ReplaceFiles(TreeNodeCollection nodes)
+        private int ReplaceFiles(TreeNodeCollection nodes)
         {
+            int x = 0;
             foreach (TreeNode node in nodes)
             {
                 if (node.Nodes.Count > 0) 
                 {
-                    ReplaceFiles(node.Nodes);
+                    x += ReplaceFiles(node.Nodes);
                     continue;
                 }
                 if (!node.Checked) continue;
-
+                x++;
                 rule.ReplaceFile(node.Name);
+                AppendReplaceLog(node);
+            }
+            return x;
+        }
+        private void AppendReplaceLog(TreeNode node)
+        {
+            foreach (var item in rule.rules)
+            {
+                txtReplaceLog.AppendText(string.Format("{0}:{1}\n", node.Name, string.Join("\n", item.Results())));
             }
         }
 
@@ -306,6 +336,11 @@ namespace conver
 
                 txtInput.Select(index, length);
                 txtInput.ScrollToCaret();
+                if (replaced)
+                {
+                    txtReplaceResult.Select(index, length);
+                    txtReplaceResult.ScrollToCaret();
+                }
             }
         }
 

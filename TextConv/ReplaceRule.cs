@@ -13,6 +13,7 @@ namespace TextConv
 
         public string filefilter = string.Empty;
         public bool fileSkip = false;
+        public bool commentMode = false;
 
         public string aftercheckpattern = string.Empty;
 
@@ -30,7 +31,13 @@ namespace TextConv
                 return !this.fileSkip;
             }
         }
-
+        public void Init()
+        {
+            foreach (ReplaceRuleItem item in rules)
+            {
+                item.parent = this;
+            }
+        }
         public void ReplaceFile(string file)
         {
             if (!File.Exists(file)) return;
@@ -41,9 +48,16 @@ namespace TextConv
             foreach (var rule in rules)
             {
                 content = rule.replaceText(content);
-                Results.AddRange(rule.Results);
+                Results.AddRange(rule.Results());
             }
-
+            if (commentMode)
+            {
+                string header = Config.GetAppSettingValue("replace.comment.header");
+                string footer = Config.GetAppSettingValue("replace.comment.footer");
+                content = UtilWxg.ReplaceMatch(content, @"(" + header + @"\s+)+", header + "\n");
+                content = UtilWxg.ReplaceMatch(content, @"(" + footer + @"\s+)+", footer + "\n");
+            }
+            //UtilWxg.ReplaceMatch(content, )
             if (Results.Count > 0)
             {
                 File.WriteAllText(file, content, Config.Encoding);

@@ -50,7 +50,8 @@ namespace TextConv
         public string replacement = string.Empty;
         public string repfile = string.Empty;
         public string function = string.Empty;
-        
+        public int nestLoopCount = 0;
+
         public List<ReplaceGroupItem> replacegroups = new List<ReplaceGroupItem>();
         
         public bool IgnoreCase = true;
@@ -67,10 +68,10 @@ namespace TextConv
         public bool findSkip = false;
 
         public List<string> excludeWords = new List<string>();
-        public ReplaceSkipRuleItem skipMatch;
-        public ReplaceSkipRuleItem skipInput;
-        public ReplaceSkipRuleItem mustInput;
-
+        public ReplaceSkipRuleItem skipMatch = null;
+        public ReplaceSkipRuleItem skipInput = null;
+        public ReplaceSkipRuleItem mustInput = null;
+        public ReplaceRule parent = null;
         #endregion
 
         #region "private attributes"
@@ -81,7 +82,19 @@ namespace TextConv
         private List<LineMatch> vals = new List<LineMatch>();
         
         private int lineNo = 0;
-        private int matchIndex = 0;
+        //private int matchIndex = 0;
+        //private List<string> origins = new List<string>();
+        private bool commentMode
+        {
+            get
+            {
+                if (parent == null)
+                {
+                    return bool.Parse(Config.GetAppSettingValue("replace.comment.mode"));
+                }
+                return parent.commentMode;
+            }
+        }
         #endregion
 
         #region "public Get Properties"
@@ -112,9 +125,9 @@ namespace TextConv
         }
 
         private List<string> repResults = new List<string>();
-        public List<string> Results
+        public List<string> Results()
         {
-            get { return repResults; }
+            return repResults;
         }
         #endregion
 
@@ -148,22 +161,24 @@ namespace TextConv
             vals.Sort(CompareLineMatch);
         }
 
-        private void beforeReplace(string content)
-        {
-            //　範囲判定不要の場合、処理対象外
-            if (!HasRangeCheck) return;
+        //private void beforeReplace(string content)
+        //{
+        //    //　範囲判定不要の場合、処理対象外
+        //    if (!HasRangeCheck) return;
+        //    if (string.IsNullOrEmpty(content)) return;
+        //    string[] lines = Regex.Split(content, @"[\r\n]");
+        //    beforeReplace(lines);
+        //    //keyReg = new Regex(rangeFrom, RegOptions);
+        //    //valReg = new Regex(rangeTo, RegOptions);
 
-            keyReg = new Regex(rangeFrom, RegOptions);
-            valReg = new Regex(rangeTo, RegOptions);
+        //    //rangeMatches.Clear();
+        //    //keys.Clear();
+        //    //vals.Clear();
 
-            rangeMatches.Clear();
-            keys.Clear();
-            vals.Clear();
-
-            fillMatches(0, content);
-            keys.Sort(CompareLineMatch);
-            vals.Sort(CompareLineMatch);
-        }
+        //    //fillMatches(0, content);
+        //    //keys.Sort(CompareLineMatch);
+        //    //vals.Sort(CompareLineMatch);
+        //}
         private static int CompareLineMatch(LineMatch x, LineMatch y)
         {
             if (x.lineNo != y.lineNo)
@@ -229,8 +244,8 @@ namespace TextConv
                     return content;
                 }
             }
-
-            beforeReplace(content);
+            string[] lines = Regex.Split(content, @"[\r\n]");
+            beforeReplace(lines);
             repResults.Clear();
             //==============================
             if (!string.IsNullOrEmpty(repfile))
@@ -243,11 +258,36 @@ namespace TextConv
             }
             replacement = replacement.Replace("\\n", "\n");
             replacement = replacement.Replace("\\t", "\t");
+
+            return replaceLines(lines);
+            //Regex reg = new Regex(pattern, RegOptions);
+            //int maxLoop = int.Parse(Config.GetAppSettingValue2("maxloop", "10"));
+
+            //while (reg.IsMatch(content))
+            //{
+            //    matchIndex = 0;
+            //    string newContent = reg.Replace(content, MatchReplacer);
+            //    if (newContent.Equals(content))
+            //    {
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        content = newContent;
+            //    }
+            //    if (maxLoop < 0) break;
+            //    maxLoop--;
+            //}
+            //==============================
+            //return content;
+        }
+        private string replaceString(string content)
+        {
+            int loopCount = nestLoopCount;
             Regex reg = new Regex(pattern, RegOptions);
-            int maxLoop = int.Parse(Config.GetAppSettingValue2("maxloop", "10"));
             while (reg.IsMatch(content))
             {
-                matchIndex = 0;
+                //matchIndex = 0;
                 string newContent = reg.Replace(content, MatchReplacer);
                 if (newContent.Equals(content))
                 {
@@ -257,16 +297,50 @@ namespace TextConv
                 {
                     content = newContent;
                 }
-                if (maxLoop < 0) break;
-                maxLoop--;
+                loopCount--;
+                if (loopCount < 0) break;
             }
-            //==============================
             return content;
         }
-        
+        private string replaceLines(string[] lines)
+        {
+            List<string> newLines = new List<string>();
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                lineNo = i + 1;
+                string nline = replaceString(line);
+                if (!nline.Equals(line))
+                {
+                    if (commentMode)
+                    {
+                        string indent = UtilWxg.GetMatchGroup(line, @"^(\s+)(.+)", 1);
+                        string oline = UtilWxg.GetMatchGroup(line, @"^(\s+)(.+)", 2);
+                        string header = Config.GetAppSettingValue("replace.comment.header");
+                        string marker = Config.GetAppSettingValue("replace.comment.marker");
+                        string footer = Config.GetAppSettingValue("replace.comment.footer");
+
+                        newLines.Add(string.Format("{0}{1}", indent, header));
+                        newLines.Add(string.Format("{0}{1}{2}", indent, marker, oline));
+                        newLines.Add(nline);
+                        newLines.Add(string.Format("{0}{1}", indent, footer));
+                    }
+                    else
+                    {
+                        newLines.Add(nline);
+                    }
+                }
+                else
+                {
+                    newLines.Add(nline);
+                }
+            }
+            return string.Join("\n", newLines);
+        }
+
         private string MatchReplacer(Match m)
         {
-            matchIndex++;
+            //matchIndex++;
             
             // in range check
             if (HasRangeCheck)
@@ -292,7 +366,6 @@ namespace TextConv
                     return m.Value;
                 }
             }
-
 
             string oldV = m.Value;
             string newV = m.Value;
