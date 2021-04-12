@@ -33,7 +33,6 @@ pnpm-debug.log*
 *.sln
 *.sw?
 *.log
-*.exe
 *.pdb
 
 /TextConv/.vs/TextConv/DesignTimeBuild
