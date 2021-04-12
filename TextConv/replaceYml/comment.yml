@@ -1,0 +1,21 @@
+﻿commentMode: true
+aftercheckpattern: \bAccountManager\b
+rules:
+- pattern: import\s+jp.co.intra_mart.foundation.security.account.AccountManager;
+  replacement: import jp.co.intra_mart.foundation.admin.account.AccountInfoManager;
+  skipMatch:
+    patterns:
+    - ^\s*\/\/
+    
+- pattern: AccountManager\([^)]*\)
+  replacement: AccountInfoManager()
+  skipMatch:
+    patterns:
+    - ^\s*\/\/
+
+- pattern: AccountManager(\s+\w+\s*=)
+  replacement: AccountInfoManager$1
+  skipMatch:
+    patterns:
+    - ^\s*\/\/
+  

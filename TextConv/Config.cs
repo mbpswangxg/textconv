@@ -33,5 +33,26 @@ namespace TextConv
                 return Encoding.GetEncoding(encoding);
             }
         }
+        public static CommentConfigItem GetCommentConfig(string ext)
+        {
+            string ympPath = "CommentConfig.yml";
+            CommentConfig config = YmlLoader.LoadFromFile<CommentConfig>(ympPath);
+            if (config == null)
+            {
+                Console.WriteLine("Error:...Can't found ReplaceConfig.yml...");
+                return null;
+            }
+
+            foreach (CommentConfigItem item in config.rules)
+            {
+                if (item.fileExtension.Contains(ext))
+                {
+                    return item;
+                }
+            }
+
+            //Console.WriteLine("Error:...Can't found suitable config in ReplaceConfig.yml about language [{0}]...", ext);
+            return null;
+        }
     }
 }

@@ -30,7 +30,6 @@ C:\tool\textconv\conver\obj\Debug\conver.csproj.CoreCompileInputs.cache
 C:\tool\textconv\conver\bin\Debug\README.md
 C:\tool\textconv\conver\bin\Debug\repfiles\excludeColumns.txt
 C:\tool\textconv\conver\bin\Debug\repfiles\html1-td.txt
-C:\tool\textconv\conver\bin\Debug\repfiles\html1-td2.txt
 C:\tool\textconv\conver\bin\Debug\repfiles\html1.txt
 C:\tool\textconv\conver\bin\Debug\repfiles\html2table.txt
 C:\tool\textconv\conver\bin\Debug\repfiles\tablename.txt
@@ -85,8 +84,8 @@ C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_DATE.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_NUMBER.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\TO_STR.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\ora2mssql\usertabcol.yml
-C:\tool\textconv\conver\bin\Debug\replaceYml\CASE_TAB.yml.bak
-C:\tool\textconv\conver\bin\Debug\webyml\test01.yml
 C:\tool\textconv\conver\bin\Debug\WebDriver.dll
 C:\tool\textconv\conver\bin\Debug\WebDriver.xml
 C:\tool\textconv\conver\bin\Debug\replaceYml\DATENULL.yml
+C:\tool\textconv\conver\bin\Debug\CommentConfig.yml
+C:\tool\textconv\conver\bin\Debug\replaceYml\comment.yml

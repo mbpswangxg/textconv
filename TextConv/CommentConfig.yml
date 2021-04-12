@@ -1,0 +1,10 @@
+﻿rules:
+- fileExtension: [.java, .js, .cs]
+  commentHeader: //update by mbps at 2021/04/09 for iapバージョンアップ start
+  commentMarker: //
+  commentFooter: //update by mbps at 2021/04/09 for iapバージョンアップ end
+
+- fileExtension: [.xml]
+  commentHeader: "<!--update by mbps at 2021/04/09 for iapバージョンアップ start-->"
+  commentMarker: "<!--"
+  commentFooter: "<!--update by mbps at 2021/04/09 for iapバージョンアップ end-->"

@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-p \"(#HC#)+\" -r \"====>UPDATE START===>\" -input \"#HC##HC# ReplaceRuleItem ri = new ReplaceRuleItem(); #HE##HE#\""
+      "commandLineArgs": "-c comment -d \"C:\\tmp\\wangx\\_projects\\wang2\\src\\src122\""
     }
   }
 }

@@ -31,6 +31,7 @@ namespace TextConv
                 return !this.fileSkip;
             }
         }
+        public CommentConfigItem cconfig { get; private set; }
         public void Init()
         {
             foreach (ReplaceRuleItem item in rules)
@@ -42,6 +43,8 @@ namespace TextConv
         {
             if (!File.Exists(file)) return;
             if (isSkipFile(file)) return;
+            string ext = new FileInfo(file).Extension;
+            cconfig = Config.GetCommentConfig(ext);
 
             string content = File.ReadAllText(file, Config.Encoding);
             Results.Clear();
@@ -50,14 +53,7 @@ namespace TextConv
                 content = rule.replaceText(content);
                 Results.AddRange(rule.Results());
             }
-            if (commentMode)
-            {
-                string header = Config.GetAppSettingValue("replace.comment.header");
-                string footer = Config.GetAppSettingValue("replace.comment.footer");
-                content = UtilWxg.ReplaceMatch(content, @"(" + header + @"\s+)+", header + "\n");
-                content = UtilWxg.ReplaceMatch(content, @"(" + footer + @"\s+)+", footer + "\n");
-            }
-            //UtilWxg.ReplaceMatch(content, )
+
             if (Results.Count > 0)
             {
                 File.WriteAllText(file, content, Config.Encoding);
