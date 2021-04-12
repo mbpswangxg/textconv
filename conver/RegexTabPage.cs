@@ -39,8 +39,10 @@ namespace conver
         public RegexTabPage()
         {
             InitializeComponent();
+            txtFilePath.Text = Config.GetAppSettingValue2("inputFolder", txtFilePath.Text);
             txtFilePath_TextChanged(txtFilePath, null);
             rule.rules.Add(ruleItem);
+             
         }
 
         #region
@@ -226,7 +228,11 @@ namespace conver
         {
             foreach (var item in rule.rules)
             {
-                txtReplaceLog.AppendText(string.Format("{0}:{1}\n", node.Name, string.Join("\n", item.Results())));
+                //置換無しのファイルは出力しない
+                if (item.Results().Count == 0) continue;
+
+                txtReplaceLog.AppendText(string.Format("{0}:\npattern: {1}\nreplacement: {2}\n---------Replacement Result------------------\n{3}\n", 
+                    node.Name,item.pattern, item.replacement, string.Join("\n", item.Results())));
             }
         }
 
@@ -404,6 +410,14 @@ namespace conver
             foreach(TreeNode snode in e.Node.Nodes)
             {
                 snode.Checked = e.Node.Checked;
+            }
+        }
+
+        private void chkSelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (TreeNode snode in treeFiles.Nodes)
+            {
+                snode.Checked = !snode.Checked;
             }
         }
     }

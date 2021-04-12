@@ -421,7 +421,7 @@ namespace TextConv
             
             if (!newV.Equals(oldV))
             {
-                repResults.Add(string.Format("\t{0}\t{1}", oldV, newV));
+                repResults.Add(string.Format("  old: {0}\n  new: {1}", oldV, newV));
             }
             return newV;
         }
