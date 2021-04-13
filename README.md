@@ -1,50 +1,42 @@
 # textconv
-source replacer witten by c#.net
+A command tool written by c#.net.  
 
-## 1. Parameters  
+## Main Functions
+1. regex match and replace txt files.
+   eg. textconv -c patternName -f txtFilePath  
+       textconv -c patternName -d txtDirectoryPath
+
+2. xpath analyze for html, export matched elements  
+   eg. textconv -x -d %P1%
+
+3. web driver for web page auto test. using webdriver. Currently IE and Chrome are supported.
+   eg. textconv -web -f %P1% 
+
+## 1. Regex Replacer Parameters Description.
  - -c cmdkey: the name of a replace rule.  ***optional***. if it's empty, all rules in the rulefile are used.
- - -d destfolder: a folder for the destination files of replacement. ***-f or -d required***. pre-set in textconv.config. 
- - -f srcfile: a file for the destination of replacement. ***-f or -d required***.
- - -r rulefile: save rules of replacement. split with \t. . ***required***. pre-set in textconv.config. rule examples like 
-   - UCASE_TAB=(?:FROM|UPDATE|DELETE|INSERT\s+INTO)\s+(\w*[a-z]+\w*)\s*\w*\s*(,\s*(\w*[a-z]+\w*)\s*\w*)*	UCASE_GROUP=1,3	ignoreCase=false	exludefile=repfiles/LColumns.txt
-   - UCASE_COL="\s*(?:|\w\.|,\s*\w\.)(\w*[a-z]+\w*)\s+AS\s+	UCASE_GROUP=1	ignoreCase=false	excludewords=a,b,c	excludefile=repfiles/LColumns.txt
-   - LCASE_COL=\b(B_[A-Z_]+)\s+[a-z],*	LCASE_GROUP=1	ignoreCase=false
-   - showtitle=(\s*)(function fnc_setThisForm\(\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1	skipMatchIndex=false
-   - showtitle=(\s*)(function fnc_setThisForm\([^\(]+\))	null=$1window.top.document.title = document.title;$1$2	ifnotfindstr=window.top.document.title = document.title;	replaceIndexes=1
-
-
-### usage:  
-   textconv -c patternName -d c:\source\  
-   patternName=\w+  repCmdKey=ABC  
+ - -d destfolder: a folder for the destination files. ***-f or -d required***. pre-set in textconv.config. 
+ - -f srcfile: a file for the destination. ***-f or -d required***.
+ * replace rules are saved in yml file under [TextConv/replaceYml/#example_format.yml](TextConv/replaceYml/#example_format.yml) 
+ * replace rules saved path can be redirected on change [textconv.config](./textconv.config).
    
-## 2.Option Parameters about Regex.
-- if repCmdKey== "repfile" then replacement= readAllText(repfile);
-- IgnoreCase=(true|false): RegexOptions.IgnoreCase
-- Multiline=(true|false): RegexOptions.Multiline
+## 2. Xpath analyzer
+ - -x : define Xpath analyzing. ***required***.
+ - -d destfolder: a folder for the destination files. ***-f or -d required***. pre-set in textconv.config. 
+ - -f srcfile: a file for the destination. ***-f or -d required***.
 
-## 3.Replace Option About Match In Range.
-- rangeFrom=([^\t]+) : Range of start pattern.
-- rangeTo=([^\t]+)   : Range of end pattern.
-- rangeSkip=(true|false): required. rangeFrom and rangeTo is not empty. 
-if true, skip replace the match, else do replace the match.
+ * export element(attribute) info for ut-case.
+   eg. textconv -x -d %P1%
+ * replace rules are saved in yml file under [TextConv/yml/#example_format.yml](TextConv/yml/#example_format.yml) 
+ * replace rules saved path can be redirected on change [textconv.config](./textconv.config).
+   
+## 3.Web Driver 
+ - -web : define web driver working. ***required***.
+ - -d destfolder: a folder for the destination files. ***-f or -d required***. pre-set in textconv.config. 
+ - -f srcfile: a file for the destination. ***-f or -d required***.
 
-## 4.Replace Option About filefilter.
-- filefilter=([^\t]+) : filepath pattern. 
-- fileSkip=(true|false)  : required.filefilter is not empty. 
- if true, skip replace the match, else do replace the match.
- 
-## 5.Replace or skip file on check file contents.
-- iffindstr=([^\t]+): find pattern in file content.
-- ifnotfindstr=([^\t]+): not find pattern in file content.
-- iffindand=(true|false): iffindstr and ifnotfindstr can be duplicated. 
-true as and, false as or between duplicated findstr match.  
-
-## 6.Replace on repCmdKey=LCASE_GROUP | UCASE_GROUP. 
-   ex. UCASE_GROUP=1,3 : UCASE group[1] and group[3] of captures.
-- excludewords=([^\t]+): skip on contained in excluedwords.  
-- excludefile=([^\t]+): skip on contained in excluedwords read from this file. 
-
-## 7.Replace or skip about replaceIndexes and skipMatchIndex.
-- replaceIndexes=([^\t]+): like replaceIndexes=1,2. if matchcollection index=1 or 2, do replace.
-- skipMatchIndex=(true|false): if true, skip the match index contained in replaceIndexes.
+ * export element(attribute) info for ut-case.
+   eg. textconv -web -f rulefile.yml
+ * replace rules are saved in yml file under [TextConv/webyml/#example_format.yml](TextConv/webyml/#example_format.yml) 
+ * replace rules saved path can be redirected on change [textconv.config](./textconv.config).
+ * The tool of [*YmlExporter.xlsm*](./textconv/bin/YmlExporter.xlsm) is written by excel macro, which helps for making webdriver.yml
 
