@@ -40,4 +40,4 @@ A command tool written by c#.net.
  * replace rules are saved in yml file under [TextConv/webyml/#example_format.yml](TextConv/webyml/#example_format.yml) 
  * replace rules saved path can be redirected on change [textconv.config](./textconv.config).
  * The tool of [*YmlExporter.xlsm*](./textconv/bin/YmlExporter.xlsm) is written by excel macro, which helps for making webdriver.yml
-
+ * if the element can't be found, please using conver.exe(a UI Tool) to test XPath. 
