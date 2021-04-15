@@ -55,7 +55,7 @@ namespace TextConv
         public List<ReplaceGroupItem> replacegroups = new List<ReplaceGroupItem>();
         
         public bool IgnoreCase = true;
-        public bool Multiline = true;
+        public bool Multiline = false;
 
         public string rangeFrom = string.Empty;
         public string rangeTo = string.Empty;
@@ -161,24 +161,23 @@ namespace TextConv
             vals.Sort(CompareLineMatch);
         }
 
-        //private void beforeReplace(string content)
-        //{
-        //    //　範囲判定不要の場合、処理対象外
-        //    if (!HasRangeCheck) return;
-        //    if (string.IsNullOrEmpty(content)) return;
-        //    string[] lines = Regex.Split(content, @"[\r\n]");
-        //    beforeReplace(lines);
-        //    //keyReg = new Regex(rangeFrom, RegOptions);
-        //    //valReg = new Regex(rangeTo, RegOptions);
+        private void beforeReplace(string content)
+        {
+            //　範囲判定不要の場合、処理対象外
+            if (!HasRangeCheck) return;
+            if (string.IsNullOrEmpty(content)) return;
 
-        //    //rangeMatches.Clear();
-        //    //keys.Clear();
-        //    //vals.Clear();
+            keyReg = new Regex(rangeFrom, RegOptions);
+            valReg = new Regex(rangeTo, RegOptions);
 
-        //    //fillMatches(0, content);
-        //    //keys.Sort(CompareLineMatch);
-        //    //vals.Sort(CompareLineMatch);
-        //}
+            rangeMatches.Clear();
+            keys.Clear();
+            vals.Clear();
+
+            fillMatches(0, content);
+            keys.Sort(CompareLineMatch);
+            vals.Sort(CompareLineMatch);
+        }
         private static int CompareLineMatch(LineMatch x, LineMatch y)
         {
             if (x.lineNo != y.lineNo)
@@ -244,22 +243,30 @@ namespace TextConv
                     return content;
                 }
             }
-            string[] lines = Regex.Split(content, @"\r?\n");
-            beforeReplace(lines);
-            repResults.Clear();
             //==============================
             if (!string.IsNullOrEmpty(repfile))
             {
                 string tmpValue = readRepfile(repfile);
-                if (!string.IsNullOrEmpty(tmpValue)) 
+                if (!string.IsNullOrEmpty(tmpValue))
                 {
                     replacement = tmpValue;
                 }
             }
             replacement = replacement.Replace("\\n", "\n");
             replacement = replacement.Replace("\\t", "\t");
-
-            return replaceLines(lines);
+            repResults.Clear();
+            if (Multiline)
+            {
+                beforeReplace(content);
+                return replaceString(content);
+            }
+            else
+            {
+                string[] lines = Regex.Split(content, @"\r?\n");
+                beforeReplace(lines);
+                return replaceLines(lines);
+            }
+            
             //Regex reg = new Regex(pattern, RegOptions);
             //int maxLoop = int.Parse(Config.GetAppSettingValue2("maxloop", "10"));
 
