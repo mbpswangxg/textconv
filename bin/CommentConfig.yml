@@ -1,5 +1,10 @@
 ﻿rules:
-- fileExtension: [.java, .js, .cs]
+- fileExtension: [.default]
+  commentHeader: //======update by test @2021 start
+  commentMarker: //
+  commentFooter: //======update by test @2021 end
+
+- fileExtension: [.java, .js, .cs, .html]
   commentHeader: //update by mbps at 2021/04/09 for iapバージョンアップ start
   commentMarker: //
   commentFooter: //update by mbps at 2021/04/09 for iapバージョンアップ end

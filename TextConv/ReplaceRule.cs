@@ -13,7 +13,7 @@ namespace TextConv
 
         public string filefilter = string.Empty;
         public bool fileSkip = false;
-        public bool commentMode = false;
+        public bool commentRequired = false;
 
         public string aftercheckpattern = string.Empty;
 
@@ -39,6 +39,31 @@ namespace TextConv
                 item.parent = this;
             }
         }
+        public string ReplaceText(string content)
+        {
+            if(cconfig == null)
+            {
+                cconfig = Config.GetCommentConfig(".default");
+            }
+
+            Results.Clear();
+            foreach (var rule in rules)
+            {
+                content = rule.replaceText(content);
+                Results.AddRange(rule.Results());
+            }
+
+            if (!string.IsNullOrEmpty(aftercheckpattern))
+            {
+                MatchCollection ms = Regex.Matches(content, aftercheckpattern);
+                foreach (Match m in ms)
+                {
+                    Console.WriteLine("\t{0}\t{1}", aftercheckpattern, m.Value);
+                }
+            }
+            return content;
+
+        }
         public void ReplaceFile(string file)
         {
             if (!File.Exists(file)) return;
@@ -47,25 +72,11 @@ namespace TextConv
             cconfig = Config.GetCommentConfig(ext);
 
             string content = File.ReadAllText(file, Config.Encoding);
-            Results.Clear();
-            foreach (var rule in rules)
-            {
-                content = rule.replaceText(content);
-                Results.AddRange(rule.Results());
-            }
-
+            content = ReplaceText(content);
             if (Results.Count > 0)
             {
                 File.WriteAllText(file, content, Config.Encoding);
                 Console.WriteLine("{0}\n{1}", file, string.Join("\n", Results));
-            }
-            if (!string.IsNullOrEmpty(aftercheckpattern))
-            {
-                MatchCollection ms = Regex.Matches(content, aftercheckpattern);
-                foreach (Match m in ms)
-                {
-                    Console.WriteLine("\t{0}\t{1}", aftercheckpattern, m.Value);
-                }
             }
         }
 

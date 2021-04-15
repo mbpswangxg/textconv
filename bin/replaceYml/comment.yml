@@ -1,4 +1,4 @@
-﻿commentMode: true
+﻿commentRequired: true
 aftercheckpattern: \bAccountManager\b
 rules:
 - pattern: import\s+jp.co.intra_mart.foundation.security.account.AccountManager;

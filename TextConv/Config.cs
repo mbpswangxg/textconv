@@ -51,7 +51,6 @@ namespace TextConv
                 }
             }
 
-            //Console.WriteLine("Error:...Can't found suitable config in ReplaceConfig.yml about language [{0}]...", ext);
             return null;
         }
     }

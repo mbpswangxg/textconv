@@ -134,6 +134,8 @@ namespace conver
             if (string.IsNullOrEmpty(txtInput.Text)) return;
             if (string.IsNullOrEmpty(txtPattern.Text)) return;
 
+            UI2Data(); 
+            
             HighLight hl = new HighLight(txtInput);
             hl.Reset2Default();
             treeMatch.Nodes.Clear();
@@ -177,7 +179,7 @@ namespace conver
 
             LoadRuleFromInput();
 
-            txtReplaceResult.Text = ruleItem.replaceText(txtInput.Text);
+            txtReplaceResult.Text = rule.ReplaceText(txtInput.Text);
             HighLight hl = new HighLight(txtReplaceResult);
             hl.Reset2Default();            
             foreach (string result in ruleItem.Results())

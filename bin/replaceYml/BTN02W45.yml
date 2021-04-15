@@ -1,4 +1,4 @@
-commentMode: true
+commentRequired: false
 rules:
 - pattern: class="BTN02"
   replacement: class="BTN02 W045"

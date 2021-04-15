@@ -83,18 +83,7 @@ namespace TextConv
         
         private int lineNo = 0;
         //private int matchIndex = 0;
-        //private List<string> origins = new List<string>();
-        private bool commentMode
-        {
-            get
-            {
-                if (parent == null)
-                {
-                    return bool.Parse(Config.GetAppSettingValue("replace.comment.mode"));
-                }
-                return parent.commentMode;
-            }
-        }
+        
         #endregion
 
         #region "public Get Properties"
@@ -290,6 +279,7 @@ namespace TextConv
         }
         private string replaceString(string content)
         {
+            string origin = content;
             int loopCount = nestLoopCount;
             Regex reg = new Regex(pattern, RegOptions);
             while (reg.IsMatch(content))
@@ -307,7 +297,8 @@ namespace TextConv
                 loopCount--;
                 if (loopCount < 0) break;
             }
-            return content;
+
+            return content;            
         }
         private string replaceLines(string[] lines)
         {
@@ -333,24 +324,25 @@ namespace TextConv
                 }
                 // TODO: 複数行一緒に置換方法検討
                 string nline = replaceString(line);
-                if (!nline.Equals(line) && commentMode && parent.cconfig != null)
-                {
-                    string indent = UtilWxg.GetMatchGroup(line, @"^(\s*)(.+)", 1);
-                    string oline = UtilWxg.GetMatchGroup(line, @"^(\s*)(.+)", 2);
+                newLines.Add(withComment(line, nline));
+                //if (!nline.Equals(line) && commentMode && parent.cconfig != null)
+                //{
+                //    string indent = UtilWxg.GetMatchGroup(line, @"^(\s*)(.+)", 1);
+                //    string oline = UtilWxg.GetMatchGroup(line, @"^(\s*)(.+)", 2);
 
-                    string header = parent.cconfig.commentHeader;
-                    string marker = parent.cconfig.commentMarker;
-                    string footer = parent.cconfig.commentFooter;
+                //    string header = parent.cconfig.commentHeader;
+                //    string marker = parent.cconfig.commentMarker;
+                //    string footer = parent.cconfig.commentFooter;
 
-                    newLines.Add(string.Format("{0}{1}", indent, header));
-                    newLines.Add(string.Format("{0}{1}{2}", indent, marker, oline));
-                    newLines.Add(nline);
-                    newLines.Add(string.Format("{0}{1}", indent, footer));
-                }
-                else
-                {
-                    newLines.Add(nline);
-                }
+                //    newLines.Add(string.Format("{0}{1}", indent, header));
+                //    newLines.Add(string.Format("{0}{1}{2}", indent, marker, oline));
+                //    newLines.Add(nline);
+                //    newLines.Add(string.Format("{0}{1}", indent, footer));
+                //}
+                //else
+                //{
+                //    newLines.Add(nline);
+                //}
             }
             return string.Join("\n", newLines);
         }
@@ -430,7 +422,33 @@ namespace TextConv
             {
                 repResults.Add(string.Format("  old: {0}\n  new: {1}", oldV, newV));
             }
+            if (Multiline)
+            {
+                return withComment(oldV, newV);
+            }
             return newV;
+        }
+        private string withComment(string origin, string current)
+        {
+            if (!origin.Equals(current) && parent.commentRequired && parent.cconfig != null)
+            {
+                string indent = UtilWxg.GetMatchGroup(origin, @"^(\s*)(.+)", 1);
+                string oline = UtilWxg.GetMatchGroup(origin, @"^(\s*)(.+)", 2);
+
+                string header = parent.cconfig.commentHeader;
+                string marker = parent.cconfig.commentMarker;
+                string footer = parent.cconfig.commentFooter;
+                List<string> newLines = new List<string>();
+                newLines.Add(string.Format("{0}{1}", indent, header));
+                newLines.Add(string.Format("{0}{1}{2}", indent, marker, oline));
+                newLines.Add(current);
+                newLines.Add(string.Format("{0}{1}", indent, footer));
+                return string.Join("\n", newLines);
+            }
+            else
+            {
+                return current;
+            }
         }
 
         #region "private static methods"
