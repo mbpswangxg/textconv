@@ -18,7 +18,11 @@ A command tool written by c#.net.
  - -f srcfile: a file for the destination. ***-f or -d required***.
  * replace rules are saved in yml file under [TextConv/replaceYml/#example_format.yml](TextConv/replaceYml/#example_format.yml) 
  * replace rules saved path can be redirected on change [textconv.config](./textconv.config).
-   
+ ### Regex replacement with comment header and footer.
+ - commentRequired: true
+ - commentConfig.yml: ***required***
+ ![image](https://user-images.githubusercontent.com/32559839/114843927-45f33280-9e15-11eb-8ad6-dcb57e4ce7f9.png)
+
 ## 2. Xpath analyzer
  - -x : define Xpath analyzing. ***required***.
  - -d destfolder: a folder for the destination files. ***-f or -d required***. pre-set in textconv.config. 
