@@ -9,26 +9,28 @@ namespace TextConv
 {
     public class CaseFile
     {
-        public string title;
-        public string titleText;
-        public string FileName;
-        public string subFileName;
+        private string title;
+        public string titleText { get; private set; }
+        public string FileName { get; private set; }
+        public string ext { get; private set; }
+        public string subFileName { get; private set; }
         public List<CaseItem> listNode = new List<CaseItem>();
         public List<string> errmsgs = new List<string>();
 
-        public string exportFile;
+        public string exportFile { get; private set; }
+        public string SourcePath { get; private set; }
         private HtmlDocument htmlDoc;
         private static string subFilePathSetting = Config.GetAppSettingValue("subHtmlPath");
         public CaseFile(string htmlPath)
         {
             this.htmlDoc = new HtmlDocument();
-
-            this.htmlDoc.Load(File.OpenRead(htmlPath), true);
+            this.SourcePath = htmlPath;
+            this.htmlDoc.Load(File.OpenRead(htmlPath), Config.Encoding, true);
             this.subFileName = UtilWxg.GetMatchGroup(htmlPath, subFilePathSetting, 1);
 
             FileInfo fi = new FileInfo(htmlPath);
             this.FileName = UtilWxg.GetMatchGroup(fi.Name, @"(.+)\.\w+$", 1);
-
+            this.ext = fi.Extension;
             GetTitle();
         }
 
@@ -41,9 +43,22 @@ namespace TextConv
                 {
                     title = ns.First().InnerText;
                     title = WebUtility.HtmlDecode(title);
-                    titleText = UtilWxg.GetMatchGroup(title, @"\>(\w+)", 1);
+                    titleText = UtilWxg.GetMatchGroup(title, @"\>(\w+)", 1);                    
                 }
-            } 
+            }
+            else
+            {
+                titleText = title;
+            }
+            if (!string.IsNullOrEmpty(titleText))
+            {
+                titleText = Regex.Replace(titleText, @"\$\{[\w\.\s]+\}", "unknown");
+                string invalidchars = Config.GetAppSettingValue("xpath.invalid.chars");
+                if (!string.IsNullOrEmpty(invalidchars))
+                {
+                    titleText = Regex.Replace(titleText, invalidchars, string.Empty);
+                }
+            }
         }
         //public void Parse(List<XpathItem> ruleItems)
         //{
@@ -130,9 +145,12 @@ namespace TextConv
 
         public void Export(string resultFolder)
         {
+            GetTitle();
             string caseFileName = Config.GetAppSettingValue("caseFileName");
+            
             caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "title", titleText);
             caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "filename", this.FileName);
+            caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "ext", this.ext);
 
             string[] lines = listNode.Select(ci => ci.ToStringLine()).ToArray();
             string exportFolder = Config.GetAppSettingValue2("exportFolder", "exportText");

@@ -52,7 +52,7 @@ namespace TextConv
             {
                 List<XPathRuleItem> rules = new List<XPathRuleItem>();
                 string ruleFolderPath = Config.GetAppSettingValue("xpath.rule.yml");
-                YmlLoader.Load(rules, ruleFolderPath);
+                YmlLoader.Load(rules, ruleFolderPath, cmd);
                 HtmlParseFolder(srcfolder, rules);
                 HtmlParseFile(srcFile, rules);
             }
@@ -130,7 +130,7 @@ namespace TextConv
             CaseFile cf = new CaseFile(filePath);
             cf.Parse(ruleItems);
             cf.Export(resultFolder);
-            Console.WriteLine(string.Format("{0}:casecount={1}",cf.exportFile, cf.listNode.Count));
+            Console.WriteLine(string.Format("{0}\t{1}\tcasecount={1}", cf.SourcePath, cf.exportFile, cf.listNode.Count));
             foreach(var msg in cf.errmsgs)
             {
                 Console.WriteLine(msg);

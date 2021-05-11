@@ -61,7 +61,12 @@ namespace TextConv
             {
                 this.eventName = ruleItem.wordMap[this.eventName];
             }
-            if(Regex.IsMatch(this.eventName, @"\n|\r"))
+            if (string.IsNullOrEmpty(this.eventName))
+            {
+                Console.WriteLine("eventName:" + this.eventName);
+                return;
+            }
+            else if(Regex.IsMatch(this.eventName, @"\n|\r"))
             {
                 this.eventName = Regex.Replace(this.eventName, @"\n|\r", "");
             }
@@ -71,6 +76,8 @@ namespace TextConv
 
         private string ToEventText(XPathRuleItem ruleItem)
         {
+            if (string.IsNullOrEmpty(this.eventName)) return string.Empty;
+
             foreach (var kv in ruleItem.namePatternFormats)
             {
                 if (string.IsNullOrEmpty(kv.textformat)) continue;
@@ -95,7 +102,9 @@ namespace TextConv
         }
         private string ToCaseDesc(XPathRuleItem ruleItem)
         {
-            foreach(var kv in ruleItem.namePatternFormats)
+            if (string.IsNullOrEmpty(this.eventName)) return string.Empty;
+
+            foreach (var kv in ruleItem.namePatternFormats)
             {
                 if (string.IsNullOrEmpty(kv.caseformat)) continue;
                 if (Regex.IsMatch(eventName, kv.pattern, RegexOptions.IgnoreCase))
