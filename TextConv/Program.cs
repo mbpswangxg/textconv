@@ -58,31 +58,46 @@ namespace TextConv
             }
             
             //==============================================================
-            if (args.Contains("-c") || args.Contains("-p"))
+            if (args.Contains("-c"))
             {
                 List<ReplaceRule> repRules = new List<ReplaceRule>();
                 string ruleFolderPath = Config.GetAppSettingValue("replace.rule.yml");
                 YmlLoader.Load(repRules, ruleFolderPath, cmd);
-                
-                ReplaceRuleItem ri = new ReplaceRuleItem();
-                ri.pattern = getValue("-p", args);
-                ri.replacement = getValue("-r", args);
-                if (!string.IsNullOrEmpty(ri.pattern))
+
+                if (args.Contains("-p"))
                 {
-                    string content = getValue("-input", args);
-                    if (!string.IsNullOrEmpty(content))
+                    ReplaceRuleItem ri = new ReplaceRuleItem();
+                    ri.pattern = getValue("-p", args);
+                    ri.replacement = getValue("-r", args);
+                    if (!string.IsNullOrEmpty(ri.pattern))
                     {
-                        Console.WriteLine(ri.replaceText(content));
-                    }
-                    else
-                    {
-                        ReplaceRule rule = new ReplaceRule();
-                        rule.rules.Add(ri);
-                        repRules.Add(rule);
+                        string content = getValue("-input", args);
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            Console.WriteLine(ri.replaceText(content));
+                        }
+                        else
+                        {
+                            ReplaceRule rule = new ReplaceRule();
+                            rule.rules.Add(ri);
+                            repRules.Add(rule);
+                        }
                     }
                 }
+                
                 ReplaceFolder(srcfolder, repRules);
                 ReplaceFile(srcfolder, repRules);
+            }
+            //==============================================================
+            if (args.Contains("-rename"))
+            {
+                if (args.Contains("-p") && args.Contains("-r"))
+                {
+                    ReplaceRuleItem ri = new ReplaceRuleItem();
+                    ri.pattern = getValue("-p", args);
+                    ri.replacement = getValue("-r", args);
+                    ri.Rename(srcfolder);
+                }
             }
         }
         

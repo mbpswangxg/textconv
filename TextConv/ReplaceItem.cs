@@ -313,7 +313,7 @@ namespace TextConv
                     newLines.Add(line);
                     continue;
                 }
-                if(parent.cconfig != null)
+                if(parent != null && parent.cconfig != null)
                 {
                     if(Regex.IsMatch(line, @"^\s*"+ parent.cconfig.commentMarker))
                     {
@@ -430,7 +430,7 @@ namespace TextConv
         }
         private string withComment(string origin, string current)
         {
-            if (!origin.Equals(current) && parent.commentRequired && parent.cconfig != null)
+            if (!origin.Equals(current) && parent != null && parent.commentRequired && parent.cconfig != null)
             {
                 string indent = UtilWxg.GetMatchGroup(origin, @"^(\s*)(.+)", 1);
                 string oline = UtilWxg.GetMatchGroup(origin, @"^(\s*)(.+)", 2);
@@ -467,6 +467,38 @@ namespace TextConv
         }
 
         #endregion
+
+        public void Rename(string filePath)
+        {
+            if (Directory.Exists(filePath))
+            {
+                DirectoryInfo di = new DirectoryInfo(filePath);
+                string newName = replaceText(di.Name);
+                if (!newName.Equals(di.Name))
+                {
+                    di.MoveTo(string.Format("{0}\\{1}", di.Parent.FullName, newName));
+                }
+
+                foreach (var sfolder in di.GetDirectories())
+                {
+                    Rename(sfolder.FullName);
+                }
+                foreach (var sfi in di.GetFiles())
+                {
+                    Rename(sfi.FullName);
+                }
+            }
+            else if (File.Exists(filePath))
+            {
+                FileInfo fi = new FileInfo(filePath);
+                string newName = replaceText(fi.Name);
+                if (!newName.Equals(fi.Name))
+                {
+                    fi.MoveTo(string.Format("{0}\\{1}", fi.Directory.FullName, newName));
+                }
+            }
+            
+        }
     }
     
 }
