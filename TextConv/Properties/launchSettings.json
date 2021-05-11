@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-c comment -d \"C:\\tmp\\wangx\\_projects\\wang2\\src\\src122\""
+      "commandLineArgs": "-rename -p read -r raad -d D:\\workspace\\C#\\textconv\\bin"
     }
   }
 }
