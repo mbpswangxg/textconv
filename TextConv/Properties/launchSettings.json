@@ -2,7 +2,7 @@
   "profiles": {
     "TextConv": {
       "commandName": "Project",
-      "commandLineArgs": "-rename -p read -r raad -d D:\\workspace\\C#\\textconv\\bin"
+      "commandLineArgs": " -c TrimVersion -f C:\\tmp\\wangx\\_projects\\HITACHI-L\\imart\\WEB-INF\\juggling.structure.txt"
     }
   }
 }

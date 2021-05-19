@@ -107,6 +107,9 @@
     <None Update="replaceYml\ora2mssql\TO_STR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="replaceYml\TrimVersion.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="replaceYml\UCASE_COL.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

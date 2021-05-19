@@ -166,6 +166,7 @@ namespace TextConv
             fillMatches(0, content);
             keys.Sort(CompareLineMatch);
             vals.Sort(CompareLineMatch);
+
         }
         private static int CompareLineMatch(LineMatch x, LineMatch y)
         {
@@ -241,8 +242,7 @@ namespace TextConv
                     replacement = tmpValue;
                 }
             }
-            replacement = replacement.Replace("\\n", "\n");
-            replacement = replacement.Replace("\\t", "\t");
+            
             repResults.Clear();
             if (Multiline)
             {
@@ -411,11 +411,19 @@ namespace TextConv
             }
             if (!string.IsNullOrEmpty(replacement))
             {
-                if(Regex.IsMatch(replacement, @"^NULL$", RegexOptions.IgnoreCase))
+                string repTmp = replacement;
+                repTmp = repTmp.Replace("\\n", "\n");
+                repTmp = repTmp.Replace("\\t", "\t");
+                string repV = Config.GetAppSettingValue("replace.string.empty");
+                if (Regex.IsMatch(repTmp, repV, RegexOptions.IgnoreCase))
                 {
-                    replacement = string.Empty;
+                    repTmp = string.Empty;
                 }
-                newV = Regex.Replace(m.Value, pattern, replacement, RegOptions);
+                newV = Regex.Replace(m.Value, pattern, repTmp, RegOptions);
+            }
+            else
+            {
+                newV = Regex.Replace(m.Value, pattern, string.Empty, RegOptions);
             }
             
             if (!newV.Equals(oldV))

@@ -20,15 +20,22 @@ namespace TextConv
                 return;
             }
             string cmd = getValue("-c", args);
-            
-            string srcfolder = getValue("-d", args);
-            if (string.IsNullOrEmpty(srcfolder))
-            {
-                srcfolder = Config.GetAppSettingValue("srcfolder");
-            }
-            resultFolder = UtilWxg.GetMatchGroup(srcfolder, @"(\w+)\\*$", 1);
 
-            string srcFile = getValue("-f", args);
+            string srcfolder = string.Empty;
+            if (args.Contains("-d"))
+            {
+                srcfolder = getValue("-d", args);
+                if (string.IsNullOrEmpty(srcfolder))
+                {
+                    srcfolder = Config.GetAppSettingValue("srcfolder");
+                }
+                resultFolder = UtilWxg.GetMatchGroup(srcfolder, @"(\w+)\\*$", 1);
+            }
+            string srcFile = string.Empty;
+            if (args.Contains("-f"))
+            {
+                srcFile = getValue("-f", args);
+            }
             if (string.IsNullOrEmpty(srcfolder) && string.IsNullOrEmpty(srcFile))
             {
                 Console.WriteLine("App.config setting srcfolder is required.");
@@ -86,7 +93,7 @@ namespace TextConv
                 }
                 
                 ReplaceFolder(srcfolder, repRules);
-                ReplaceFile(srcfolder, repRules);
+                ReplaceFile(srcFile, repRules);
             }
             //==============================================================
             if (args.Contains("-rename"))
