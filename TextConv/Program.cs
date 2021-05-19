@@ -142,13 +142,22 @@ namespace TextConv
         {
             if (!File.Exists(filePath)) return;
 
-            CaseFile cf = new CaseFile(filePath);
-            cf.Parse(ruleItems);
-            cf.Export(resultFolder);
-            Console.WriteLine(string.Format("{0}\t{1}\tcasecount={1}", cf.SourcePath, cf.exportFile, cf.listNode.Count));
-            foreach(var msg in cf.errmsgs)
+            try
             {
-                Console.WriteLine(msg);
+                CaseFile cf = new CaseFile(filePath);
+                cf.Parse(ruleItems);
+                cf.Export(resultFolder);
+                Console.WriteLine(string.Format("{0}\t{1}",cf.titleText, cf.SourcePath));
+                foreach (var msg in cf.errmsgs)
+                {
+                    Console.WriteLine(msg);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Source);
+                Console.Write(ex.StackTrace);
             }
         }
 

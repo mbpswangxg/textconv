@@ -148,7 +148,7 @@ namespace TextConv
             GetTitle();
             string caseFileName = Config.GetAppSettingValue("caseFileName");
             
-            caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "title", titleText);
+            //caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "title", titleText);
             caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "filename", this.FileName);
             caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "ext", this.ext);
 
