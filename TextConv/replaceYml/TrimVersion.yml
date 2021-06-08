@@ -1,4 +1,4 @@
 commentRequired: false
 rules:
 - pattern: '@[\d\.]+(-PATCH_\d+)?'
-  replacement: null
+  replacement: '#empty#'

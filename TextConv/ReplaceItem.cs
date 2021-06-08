@@ -415,20 +415,20 @@ namespace TextConv
                 repTmp = repTmp.Replace("\\n", "\n");
                 repTmp = repTmp.Replace("\\t", "\t");
                 string repV = Config.GetAppSettingValue("replace.string.empty");
-                if (Regex.IsMatch(repTmp, repV, RegexOptions.IgnoreCase))
+                if (!string.IsNullOrEmpty(repV) && Regex.IsMatch(repTmp, repV, RegexOptions.IgnoreCase))
                 {
-                    repTmp = string.Empty;
+                    repTmp = Regex.Replace(repTmp,repV, string.Empty,RegexOptions.IgnoreCase);
                 }
                 newV = Regex.Replace(m.Value, pattern, repTmp, RegOptions);
             }
             else
             {
-                newV = Regex.Replace(m.Value, pattern, string.Empty, RegOptions);
+                repResults.Add(oldV);
             }
             
             if (!newV.Equals(oldV))
             {
-                repResults.Add(string.Format("  old: {0}\n  new: {1}", oldV, newV));
+                repResults.Add(string.Format("old:{0}\nnew:{1}", oldV, newV));
             }
             if (Multiline)
             {
