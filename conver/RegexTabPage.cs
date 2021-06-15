@@ -396,7 +396,7 @@ namespace conver
             bool sftClick = (ModifierKeys & Keys.Shift) == Keys.Shift;
             if (sftClick)
             {
-                txtFilePath.Text = UtilWxg.ReplaceMatch(txtFilePath.Text, @"\\[^\\]+\\?$", "");
+                txtFilePath.Text = StringUtils.ReplaceMatch(txtFilePath.Text, @"\\[^\\]+\\?$", "");
                 return;
             }
 

@@ -222,7 +222,7 @@ namespace conver
 
         private void treeResult_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            string sindex = UtilWxg.GetMatchGroup(e.Node.Name, @"^(\d+)",1);
+            string sindex = StringUtils.GetMatchGroup(e.Node.Name, @"^(\d+)",1);
             if (!string.IsNullOrEmpty(sindex))
             {
                 int index = int.Parse(sindex);

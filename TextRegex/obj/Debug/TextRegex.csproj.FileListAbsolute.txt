@@ -1,0 +1,2 @@
+C:\tool\textconv\TextRegex\obj\Debug\TextRegex.csprojAssemblyReference.cache
+C:\tool\textconv\TextRegex\obj\Debug\TextRegex.csproj.CoreCompileInputs.cache

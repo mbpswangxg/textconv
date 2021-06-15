@@ -1,7 +1,0 @@
-﻿onclick=setSortInfo\('(\w+)'\)	
-onclick=return\s+([^""']+)	
-onclick=(\w+[^""']+)	
-onclick=\w+\('(\w+)'	
-onclick=(\w+)\(	
-
-href=(\w+[^""]+)

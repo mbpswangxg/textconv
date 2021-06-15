@@ -1,0 +1,26 @@
+﻿rules:
+- pattern: \w+\.(\w+)\s*(,\s*\w+\.(\w+))*
+  replacegroups:
+  - groupindex: 1
+    function: UCASE
+  - groupindex: 3
+    function: UCASE
+
+  rangeFrom: SELECT
+  rangeTo: FROM
+
+- pattern: \"'([\s,]*(\w+))+[\s,]*\"
+  replacegroups:
+  - groupindex: 1
+    function: UCASE
+  - groupindex: 2
+    function: UCASE
+  rangeFrom: SELECT
+  rangeTo: FROM
+
+- pattern: \"[\s,]*\w+\((\w+)\)[^\"]*\"
+  replacegroups:
+  - groupindex: 1
+    function: UCASE
+  rangeFrom: SELECT
+  rangeTo: FROM

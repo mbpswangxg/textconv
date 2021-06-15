@@ -1,6 +1,0 @@
-﻿<col class="A_C" />
-            <col class="A_R W110" />
-            <col class="A_R W110" />
-            <col class="A_R W100" />
-            <col class="A_R W090" />
-            $2

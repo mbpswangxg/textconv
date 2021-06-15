@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="packages\**" />
+    <EmbeddedResource Remove="packages\**" />
+    <None Remove="packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="RexgexUtils.cs" />
   </ItemGroup>
 
@@ -14,10 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.34" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1.2" />
-    <PackageReference Include="YamlDotNet" Version="9.1.4" />
+    <PackageReference Include="YamlDotNet" Version="11.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,103 +32,107 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CommentConfig.yml">
+    <None Update="replacer\CommentConfig.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Update="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\comment.yml">
+    <None Update="yml.replace\comment.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\DATENULL.yml">
+    <None Update="yml.replace\DATENULL.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\ADD_MONTH.yml">
+    <None Update="yml.replace\ora2mssql\ADD_MONTH.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\BTN02W45.yml">
+    <None Update="yml.replace\BTN02W45.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\BtnNoDisplay.yml">
+    <None Update="yml.replace\BtnNoDisplay.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\clearlineaddreturn.yml">
+    <None Update="yml.replace\clearlineaddreturn.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\DECODE.yml">
+    <None Update="yml.replace\ora2mssql\DECODE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\getElement.yml">
+    <None Update="yml.replace\getElement.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\HTMLescapeXml.yml">
+    <None Update="yml.replace\HTMLescapeXml.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\INSTR.yml">
+    <None Update="yml.replace\ora2mssql\INSTR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\LEFT_JOIN.yml">
+    <None Update="yml.replace\ora2mssql\LEFT_JOIN.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\LENGTH.yml">
+    <None Update="yml.replace\ora2mssql\LENGTH.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\LPAD.yml">
+    <None Update="yml.replace\ora2mssql\LPAD.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\NULLIF.yml">
+    <None Update="yml.replace\ora2mssql\NULLIF.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\NVL.yml">
+    <None Update="yml.replace\ora2mssql\NVL.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\ORA_OR.yml">
+    <None Update="yml.replace\ora2mssql\ORA_OR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\PublicStorage.yml">
+    <None Update="yml.replace\PublicStorage.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\ROWID.yml">
+    <None Update="yml.replace\ora2mssql\ROWID.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\SUBSTR.yml">
+    <None Update="yml.replace\ora2mssql\SUBSTR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\SYSDATE.yml">
+    <None Update="yml.replace\ora2mssql\SYSDATE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\TO_CHAR.yml">
+    <None Update="yml.replace\ora2mssql\TO_CHAR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\TO_CLOB.yml">
+    <None Update="yml.replace\ora2mssql\TO_CLOB.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\TO_DATE.yml">
+    <None Update="yml.replace\ora2mssql\TO_DATE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\TO_NUMBER.yml">
+    <None Update="yml.replace\ora2mssql\TO_NUMBER.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\TO_STR.yml">
+    <None Update="yml.replace\ora2mssql\TO_STR.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\sendmail.yml">
+    <None Update="yml.replace\sendmail.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\TrimVersion.yml">
+    <None Update="yml.replace\TrimVersion.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\UCASE_COL.yml">
+    <None Update="yml.replace\UCASE_COL.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\UCASE_TAB.yml">
+    <None Update="yml.replace\UCASE_TAB.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\ora2mssql\usertabcol.yml">
+    <None Update="yml.replace\ora2mssql\usertabcol.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\UserTransaction.yml">
+    <None Update="yml.replace\UserTransaction.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="case\WordDictionary.txt">
@@ -131,46 +141,28 @@
     <None Update="case\CaseDescMap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="repfiles\excludeColumns.txt">
+    <None Update="yml.replace\VWRITECHANGE.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="repfiles\html1-td.txt">
+    <None Update="yml.xpath\3tabpage.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="repfiles\html1.txt">
+    <None Update="yml.xpath\6sortlink.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="repfiles\html2table.txt">
+    <None Update="yml.xpath\5pagelink.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="repfiles\selectUserTabCol.sql">
+    <None Update="yml.xpath\4alink.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="repfiles\tablename.txt">
+    <None Update="yml.xpath\3button.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="replaceYml\VWRITECHANGE.yml">
+    <None Update="yml.xpath\2calender.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="yml\3tabpage.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="yml\6sortlink.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="yml\5pagelink.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="yml\4alink.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="yml\3button.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="yml\2calender.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="yml\1select.yml">
+    <None Update="yml.xpath\1select.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -180,7 +172,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="webyml\" />
+    <Folder Include="yml.webdriver\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

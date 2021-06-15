@@ -29,7 +29,7 @@ namespace TextConv
                 {
                     srcfolder = Config.GetAppSettingValue("srcfolder");
                 }
-                resultFolder = UtilWxg.GetMatchGroup(srcfolder, @"(\w+)\\*$", 1);
+                resultFolder = StringUtils.GetMatchGroup(srcfolder, @"(\w+)\\*$", 1);
             }
             string srcFile = string.Empty;
             if (args.Contains("-f"))

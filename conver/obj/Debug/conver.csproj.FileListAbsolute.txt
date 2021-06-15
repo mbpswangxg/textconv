@@ -90,3 +90,4 @@ C:\tool\textconv\conver\bin\Debug\replaceYml\DATENULL.yml
 C:\tool\textconv\conver\bin\Debug\CommentConfig.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\comment.yml
 C:\tool\textconv\conver\bin\Debug\replaceYml\TrimVersion.yml
+C:\tool\textconv\conver\bin\Debug\replaceYml\sendmail.yml
