@@ -81,11 +81,11 @@
     <Compile Include="HighLight.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegexTabPage.cs">
+    <Compile Include="CustomTabPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RegexTabPage.Designer.cs">
-      <DependentUpon>RegexTabPage.cs</DependentUpon>
+    <Compile Include="CustomTabPage.Designer.cs">
+      <DependentUpon>CustomTabPage.cs</DependentUpon>
     </Compile>
     <Compile Include="TreeDataBinder.cs" />
     <EmbeddedResource Include="FrmMain.resx">
@@ -101,8 +101,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RegexTabPage.resx">
-      <DependentUpon>RegexTabPage.cs</DependentUpon>
+    <EmbeddedResource Include="CustomTabPage.resx">
+      <DependentUpon>CustomTabPage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
