@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 
-namespace TextConv
+namespace Text.Common
 {
     public class Config
     {

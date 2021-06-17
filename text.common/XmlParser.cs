@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace TextConv
+namespace Text.Common
 {
     public class XmlParser
     {

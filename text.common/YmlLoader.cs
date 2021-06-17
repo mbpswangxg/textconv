@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
-namespace TextConv
+namespace Text.Common
 {
     public class YmlLoader
     {
