@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using System.Text;
 using System.Text.RegularExpressions;
 using TextConv;
-using YamlDotNet.Serialization;
 using System.IO;
+using Text.Common;
 
 namespace conver
 {
