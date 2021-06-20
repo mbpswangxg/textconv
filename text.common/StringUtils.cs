@@ -42,6 +42,10 @@ namespace Text.Common
 
             return input;
         }
+        public static string GetMatchValue(string input, string pattern)
+        {
+            return GetMatchGroup(input, pattern, 0);
+        }
 
         public static string GetMatchGroup(string input, string pattern, int groupIndex) 
         {
