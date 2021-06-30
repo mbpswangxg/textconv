@@ -1,4 +1,4 @@
-﻿namespace conver
+﻿namespace XPathUI
 {
     partial class FrmMain
     {

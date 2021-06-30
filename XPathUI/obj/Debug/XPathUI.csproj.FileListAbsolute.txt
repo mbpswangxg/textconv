@@ -1,0 +1,17 @@
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.Properties.Resources.resources
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.csproj.GenerateResource.cache
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.csproj.CoreCompileInputs.cache
+C:\tool\textconv\XPathUI\bin\Debug\XPathUI.exe.config
+C:\tool\textconv\XPathUI\bin\Debug\XPathUI.exe
+C:\tool\textconv\XPathUI\bin\Debug\XPathUI.pdb
+C:\tool\textconv\XPathUI\bin\Debug\HtmlAgilityPack.dll
+C:\tool\textconv\XPathUI\bin\Debug\YamlDotNet.dll
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.csproj.CopyComplete
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.exe
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.pdb
+C:\tool\textconv\XPathUI\bin\Debug\text.common.dll
+C:\tool\textconv\XPathUI\bin\Debug\text.common.pdb
+C:\tool\textconv\XPathUI\bin\Debug\YamlDotNet.xml
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.csproj.AssemblyReference.cache
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.FrmMain.resources
+C:\tool\textconv\XPathUI\obj\Debug\XPathUI.XPathTabPage.resources

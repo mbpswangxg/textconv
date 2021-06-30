@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using System.Windows.Forms;
-using TextConv;
+
 using HtmlAgilityPack;
 using System.Text;
+using Text.Common;
 
-namespace conver
+namespace XPathUI
 {
     public partial class XPathTabPage : UserControl
     {
@@ -120,7 +121,7 @@ namespace conver
                     TreeNode treeNode = treeResult.Nodes.Add(kv.Key, kv.Key);
                     foreach(HtmlNode n1 in kv.Value)
                     {
-                        ConvertHtmlNode(treeNode, n1);
+                        XPathUItHtmlNode(treeNode, n1);
                         hlFileContent.Highlight(n1.StreamPosition, n1.OuterHtml.Length, Color.Black, Color.YellowGreen);
                     }
                 }
@@ -139,12 +140,12 @@ namespace conver
         {
 
         }
-        private void ConvertHtmlNode(TreeNode treeNode, HtmlNode htmlNode)
+        private void XPathUItHtmlNode(TreeNode treeNode, HtmlNode htmlNode)
         {
             TreeNode sNode = treeNode.Nodes.Add(string.Format("{0}:{1}", htmlNode.StreamPosition, htmlNode.Name), htmlNode.OuterHtml);
             foreach(HtmlNode hNode in htmlNode.ChildNodes)
             {
-                ConvertHtmlNode(sNode, hNode);
+                XPathUItHtmlNode(sNode, hNode);
             }
         }
         //private void LoadHistory()

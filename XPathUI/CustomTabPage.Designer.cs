@@ -1,5 +1,5 @@
 ﻿
-namespace conver
+namespace XPathUI
 {
     partial class XPathTabPage
     {
@@ -365,7 +365,8 @@ namespace conver
             this.txtFileFilter.Name = "txtFileFilter";
             this.txtFileFilter.Size = new System.Drawing.Size(78, 19);
             this.txtFileFilter.TabIndex = 8;
-            this.txtFileFilter.Text = "html";
+            this.txtFileFilter.Text = "html|jsp";
+            this.txtFileFilter.TextChanged += new System.EventHandler(this.txtFilePath_TextChanged);
             // 
             // treeFiles
             // 

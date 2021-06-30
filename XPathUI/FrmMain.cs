@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace conver
+namespace XPathUI
 {
     public partial class FrmMain : Form
     {

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace conver
+namespace XPathUI
 {
     public class HighLight
     {
