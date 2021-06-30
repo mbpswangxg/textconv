@@ -1,0 +1,10 @@
+rules:
+- pattern: '(EQUIP_DIV_NM|TYPE_NO|EQUIP_NM|REQ_TARGET_DT):\s+aoSP\w*(.\w+)'
+  replacement: '$1: aoSP$2'
+
+- pattern: aoSP_frame(.\w+)
+  replacement: aoSP$1
+  rangeFrom: oSendMail.setSubject\(
+  rangeTo: \);
+  rangeSkip: false
+  

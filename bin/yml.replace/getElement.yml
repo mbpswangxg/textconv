@@ -1,0 +1,23 @@
+﻿rules:
+- pattern: (\s*)(\<script src="csjs\/im_window.js"\>)
+  replacement: $1<script src="jae/migration/util.js"></script>$1$2
+  # skip replacement pattern: if include in utils.
+  skipInput: 
+    patterns:
+    - src=".+\/migration\/util.js"
+    # true: all patterns matched; false: any pattern matched.
+    isAnd: true  
+
+  # skip replacement pattern: if include in utils.  
+  mustInput:
+    patterns:
+    - document.getElementById
+    - document.getElementByName
+    isAnd: false   # true: all patterns matched; false: any pattern matched. 
+
+  
+- pattern: document.getElementById
+  replacement: getElement
+- pattern: document.getElementByName
+  replacement: getElement
+  

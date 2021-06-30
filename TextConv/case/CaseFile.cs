@@ -26,7 +26,7 @@ namespace TextConv
         {
             this.htmlDoc = new HtmlDocument();
             this.SourcePath = htmlPath;
-            this.htmlDoc.Load(File.OpenRead(htmlPath), Config.Encoding, true);
+            this.htmlDoc.Load(File.OpenRead(htmlPath), Config.Encoding);
             this.subFileName = StringUtils.GetMatchGroup(htmlPath, subFilePathSetting, 1);
 
             FileInfo fi = new FileInfo(htmlPath);
@@ -44,13 +44,14 @@ namespace TextConv
                 {
                     title = ns.First().InnerText;
                     title = WebUtility.HtmlDecode(title);
-                    titleText = StringUtils.GetMatchGroup(title, @"\>(\w+)", 1);                    
+                    if(Regex.IsMatch(title, @"\>(\w+)"))
+                    {
+                        title = StringUtils.GetMatchGroup(title, @"\>(\w+)", 1);
+                    }
                 }
             }
-            else
-            {
-                titleText = title;
-            }
+            titleText = title;
+
             if (!string.IsNullOrEmpty(titleText))
             {
                 titleText = Regex.Replace(titleText, @"\$\{[\w\.\s]+\}", "unknown");
@@ -61,53 +62,14 @@ namespace TextConv
                 }
             }
         }
-        //public void Parse(List<XpathItem> ruleItems)
-        //{
-        //    listNode.Clear();
-
-        //    CaseItem ci = new CaseItem();
-        //    listNode.Add(ci);
-        //    ci.title = this.title;
-        //    ci.subpath = this.subFileName;
-        //    ci.eventText = "初期表示";
-        //    ci.caseDesc = "画面が表示される";
-        //    bool writeLog = bool.Parse(Config.GetAppSettingValue("writeLog"));
-        //    foreach (var item in ruleItems)
-        //    {
-        //        var ns = htmlDoc.DocumentNode.SelectNodes(item.nameXpath);
-        //        if (ns == null) continue;
-        //        foreach(var node in ns)
-        //        {
-        //            ci = new CaseItem();
-        //            listNode.Add(ci);
-                    
-        //            ci.title = this.title;
-        //            ci.subpath = this.subFileName;
-        //            ci.refresh(item, node);
-        //            ci.ToCaseDesc(item, node);
-        //            if(string.IsNullOrEmpty(ci.eventName))
-        //            {
-        //                errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}", 
-        //                    ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name,item.nameXpath));
-        //            }else if (!Regex.IsMatch(ci.eventName, @"\w+"))
-        //            {
-        //                errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventName={6}    eventText={1}  caseDesc={2}    nodehtml={3}",
-        //                    ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.nameXpath, ci.eventName));
-        //            }
-        //            if (writeLog)
-        //            {
-        //                errmsgs.Add(" ●INFO●:   " + ci.ToStringLine());
-        //            }
-        //        }
-        //    }
-        //}
+        
         public void Parse(List<XPathRuleItem> ruleItems)
         {
             listNode.Clear();
 
             CaseItem ci = new CaseItem();
             listNode.Add(ci);
-            ci.title = this.title;
+            ci.title = this.titleText;
             ci.subpath = this.subFileName;
             ci.eventText = "初期表示";
             ci.caseDesc = "画面が表示される";
@@ -120,8 +82,7 @@ namespace TextConv
                 foreach (var node in ns)
                 {
                     ci = new CaseItem();
-                    listNode.Add(ci);
-                    ci.title = this.title;
+                    ci.title = this.titleText;
                     ci.subpath = this.subFileName;
 
                     ci.refresh(item, node);
@@ -130,16 +91,27 @@ namespace TextConv
                     {
                         errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventText={1}  caseDesc={2}    nodehtml={3}",
                             ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.xpath));
+                        ci.eventText = item.xpath;
+                        if (string.IsNullOrEmpty(ci.caseDesc))
+                        {
+                            ci.caseDesc = node.OuterHtml;
+                        }
                     }
                     else if (!Regex.IsMatch(ci.eventName, @"\w+"))
                     {
                         errmsgs.Add(string.Format(" ★Error★:   rule:{4}={5} eventkey={0}    eventName={6}    eventText={1}  caseDesc={2}    nodehtml={3}",
                             ci.eventKey, ci.eventText, ci.caseDesc, node.OuterHtml, item.name, item.xpath, ci.eventName));
+                        if (string.IsNullOrEmpty(ci.caseDesc))
+                        {
+                            ci.caseDesc = node.OuterHtml;
+                        }
                     }
+                    ci.caseDesc = Regex.Replace(ci.caseDesc, "[\t\r\n]+", string.Empty);
                     if (writeLog)
                     {
                         errmsgs.Add(" ●INFO●:   " + ci.ToStringLine());
                     }
+                    listNode.Add(ci);
                 }
             }
         }
@@ -149,7 +121,7 @@ namespace TextConv
             GetTitle();
             string caseFileName = Config.GetAppSettingValue("caseFileName");
             
-            //caseFileName = UtilWxg.ReplaceKeyValue(caseFileName, "title", titleText);
+            caseFileName = StringUtils.ReplaceKeyValue(caseFileName, "title", titleText);
             caseFileName = StringUtils.ReplaceKeyValue(caseFileName, "filename", this.FileName);
             caseFileName = StringUtils.ReplaceKeyValue(caseFileName, "ext", this.ext);
 
