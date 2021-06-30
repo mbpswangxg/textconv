@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
+
 namespace TextConv
 {
     public class XPathKeyPattern
@@ -29,15 +31,15 @@ namespace TextConv
         public Dictionary<string, string> wordMap = new Dictionary<string, string>();
         public XPathRuleItem()
         {
-            LoadMap(Config.GetAppSettingValue("casemapFile"), caseMap);
-            LoadMap(Config.GetAppSettingValue("wordmapfile"), wordMap);
+            //LoadMap(Config.GetAppSettingValue("casemapFile"), caseMap);
+            //LoadMap(Config.GetAppSettingValue("wordmapfile"), wordMap);
         }
-        private void LoadMap(string filename, Dictionary<string, string> map)
-        {
-            if (File.Exists(filename))
-            {
-                FileHelper.FillFromFile(filename, map);
-            }
-        }
+        //private void LoadMap(string filename, Dictionary<string, string> map)
+        //{
+        //    if (File.Exists(filename))
+        //    {
+        //        FileHelper.FillFromFile(filename, map);
+        //    }
+        //}
     }
 }

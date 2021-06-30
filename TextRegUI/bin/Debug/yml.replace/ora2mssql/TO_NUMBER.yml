@@ -1,0 +1,7 @@
+﻿rules:
+- pattern: TO_NUMBER\(
+  replacement: CONVERT(decimal,
+
+- pattern: (FORMAT\()(activity_cd)(,)
+  replacement: $1CONVERT(decimal,$2)$3
+  

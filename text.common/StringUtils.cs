@@ -46,7 +46,14 @@ namespace Text.Common
         {
             return GetMatchGroup(input, pattern, 0);
         }
-
+        public static string GetPropertyValue(string line, string name)
+        {
+            return GetMatchGroup(line, string.Format(@"{0}\s*=[\s""]*([^""]+)[\s""]*", name), 1);
+        }
+        public static string GetNodeText(string line)
+        {
+            return GetMatchGroup(line, @"\>([^\<\>]+)\<", 1);
+        }
         public static string GetMatchGroup(string input, string pattern, int groupIndex) 
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;

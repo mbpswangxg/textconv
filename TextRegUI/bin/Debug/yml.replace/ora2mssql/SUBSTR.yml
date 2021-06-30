@@ -1,0 +1,7 @@
+﻿rules:
+- pattern: ((?:^|[^\.\w]))SUBSTR\s*\(
+  replacement: $1SUBSTRING(
+
+- pattern: (SUBSTRING\([^,]+),\s*0\s*
+  replacement: $1,1
+

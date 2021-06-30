@@ -20,18 +20,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.34" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1.2" />
     <PackageReference Include="YamlDotNet" Version="11.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\bin\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="dataset\DataSets.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSets.Designer.cs</LastGenOutput>
+    </None>
     <None Update="replacer\CommentConfig.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -176,6 +183,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\text.common\Text.Common.csproj" />
+    <ProjectReference Include="..\text.web\Text.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="dataset\DataSets.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataSets.xsd</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

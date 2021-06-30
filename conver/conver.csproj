@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.11.30.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Users\wangx\.nuget\packages\htmlagilitypack\1.11.30\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,12 +64,6 @@
       <DependentUpon>RegexTabPage.cs</DependentUpon>
     </Compile>
     <Compile Include="TreeDataBinder.cs" />
-    <Compile Include="XPathTabPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="XPathTabPage.Designer.cs">
-      <DependentUpon>XPathTabPage.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="FrmMDI.resx">
       <DependentUpon>FrmMDI.cs</DependentUpon>
     </EmbeddedResource>
@@ -88,9 +78,6 @@
     </Compile>
     <EmbeddedResource Include="RegexTabPage.resx">
       <DependentUpon>RegexTabPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XPathTabPage.resx">
-      <DependentUpon>XPathTabPage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

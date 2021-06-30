@@ -1,0 +1,6 @@
+﻿rules:
+- pattern: ([^\r\n]+)("d:\\\\imart\\\\storage\\\\"\s*\+\s*Module.client.get\("group"\))([^\r\n]+)
+  replacement: $1new Packages.jp.co.intra_mart.system.service.client.file.StorageInformation().getPublicStorageRootPath().replace(/\//g, "\\")$3
+
+- pattern: ([^\r\n]+)("d:\\\\imart\\\\storage\\\\"\s*\+\s*p_sGrp)([^\r\n]+)
+  replacement: $1new Packages.jp.co.intra_mart.system.service.client.file.StorageInformation().getPublicStorageRootPath().replace(/\//g, "\\")$3

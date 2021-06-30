@@ -37,3 +37,4 @@ pnpm-debug.log*
 
 /TextConv/.vs/TextConv/DesignTimeBuild
 /TextConv/packages/YamlDotNet.9.1.4
+personal_access_token.txt

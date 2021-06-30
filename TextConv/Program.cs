@@ -3,7 +3,8 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
+using Text.Common;
+using Text.Web;
 namespace TextConv
 {
     public class Program
@@ -133,7 +134,7 @@ namespace TextConv
         {
             if (!Directory.Exists(folder)) return;
 
-            string ext = Config.GetAppSettingValue2("xpath.ext", ".(html?|xml)$");
+            string ext = Config.GetAppSettingValue2("xpath.ext", ".(html?|jsp)$");
             foreach (string filePath in Directory.GetFiles(folder))
             {
                 if (!Regex.IsMatch(filePath, ext)) continue;

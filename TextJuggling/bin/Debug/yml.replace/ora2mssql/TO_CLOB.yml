@@ -1,0 +1,6 @@
+﻿rules:
+- pattern: TO_CLOB\('\W+(\w+)\W+'\)
+  replacement: CAST('" + $1 +"' AS NVARCHAR(" + $1.length + "))
+
+- pattern: TO_CLOB\('\W+(\w+)\s*\+\s*(\w+)\W+'\)
+  replacement: CAST('" + $1 + $2 + "' AS NVARCHAR(" + ($1.length + $2.length) + "))
