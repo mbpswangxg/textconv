@@ -48,7 +48,6 @@ namespace XPathUI
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.txtFileContent = new System.Windows.Forms.RichTextBox();
             this.treeResult = new System.Windows.Forms.TreeView();
-            this.tabInputFiles = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtFileFilter = new System.Windows.Forms.TextBox();
             this.treeFiles = new System.Windows.Forms.TreeView();
@@ -59,6 +58,7 @@ namespace XPathUI
             this.txtReplaceResult = new System.Windows.Forms.RichTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.txtReplaceLog = new System.Windows.Forms.RichTextBox();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -86,12 +86,15 @@ namespace XPathUI
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
-            this.tabInputFiles.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -109,7 +112,7 @@ namespace XPathUI
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(1087, 711);
-            this.splitContainer1.SplitterDistance = 136;
+            this.splitContainer1.SplitterDistance = 76;
             this.splitContainer1.TabIndex = 5;
             // 
             // splitContainer3
@@ -126,7 +129,7 @@ namespace XPathUI
             // 
             this.splitContainer3.Panel2.Controls.Add(this.tabControl2);
             this.splitContainer3.Panel2Collapsed = true;
-            this.splitContainer3.Size = new System.Drawing.Size(1087, 136);
+            this.splitContainer3.Size = new System.Drawing.Size(1087, 76);
             this.splitContainer3.SplitterDistance = 615;
             this.splitContainer3.TabIndex = 6;
             // 
@@ -137,7 +140,7 @@ namespace XPathUI
             this.groupHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupHistory.Location = new System.Drawing.Point(0, 0);
             this.groupHistory.Name = "groupHistory";
-            this.groupHistory.Size = new System.Drawing.Size(1087, 136);
+            this.groupHistory.Size = new System.Drawing.Size(1087, 76);
             this.groupHistory.TabIndex = 0;
             this.groupHistory.TabStop = false;
             this.groupHistory.Text = "XPath";
@@ -155,7 +158,7 @@ namespace XPathUI
             this.txtFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtFilter.Location = new System.Drawing.Point(3, 15);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(1081, 118);
+            this.txtFilter.Size = new System.Drawing.Size(1081, 58);
             this.txtFilter.TabIndex = 5;
             this.txtFilter.Text = "//input[@type=\'button\'];//title;//a";
             // 
@@ -266,25 +269,24 @@ namespace XPathUI
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.tabInput);
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer6);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer2.Panel2Collapsed = true;
-            this.splitContainer2.Size = new System.Drawing.Size(1087, 571);
+            this.splitContainer2.Size = new System.Drawing.Size(1087, 631);
             this.splitContainer2.SplitterDistance = 616;
             this.splitContainer2.TabIndex = 1;
             // 
             // tabInput
             // 
             this.tabInput.Controls.Add(this.tabInputContent);
-            this.tabInput.Controls.Add(this.tabInputFiles);
             this.tabInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabInput.Location = new System.Drawing.Point(0, 0);
             this.tabInput.Name = "tabInput";
             this.tabInput.SelectedIndex = 0;
-            this.tabInput.Size = new System.Drawing.Size(1087, 571);
+            this.tabInput.Size = new System.Drawing.Size(1087, 531);
             this.tabInput.TabIndex = 2;
             // 
             // tabInputContent
@@ -293,7 +295,7 @@ namespace XPathUI
             this.tabInputContent.Location = new System.Drawing.Point(4, 22);
             this.tabInputContent.Name = "tabInputContent";
             this.tabInputContent.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInputContent.Size = new System.Drawing.Size(1079, 545);
+            this.tabInputContent.Size = new System.Drawing.Size(1079, 505);
             this.tabInputContent.TabIndex = 0;
             this.tabInputContent.Text = "Html/Xml";
             this.tabInputContent.UseVisualStyleBackColor = true;
@@ -311,7 +313,7 @@ namespace XPathUI
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.treeResult);
-            this.splitContainer4.Size = new System.Drawing.Size(1073, 539);
+            this.splitContainer4.Size = new System.Drawing.Size(1073, 499);
             this.splitContainer4.SplitterDistance = 712;
             this.splitContainer4.TabIndex = 2;
             // 
@@ -320,7 +322,7 @@ namespace XPathUI
             this.txtFileContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtFileContent.Location = new System.Drawing.Point(0, 0);
             this.txtFileContent.Name = "txtFileContent";
-            this.txtFileContent.Size = new System.Drawing.Size(712, 539);
+            this.txtFileContent.Size = new System.Drawing.Size(712, 499);
             this.txtFileContent.TabIndex = 1;
             this.txtFileContent.Text = "";
             // 
@@ -329,20 +331,9 @@ namespace XPathUI
             this.treeResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeResult.Location = new System.Drawing.Point(0, 0);
             this.treeResult.Name = "treeResult";
-            this.treeResult.Size = new System.Drawing.Size(357, 539);
+            this.treeResult.Size = new System.Drawing.Size(357, 499);
             this.treeResult.TabIndex = 0;
             this.treeResult.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeResult_AfterSelect);
-            // 
-            // tabInputFiles
-            // 
-            this.tabInputFiles.Controls.Add(this.groupBox2);
-            this.tabInputFiles.Location = new System.Drawing.Point(4, 22);
-            this.tabInputFiles.Name = "tabInputFiles";
-            this.tabInputFiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInputFiles.Size = new System.Drawing.Size(1079, 545);
-            this.tabInputFiles.TabIndex = 1;
-            this.tabInputFiles.Text = "Files Tree";
-            this.tabInputFiles.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -350,9 +341,9 @@ namespace XPathUI
             this.groupBox2.Controls.Add(this.treeFiles);
             this.groupBox2.Controls.Add(this.txtFilePath);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1073, 539);
+            this.groupBox2.Size = new System.Drawing.Size(1087, 96);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Files";
@@ -361,7 +352,7 @@ namespace XPathUI
             // 
             this.txtFileFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFileFilter.BackColor = System.Drawing.SystemColors.Info;
-            this.txtFileFilter.Location = new System.Drawing.Point(991, -3);
+            this.txtFileFilter.Location = new System.Drawing.Point(1005, -3);
             this.txtFileFilter.Name = "txtFileFilter";
             this.txtFileFilter.Size = new System.Drawing.Size(78, 19);
             this.txtFileFilter.TabIndex = 8;
@@ -370,10 +361,11 @@ namespace XPathUI
             // 
             // treeFiles
             // 
+            this.treeFiles.CheckBoxes = true;
             this.treeFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeFiles.Location = new System.Drawing.Point(3, 15);
             this.treeFiles.Name = "treeFiles";
-            this.treeFiles.Size = new System.Drawing.Size(1067, 521);
+            this.treeFiles.Size = new System.Drawing.Size(1081, 78);
             this.treeFiles.TabIndex = 0;
             this.treeFiles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFiles_AfterSelect);
             this.treeFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeFiles_NodeMouseDoubleClick);
@@ -383,9 +375,9 @@ namespace XPathUI
             this.txtFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFilePath.BackColor = System.Drawing.SystemColors.Info;
-            this.txtFilePath.Location = new System.Drawing.Point(86, -2);
+            this.txtFilePath.Location = new System.Drawing.Point(47, -2);
             this.txtFilePath.Name = "txtFilePath";
-            this.txtFilePath.Size = new System.Drawing.Size(899, 19);
+            this.txtFilePath.Size = new System.Drawing.Size(952, 19);
             this.txtFilePath.TabIndex = 2;
             this.txtFilePath.Text = "C:\\tmp\\wangx\\_projects\\jae\\develop\\jae\\jae\\src\\main\\jssp\\src\\jae";
             this.txtFilePath.TextChanged += new System.EventHandler(this.txtFilePath_TextChanged);
@@ -454,6 +446,24 @@ namespace XPathUI
             this.txtReplaceLog.TabIndex = 8;
             this.txtReplaceLog.Text = "";
             // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.groupBox2);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.tabInput);
+            this.splitContainer6.Size = new System.Drawing.Size(1087, 631);
+            this.splitContainer6.SplitterDistance = 96;
+            this.splitContainer6.TabIndex = 3;
+            // 
             // XPathTabPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -490,13 +500,16 @@ namespace XPathUI
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
-            this.tabInputFiles.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
+            this.splitContainer6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -516,7 +529,6 @@ namespace XPathUI
         private System.Windows.Forms.RichTextBox txtFilter;
         private System.Windows.Forms.TabControl tabInput;
         private System.Windows.Forms.TabPage tabInputContent;
-        private System.Windows.Forms.TabPage tabInputFiles;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.SplitContainer splitContainer5;
@@ -533,5 +545,6 @@ namespace XPathUI
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.RichTextBox txtReplaceLog;
         private System.Windows.Forms.Label lblFilePath;
+        private System.Windows.Forms.SplitContainer splitContainer6;
     }
 }
