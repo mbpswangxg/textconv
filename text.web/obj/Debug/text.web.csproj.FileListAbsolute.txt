@@ -1,0 +1,14 @@
+C:\tool\textconv\text.web\obj\Debug\text.web.csproj.CoreCompileInputs.cache
+C:\tool\textconv\text.web\bin\Debug\text.web.dll
+C:\tool\textconv\text.web\bin\Debug\text.web.pdb
+C:\tool\textconv\text.web\bin\Debug\text.common.dll
+C:\tool\textconv\text.web\bin\Debug\WebDriver.dll
+C:\tool\textconv\text.web\bin\Debug\HtmlAgilityPack.dll
+C:\tool\textconv\text.web\bin\Debug\YamlDotNet.dll
+C:\tool\textconv\text.web\bin\Debug\text.common.pdb
+C:\tool\textconv\text.web\bin\Debug\WebDriver.xml
+C:\tool\textconv\text.web\bin\Debug\YamlDotNet.xml
+C:\tool\textconv\text.web\obj\Debug\text.web.csproj.CopyComplete
+C:\tool\textconv\text.web\obj\Debug\text.web.dll
+C:\tool\textconv\text.web\obj\Debug\text.web.pdb
+C:\tool\textconv\text.web\obj\Debug\Text.Web.csproj.AssemblyReference.cache
