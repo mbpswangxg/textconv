@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using Text.Common;
 
 namespace Text.Web
@@ -22,6 +23,7 @@ namespace Text.Web
         public IDictionary<string, object> vars { get; private set; }
 
         public IWebDriver driver;
+        private IJavaScriptExecutor js;
         public WebAction()
         {
             vars = new Dictionary<string, object>();
@@ -85,7 +87,20 @@ namespace Text.Web
                 driver.Navigate().GoToUrl(action.target);
                 return true;
             }
-
+            if (action.IsCmd("runjs"))
+            {
+                js = (IJavaScriptExecutor)driver;
+                if (!string.IsNullOrEmpty(action.target))
+                {
+                    var element = FindElement(action);
+                    js.ExecuteScript(action.value, element);
+                }
+                else
+                {
+                    js.ExecuteScript(action.value);
+                }
+                
+            }
             // switch to dest window or frame
             if (action.IsTarget("switchwindow"))
             {
@@ -286,6 +301,17 @@ namespace Text.Web
             {
                 return false;
             }
+            if (action.IsCmd("mouseover"))
+            {
+                Actions builder = new Actions(driver);
+                builder.MoveToElement(element).Perform();
+                return true;
+            }
+            if (action.IsCmd("mouseout"))
+            {
+                Actions builder = new Actions(driver);
+                builder.MoveToElement(element, 0, 0).Perform();
+            }
 
             if (action.IsCmd("click"))
             {
@@ -316,7 +342,10 @@ namespace Text.Web
             }else if (action.IsCmd("overwrite"))
             {
                 element.Clear();
-                element.SendKeys(action.value);
+                if (!string.IsNullOrEmpty(action.value))
+                {
+                    element.SendKeys(action.value);
+                }
                 return true;
             }
             return false;

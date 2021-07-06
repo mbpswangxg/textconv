@@ -1,9 +1,6 @@
-C:\tool\textconv\text.common\obj\Debug\text.common.csproj.CoreCompileInputs.cache
-C:\tool\textconv\text.common\bin\Debug\text.common.dll
-C:\tool\textconv\text.common\bin\Debug\text.common.pdb
-C:\tool\textconv\text.common\bin\Debug\HtmlAgilityPack.dll
-C:\tool\textconv\text.common\bin\Debug\YamlDotNet.dll
-C:\tool\textconv\text.common\bin\Debug\YamlDotNet.xml
-C:\tool\textconv\text.common\obj\Debug\text.common.csproj.CopyComplete
-C:\tool\textconv\text.common\obj\Debug\text.common.dll
-C:\tool\textconv\text.common\obj\Debug\text.common.pdb
+D:\workspace\C#\textconv\bin\text.common.dll
+D:\workspace\C#\textconv\bin\text.common.pdb
+D:\workspace\C#\textconv\text.common\obj\Debug\Text.Common.csprojAssemblyReference.cache
+D:\workspace\C#\textconv\text.common\obj\Debug\Text.Common.csproj.CopyComplete
+D:\workspace\C#\textconv\text.common\obj\Debug\text.common.dll
+D:\workspace\C#\textconv\text.common\obj\Debug\text.common.pdb

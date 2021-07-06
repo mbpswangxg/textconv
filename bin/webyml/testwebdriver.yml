@@ -1,0 +1,109 @@
+﻿## 処理待ち時間: 0.5秒
+interval: 500
+#screenshotの監視command
+shotcmd: [open, popup, click]
+#screenshotの開始STEP位置
+shotfromstep: 15
+actions: 
+  #step:1
+  - command: var
+    target: routeX
+    value: 1
+    shotflag: 
+
+  #step:2tenant取得の為
+  - command: open
+    target: http://18.180.153.74:9084/toyo/login
+    value: 
+    shotflag: 
+
+  #step:3
+  - command: resize
+    target: window
+    value: 1000x900
+    shotflag: 
+
+  #step:4ID入力
+  - command: overwrite
+    target: id=im_user
+    value: wangxg
+    shotflag: 
+
+  #step:5PWD入力
+  - command: overwrite
+    target: id=im_password
+    value: 
+    shotflag: 
+
+  #step:6
+  - command: wait
+    target: 
+    value: 1000
+    shotflag: 
+
+  #step:7
+  - command: click
+    target: css=.imui-btn-login
+    value: 
+    shotflag: 
+
+  #step:8
+  - command: open
+    target: http://18.180.153.74:9084/toyo/im_workflow/applications/bookmarks?
+    value: 
+    shotflag: 
+
+  #step:9
+  - command: open
+    target: http://18.180.153.74:9084/toyo/im_workflow/applications
+    value: 
+    shotflag: 
+
+  #step:10
+  - command: click
+    target: linktext=【EDP】業務依頼書（本番移行）
+    value: 
+    shotflag: 
+
+  #step:11
+  - command: overwrite
+    target: name=transComment
+    value: 桃太郎　テスト　２０２１０７０６
+    shotflag: 
+
+  #step:12
+  - command: overwrite
+    target: id=receiptNo1
+    value: Receipt0000000000001
+    shotflag: 
+
+  #step:13
+  - command: click
+    target: css=a:nth-child(6) > img
+    value: 
+    shotflag: 
+
+  #step:14
+  - command: click
+    target: css=a b
+    value: 
+    shotflag: 
+
+  #step:15
+  - command: click
+    target: css=#btnBack > img
+    value: 
+    shotflag: 
+
+  #step:16
+  - command: wait
+    target: 
+    value: 2000
+    shotflag: 1
+
+  #step:17
+  - command: close
+    target: 
+    value: 
+    shotflag: 
+

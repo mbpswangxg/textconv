@@ -1,0 +1,3 @@
+﻿rules:
+- pattern: (\<IMART\s+type\=\"string\")\s+(value=(p_sDispInfo|\w+.DISP_MSG|p_sDispMsg|\w+.(START|End|ALL|RESULT)\b|p_sPaging|p_sNextArrow))
+  replacement: $1 escapeXml="false" $2
