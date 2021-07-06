@@ -1,7 +1,0 @@
-D:\workspace\C#\textconv\bin\text.web.exe.config
-D:\workspace\C#\textconv\bin\text.web.exe
-D:\workspace\C#\textconv\bin\text.web.pdb
-D:\workspace\C#\textconv\text.web\obj\Debug\Text.Web.csprojAssemblyReference.cache
-D:\workspace\C#\textconv\text.web\obj\Debug\Text.Web.csproj.CopyComplete
-D:\workspace\C#\textconv\text.web\obj\Debug\text.web.exe
-D:\workspace\C#\textconv\text.web\obj\Debug\text.web.pdb

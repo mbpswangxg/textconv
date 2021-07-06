@@ -1,6 +1,0 @@
-D:\workspace\C#\textconv\bin\text.common.dll
-D:\workspace\C#\textconv\bin\text.common.pdb
-D:\workspace\C#\textconv\text.common\obj\Debug\Text.Common.csprojAssemblyReference.cache
-D:\workspace\C#\textconv\text.common\obj\Debug\Text.Common.csproj.CopyComplete
-D:\workspace\C#\textconv\text.common\obj\Debug\text.common.dll
-D:\workspace\C#\textconv\text.common\obj\Debug\text.common.pdb
